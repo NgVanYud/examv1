@@ -25,7 +25,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
         Route::bind('subject', function($slug) {
-            return App\Models\Subject::where('slug', $slug)->first();
+            return \App\Models\Subject::where('slug', $slug)->first();
         });
     }
 

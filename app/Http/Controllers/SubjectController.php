@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSubjectRequest;
+use App\Http\Requests\UpdateSubjectRequest;
 use App\Http\Resources\Subject\SubjectCollection;
 use App\Repositories\Subject\SubjectRepository;
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ class SubjectController extends Controller
      */
     public function index(Request $request)
     {
+//        return $request->all();
         $conditions = [
             'orderBy' => ($request->order_by ? $request->order_by : 'name'),
             'sortDesc' => ($request->sort_desc == 'true' ? 'desc' : 'asc'),
@@ -97,9 +99,11 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateSubjectRequest $request, $subject)
     {
-        //
+        return $this->subjectRepository->updateById($subject->id, $request->only([
+            'code', 'name', 'credit', 'description'
+        ]));
     }
 
     /**

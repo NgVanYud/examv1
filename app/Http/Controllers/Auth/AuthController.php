@@ -21,15 +21,6 @@ class AuthController extends Controller
 //        $this->middleware('jwt.auth', ['except' => ['login']]);
     }
 
-    /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function me()
-    {
-        return response()->json(auth()->user());
-    }
 
     /**
      * Refresh a token.
@@ -38,7 +29,7 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-//        return JWTAuth::refresh(auth()->token());
+//        return JWTAuth::getToken();
         return $this->respondWithToken(auth()->refresh());
     }
 

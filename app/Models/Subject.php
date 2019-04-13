@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Traits\SubjectAttributes;
 
 class Subject extends Model
 {
-    use Sluggable;
+    use Sluggable, SubjectAttributes;
 
     public $fillable = ['code', 'name', 'slug', 'credit', 'description'];
 
