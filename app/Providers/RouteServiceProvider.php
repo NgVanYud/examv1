@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Exceptions\GeneralException;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -24,13 +25,28 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-        Route::bind('subject', function($slug) {
-            return \App\Models\Subject::where('slug', $slug)->first();
-        });
+        $bindingInfo = [
+            [
+                'podcast' => 'subject',
+                'model' => '\App\Models\Subject',
+                'findBy' => 'slug'
+            ],
+            [
+                'podcast' => 'term',
+                'model' => '\App\Models\Term',
+                'findBy' => 'uuid'
+            ]
+        ];
 
-        Route::bind('term', function($uuid) {
-            return \App\Models\Term::where('uuid', $uuid)->first();
-        });
+        foreach ($bindingInfo as $obj) {
+            Route::bind($obj['podcast'], function($findBy) use ($obj) {
+                $record = $obj['model']::where($obj['findBy'], $findBy)->first();
+                if(!$record) {
+                    throw new GeneralException(__('exceptions.general'), 404);
+                }
+                return $record;
+            });
+        }
     }
 
     /**

@@ -8,5 +8,5 @@
 Route::group([
     'middleware' => 'jwt.auth',
 ], function() {
-    Route::resource('terms', 'TermController');
+    Route::apiResource('terms', 'TermController');
 });
