@@ -37,5 +37,13 @@ class TermRepository extends BaseRepository
         });
     }
 
+    public function update(Term $term, array $data) {
+        return DB::transaction(function() use ($term, $data){
+            $term->update(array_diff_key($data, array_flip(['subjects'])));
+            $term->subjects()->sync($data['subjects']);
+            return new TermResouce($term);
+        });
+    }
+
 
 }

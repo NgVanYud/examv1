@@ -15,13 +15,13 @@ return [
 
     'accepted' => 'Thuộc tính :attribute được chấp nhận',
     'active_url' => 'Thuộc tính :attribute không phải là URL hợp lệ.',
-    'after' => 'The :attribute must be a date after :date.',
+    'after' => 'Giá trị :attribute phải muộn hơn so với :date.',
     'after_or_equal' => 'The :attribute must be a date after or equal to :date.',
     'alpha' => 'The :attribute may only contain letters.',
     'alpha_dash' => 'The :attribute may only contain letters, numbers, dashes and underscores.',
     'alpha_num' => 'The :attribute may only contain letters and numbers.',
     'array' => 'Thuộc tính :attribute yêu cầu dạng mảng.',
-    'before' => 'The :attribute must be a date before :date.',
+    'before' => 'Giá trị :attribute phải có giá trị trước ngày :date.',
     'before_or_equal' => 'The :attribute must be a date before or equal to :date.',
     'between' => [
         'numeric' => 'The :attribute must be between :min and :max.',
@@ -149,7 +149,10 @@ return [
 
     'attributes' => [
         'credit' => 'số tín chỉ',
-        'code' => 'mã code'
+        'code' => 'mã code',
+        'end' => 'ngày kết thúc',
+        'begin' => 'ngày bắt đầu',
+        'name' => 'tên'
     ],
 
 ];

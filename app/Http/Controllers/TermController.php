@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTermRequest;
+use App\Http\Requests\UpdateTermRequest;
+use App\Http\Resources\Term\TermCollection;
 use App\Repositories\Term\TermRepository;
 use Illuminate\Http\Request;
 
@@ -31,9 +33,17 @@ class TermController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $conditions = [
+            'orderBy' => ($request->order_by ? $request->order_by : 'name'),
+            'sortDesc' => ($request->sort_desc == 'true' ? 'desc' : 'asc'),
+            'perPage' => ($request->per_page && intval($request->per_page) > 0 ? $request->per_page: null)
+        ];
+        return new TermCollection($this->termRepository
+            ->orderBy($conditions['orderBy'], $conditions['sortDesc'])
+            ->paginate($conditions['perPage'])
+        );
     }
 
     /**
@@ -86,9 +96,9 @@ class TermController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTermRequest $request, $term)
     {
-        //
+        return $this->termRepository->update($term, $request->all());
     }
 
     /**
