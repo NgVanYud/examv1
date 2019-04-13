@@ -27,6 +27,10 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('subject', function($slug) {
             return \App\Models\Subject::where('slug', $slug)->first();
         });
+
+        Route::bind('term', function($uuid) {
+            return \App\Models\Term::where('uuid', $uuid)->first();
+        });
     }
 
     /**

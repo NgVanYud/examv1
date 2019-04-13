@@ -149,7 +149,7 @@ return [
 
     'attributes' => [
         'credit' => 'số tín chỉ',
-        'code' => 'mã môn học'
+        'code' => 'mã code'
     ],
 
 ];

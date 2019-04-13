@@ -24,4 +24,5 @@ Route::group([
     include __DIR__.'/modules/auth.php';
     include __DIR__.'/modules/users.php';
     include __DIR__.'/modules/subjects.php';
+    include __DIR__.'/modules/terms.php';
 });
