@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -17,7 +18,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('jwt.auth', ['except' => ['login']]);
+//        $this->middleware('jwt.auth', ['except' => ['login']]);
     }
 
     /**
@@ -37,7 +38,21 @@ class AuthController extends Controller
      */
     public function refresh()
     {
+//        return JWTAuth::refresh(auth()->token());
         return $this->respondWithToken(auth()->refresh());
+    }
+
+    /**
+     * Get the token array structure
+     *
+     * @param string $token
+     */
+    public function respondWithToken($token) {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL()*60
+        ]);
     }
 
 
