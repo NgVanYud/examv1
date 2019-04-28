@@ -11,5 +11,6 @@ Route::group([
 ], function() {
     Route::post('subjects/{subjectId}/chapters', 'SubjectController@storeChapter');
     Route::post('subjects/{subjectId}/chapters/{chapterId}/update', 'SubjectController@updateChapter');
+    Route::get('subjects/{subjectId}/chapters', 'SubjectController@getChapters');
     Route::resource('subjects', 'SubjectController');
 });

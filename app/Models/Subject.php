@@ -39,5 +39,7 @@ class Subject extends Model
     public function terms(){
         return $this->belongsToMany(Term::class);
     }
-
+    public function chapters() {
+      return $this->hasMany(Chapter::class);
+    }
 }

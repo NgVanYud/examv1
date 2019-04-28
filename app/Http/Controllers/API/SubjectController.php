@@ -145,4 +145,8 @@ class SubjectController extends Controller
         422
       );
     }
+
+    public function getChapters($subjectId) {
+      return $this->subjectRepository->getChapters($subjectId);
+    }
 }

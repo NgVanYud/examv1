@@ -42,9 +42,6 @@ class ChapterRepository extends BaseRepository
     if($this->getById($id)) {
       return true;
     }
-    throw new GeneralException(
-      __('exceptions.invalid_data'),
-      422
-    );
+    return false;
   }
 }

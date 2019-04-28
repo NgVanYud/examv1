@@ -9,6 +9,7 @@
 namespace App\Repositories\Subject;
 
 
+use App\Exceptions\GeneralException;
 use App\Http\Requests\StoreChapterRequest;
 use App\Models\Subject;
 use App\Repositories\BaseRepository;
@@ -47,5 +48,16 @@ class SubjectRepository extends BaseRepository
         return true;
       }
       return false;
+    }
+
+    public function getChapters($subjectId) {
+      $subject = $this->getById($subjectId);
+      if($subject) {
+        return $subject->chapters;
+      }
+      throw new GeneralException(
+        __('exceptions.invalid_data'),
+        422
+      );
     }
 }
