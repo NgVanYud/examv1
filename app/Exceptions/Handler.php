@@ -50,6 +50,6 @@ class Handler extends ExceptionHandler
             'error' => true,
             'code' => $exception->getCode(),
             'message' => $exception->getMessage()
-        ], $exception->getCode());
+        ]);
     }
 }

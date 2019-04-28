@@ -144,6 +144,12 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+      'credit' => 'số tín chỉ',
+      'code' => 'mã code',
+      'end' => 'ngày kết thúc',
+      'begin' => 'ngày bắt đầu',
+      'name' => 'tên'
+    ],
 
 ];

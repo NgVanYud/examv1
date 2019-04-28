@@ -10,5 +10,6 @@ Route::group([
   'namespace' => 'API'
 ], function() {
     Route::post('subjects/{subjectId}/chapters', 'SubjectController@storeChapter');
+    Route::post('subjects/{subjectId}/chapters/{chapterId}/update', 'SubjectController@updateChapter');
     Route::resource('subjects', 'SubjectController');
 });

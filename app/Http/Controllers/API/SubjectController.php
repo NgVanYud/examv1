@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Exceptions\GeneralException;
 use App\Http\Requests\StoreChapterRequest;
 use App\Http\Requests\StoreSubjectRequest;
+use App\Http\Requests\UpdateChapterRequest;
 use App\Http\Requests\UpdateSubjectRequest;
 use App\Http\Resources\Subject\SubjectCollection;
 use App\Repositories\Subject\ChapterRepository;
@@ -128,6 +129,16 @@ class SubjectController extends Controller
       if($this->subjectRepository->existed($subjectId)) {
         $chapterData = $request->all() + ['subject_id' => (int)$subjectId];
         return $this->chapterRepository->create($chapterData);
+      }
+      throw new GeneralException(
+        __('exceptions.invalid_data'),
+        422
+      );
+    }
+
+    public function updateChapter(UpdateChapterRequest $request, $subjectId, $chapterId) {
+      if($this->chapterRepository->existed($chapterId)) {
+        return $this->chapterRepository->updateById($chapterId, $request->all());
       }
       throw new GeneralException(
         __('exceptions.invalid_data'),
