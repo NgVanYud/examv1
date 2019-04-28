@@ -7,6 +7,7 @@
  */
 Route::group([
     'middleware' => 'jwt.auth',
+  'namespace' => 'API'
 ], function() {
     Route::apiResource('terms', 'TermController');
 });

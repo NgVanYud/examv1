@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Http\Requests\StoreTermRequest;
 use App\Http\Requests\UpdateTermRequest;
@@ -8,6 +8,7 @@ use App\Http\Resources\Term\TermCollection;
 use App\Http\Resources\Term\TermResouce;
 use App\Repositories\Term\TermRepository;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class TermController extends Controller
 {

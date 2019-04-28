@@ -7,6 +7,8 @@
  */
 Route::group([
     'middleware' => 'jwt.auth',
+  'namespace' => 'API'
 ], function() {
+    Route::post('subjects/{subjectId}/chapters', 'SubjectController@storeChapter');
     Route::resource('subjects', 'SubjectController');
 });

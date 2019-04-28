@@ -9,6 +9,7 @@
 namespace App\Repositories\Subject;
 
 
+use App\Http\Requests\StoreChapterRequest;
 use App\Models\Subject;
 use App\Repositories\BaseRepository;
 
@@ -24,4 +25,27 @@ class SubjectRepository extends BaseRepository
         return Subject::class;
     }
 
+  /**
+   * Get the specified model record from the database.
+   *
+   * @param       $id
+   * @param array $columns
+   *
+   * @return Collection|Model
+   */
+  public function getById($id, array $columns = ['*'])
+  {
+    $this->unsetClauses();
+
+    $this->newQuery()->eagerLoad();
+
+    return $this->query->find($id, $columns);
+  }
+
+  public function existed($id) {
+      if($this->getById($id)) {
+        return true;
+      }
+      return false;
+    }
 }

@@ -1,16 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Exceptions\GeneralException;
+use App\Http\Requests\StoreChapterRequest;
 use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
 use App\Http\Resources\Subject\SubjectCollection;
+use App\Repositories\Subject\ChapterRepository;
 use App\Repositories\Subject\SubjectRepository;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class SubjectController extends Controller
 {
     public $subjectRepository;
+
+    public $chapterRepository;
 
     /**
      * PHP 5 allows developers to declare constructor methods for classes.
@@ -23,9 +29,10 @@ class SubjectController extends Controller
      * param [ mixed $args [, $... ]]
      * @link https://php.net/manual/en/language.oop5.decon.php
      */
-    public function __construct(SubjectRepository $subjectRepository)
-    {
+    public function __construct(
+      SubjectRepository $subjectRepository, ChapterRepository $chapterRepository){
         $this->subjectRepository = $subjectRepository;
+        $this->chapterRepository = $chapterRepository;
     }
 
     /**
@@ -115,5 +122,16 @@ class SubjectController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function storeChapter(StoreChapterRequest $request, $subjectId) {
+      if($this->subjectRepository->existed($subjectId)) {
+        $chapterData = $request->all() + ['subject_id' => (int)$subjectId];
+        return $this->chapterRepository->create($chapterData);
+      }
+      throw new GeneralException(
+        __('exceptions.invalid_data'),
+        422
+      );
     }
 }
