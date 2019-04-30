@@ -126,4 +126,36 @@ class SubjectRepository extends BaseRepository
         422
       );
     }
+
+    public function updateQuestion($questionId, $data) {
+      return DB::transaction( function () use ($questionId, $data) {
+        $questionData = [
+          'content' => $data['content']
+        ];
+        $question = $this->questionRepository->updateById($questionId, $questionData);
+        $options = $question->options;
+        //Check if the id of answer exists into the options array
+        if($options->contains('id', $data['answer'])) {
+          $optionsData = $data['options'];
+          foreach ($options as $key => $option) {
+            $option->update([
+              'content' => $optionsData[$key],
+              'question_id' => $questionId,
+              'is_correct' => $option->id == $data['answer'] ? Option::CODE_CORRECT : Option::CODE_INCORRECT
+            ]);
+          }
+          return $question;
+        } else {
+          throw new GeneralException(
+            __('exceptions.invalid_data'),
+            422
+          );
+        }
+
+      });
+      throw new GeneralException(
+        __('exceptions.general'),
+        422
+      );
+    }
 }

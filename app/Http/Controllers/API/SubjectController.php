@@ -7,6 +7,7 @@ use App\Http\Requests\StoreChapterRequest;
 use App\Http\Requests\StoreQuestionRequest;
 use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateChapterRequest;
+use App\Http\Requests\UpdateQuestionRequest;
 use App\Http\Requests\UpdateSubjectRequest;
 use App\Http\Resources\Subject\SubjectCollection;
 use App\Models\Subject;
@@ -154,6 +155,16 @@ class SubjectController extends Controller
     public function storeQuestion(StoreQuestionRequest $request, $subjectId, $chapterId) {
       if($this->subjectRepository->containChapter($subjectId, $chapterId)) {
         return $this->subjectRepository->storeQuestion($request->all());
+      }
+      throw new GeneralException(
+        __('exceptions.invalid_data'),
+        422
+      );
+    }
+
+    public function updateQuestion(UpdateQuestionRequest $request, $subjectId, $chapterId, $questionId) {
+      if($this->chapterRepository->containQuestion($chapterId, $questionId)) {
+        return $this->subjectRepository->updateQuestion($questionId, $request->all());
       }
       throw new GeneralException(
         __('exceptions.invalid_data'),
