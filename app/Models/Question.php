@@ -19,6 +19,8 @@ class Question extends Model
     'is_actived' => 'boolean'
   ];
 
+  protected $dates = [ 'deleted_at' ];
+
   public function getRouteKeyName()
   {
     return 'id';

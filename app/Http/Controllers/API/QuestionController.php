@@ -60,9 +60,9 @@ class QuestionController extends Controller
      * @param  \App\ModelsQuestion  $modelsQuestion
      * @return \Illuminate\Http\Response
      */
-    public function destroy()
+    public function destroy(Question $question)
     {
-        //
+        $question->delete();
     }
 
 }
