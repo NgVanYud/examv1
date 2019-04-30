@@ -4,10 +4,12 @@ namespace App\Http\Controllers\API;
 
 use App\Exceptions\GeneralException;
 use App\Http\Requests\StoreChapterRequest;
+use App\Http\Requests\StoreQuestionRequest;
 use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateChapterRequest;
 use App\Http\Requests\UpdateSubjectRequest;
 use App\Http\Resources\Subject\SubjectCollection;
+use App\Models\Subject;
 use App\Repositories\Subject\ChapterRepository;
 use App\Repositories\Subject\SubjectRepository;
 use Illuminate\Http\Request;
@@ -43,7 +45,6 @@ class SubjectController extends Controller
      */
     public function index(Request $request)
     {
-//        return $request->all();
         $conditions = [
             'orderBy' => ($request->order_by ? $request->order_by : 'name'),
             'sortDesc' => ($request->sort_desc == 'true' ? 'desc' : 'asc'),
@@ -149,4 +150,15 @@ class SubjectController extends Controller
     public function getChapters($subjectId) {
       return $this->subjectRepository->getChapters($subjectId);
     }
+
+    public function storeQuestion(StoreQuestionRequest $request, $subjectId, $chapterId) {
+      if($this->subjectRepository->containChapter($subjectId, $chapterId)) {
+        return $this->subjectRepository->storeQuestion($request->all());
+      }
+      throw new GeneralException(
+        __('exceptions.invalid_data'),
+        422
+      );
+    }
+
 }
