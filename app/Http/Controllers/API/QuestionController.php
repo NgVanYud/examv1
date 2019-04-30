@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Resources\Question\QuestionResource;
+use App\Models\Question;
 use App\ModelsQuestion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -35,9 +37,9 @@ class QuestionController extends Controller
      * @param  \App\ModelsQuestion  $modelsQuestion
      * @return \Illuminate\Http\Response
      */
-    public function show(ModelsQuestion $modelsQuestion)
+    public function show(Question $question)
     {
-        //
+        return new QuestionResource($question);
     }
 
     /**
@@ -47,7 +49,7 @@ class QuestionController extends Controller
      * @param  \App\ModelsQuestion  $modelsQuestion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ModelsQuestion $modelsQuestion)
+    public function update(Request $request)
     {
         //
     }
@@ -58,7 +60,7 @@ class QuestionController extends Controller
      * @param  \App\ModelsQuestion  $modelsQuestion
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ModelsQuestion $modelsQuestion)
+    public function destroy()
     {
         //
     }
