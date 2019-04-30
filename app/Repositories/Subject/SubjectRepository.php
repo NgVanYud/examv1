@@ -11,6 +11,7 @@ namespace App\Repositories\Subject;
 
 use App\Exceptions\GeneralException;
 use App\Http\Requests\StoreChapterRequest;
+use App\Http\Resources\Question\QuestionCollection;
 use App\Models\Option;
 use App\Models\Subject;
 use App\Repositories\BaseRepository;
@@ -155,6 +156,29 @@ class SubjectRepository extends BaseRepository
       });
       throw new GeneralException(
         __('exceptions.general'),
+        422
+      );
+    }
+
+    public function getQuestions($subjectId, $conditions) {
+      $chapterId = $conditions['chapter'] ? $conditions['chapter'] : '';
+      $orderBy = $conditions['order_by'] ? $conditions['order_by'] : 'id';
+      $order = $conditions['order'] ? $conditions['order'] : 'asc';
+      $perPage = $conditions['per_page'] ? $conditions['per_page'] : 10;
+      if($chapterId) {
+        return new QuestionCollection($this->questionRepository
+          ->where('subject_id', $subjectId)
+          ->where('chapter_id', $chapterId)
+          ->orderBy($orderBy, $order)
+          ->paginate($perPage));
+      } else {
+        return new QuestionCollection($this->questionRepository
+          ->where('subject_id', $subjectId)
+          ->orderBy($orderBy, $order)
+          ->paginate($perPage));
+      }
+      throw new GeneralException(
+        __('exceptions.invalid_data'),
         422
       );
     }

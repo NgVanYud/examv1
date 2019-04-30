@@ -172,4 +172,8 @@ class SubjectController extends Controller
       );
     }
 
+    public function getQuestions(Request $request, $subjectId) {
+      return $this->subjectRepository->getQuestions($subjectId, $request->all());
+    }
+
 }
