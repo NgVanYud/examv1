@@ -35,6 +35,11 @@ class RouteServiceProvider extends ServiceProvider
                 'podcast' => 'term',
                 'model' => '\App\Models\Term',
                 'findBy' => 'uuid'
+            ],
+            [
+              'podcast' => 'format',
+              'model' => '\App\Models\Format',
+              'findBy' => 'id'
             ]
         ];
 
