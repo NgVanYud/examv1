@@ -88,7 +88,7 @@ class LoginController extends Controller
      */
     protected function respondWithToken($token)
     {
-        return new JsonResponse(__('messages.login.error'), [
+        return new JsonResponse(__('messages.login.success'), [
                 'access_token' => $token,
                 'token_type' => 'bearer',
                 'expires_in' => auth()->factory()->getTTL() * 60

@@ -2,15 +2,15 @@ import request from '@/utils/request';
 
 export function login(data) {
   return request({
-    url: '/auth/login',
+    url: 'auth/login',
     method: 'post',
     data: data,
   });
 }
 
-export function getInfo(token) {
+export function getInfo() {
   return request({
-    url: '/auth/user',
+    url: 'me',
     method: 'get',
   });
 }

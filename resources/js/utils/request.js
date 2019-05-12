@@ -12,6 +12,7 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     const token = getToken();
+    config.headers['Accept'] = 'application/json';
     if (token) {
       config.headers['Authorization'] = 'Bearer ' + getToken(); // Set JWT token
     }

@@ -9,6 +9,7 @@ const tableRoutes = {
     title: 'table',
     icon: 'table',
     permissions: ['view menu table'],
+    roles: ['Cán Bộ Khảo Thí'],
   },
   children: [
     {

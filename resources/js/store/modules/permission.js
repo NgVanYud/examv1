@@ -2,6 +2,8 @@ import { asyncRoutes, constantRoutes } from '@/router';
 
 /**
  * Check if it matches the current user right by meta.role
+ * Check user hoặc có role hoặc có permission là return true
+ *
  * @param {String[]} roles
  * @param {String[]} permissions
  * @param route

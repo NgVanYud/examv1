@@ -6,7 +6,7 @@ import store from '@/store';
 const state = {
   token: getToken(),
   name: '',
-  avatar: '',
+  username: '',
   introduction: '',
   roles: [],
   permissions: [],
@@ -22,8 +22,8 @@ const mutations = {
   SET_NAME: (state, name) => {
     state.name = name;
   },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar;
+  SET_USERNAME: (state, username) => {
+    state.username = username;
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles;
@@ -36,12 +36,12 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { email, password } = userInfo;
+    const { username, password } = userInfo;
     return new Promise((resolve, reject) => {
-      login({ email: email.trim(), password: password })
+      login({ username: username, password: password })
         .then(response => {
-          commit('SET_TOKEN', response.token);
-          setToken(response.token);
+          commit('SET_TOKEN', response.data.access_token);
+          setToken(response.data.access_token);
           resolve();
         })
         .catch(error => {
@@ -55,24 +55,28 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.token)
         .then(response => {
-          const { data } = response;
+          const user = response.data;
+          const roles = response.roles;
+          const permissions = response.permissions;
 
-          if (!data) {
+          if (!response) {
             reject('Verification failed, please Login again.');
           }
 
-          const { roles, name, avatar, introduction, permissions } = data;
-          // roles must be a non-empty array
           if (!roles || roles.length <= 0) {
             reject('getInfo: roles must be a non-null array!');
           }
+          const rolesName = roles.map(role => role.name);
+          const permissionsName = permissions.map(permission => permission.name);
 
-          commit('SET_ROLES', roles);
-          commit('SET_PERMISSIONS', permissions);
-          commit('SET_NAME', name);
-          commit('SET_AVATAR', avatar);
-          commit('SET_INTRODUCTION', introduction);
-          resolve(data);
+          commit('SET_ROLES', rolesName);
+          commit('SET_PERMISSIONS', permissionsName);
+          commit('SET_NAME', user.full_name);
+          commit('SET_USERNAME', user.username);
+          resolve({
+            roles: rolesName,
+            permissions: permissionsName,
+          });
         })
         .catch(error => {
           reject(error);

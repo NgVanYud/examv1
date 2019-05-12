@@ -3,11 +3,11 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <h3 class="title">{{ $t('login.title') }}</h3>
       <lang-select class="set-language" />
-      <el-form-item prop="email">
+      <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model="loginForm.email" name="email" type="text" auto-complete="on" :placeholder="$t('login.email')" />
+        <el-input v-model="loginForm.username" name="email" type="text" auto-complete="on" :placeholder="$t('login.email')" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
@@ -39,19 +39,19 @@
 
 <script>
 import LangSelect from '@/components/LangSelect';
-import { validEmail } from '@/utils/validate';
+// import { validEmail } from '@/utils/validate';
 
 export default {
   name: 'Login',
   components: { LangSelect },
   data() {
-    const validateEmail = (rule, value, callback) => {
-      if (!validEmail(value)) {
-        callback(new Error('Please enter the correct email'));
-      } else {
-        callback();
-      }
-    };
+    // const validateEmail = (rule, value, callback) => {
+    //   if (!validEmail(value)) {
+    //     callback(new Error('Please enter the correct email'));
+    //   } else {
+    //     callback();
+    //   }
+    // };
     const validatePass = (rule, value, callback) => {
       if (value.length < 4) {
         callback(new Error('Password cannot be less than 4 digits'));
@@ -61,11 +61,12 @@ export default {
     };
     return {
       loginForm: {
-        email: 'admin@laravue.dev',
-        password: 'laravue',
+        username: 'GV000001',
+        password: '123@abc',
       },
       loginRules: {
-        email: [{ required: true, trigger: 'blur', validator: validateEmail }],
+        // email: [{ required: true, trigger: 'blur', validator: validateEmail }],
+        username: [{ required: true, trigger: 'blur' }],
         password: [{ required: true, trigger: 'blur', validator: validatePass }],
       },
       loading: false,
@@ -93,14 +94,12 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true;
-          this.$store.dispatch('user/login', this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || '/' });
-              this.loading = false;
-            })
-            .catch(() => {
-              this.loading = false;
-            });
+          this.$store.dispatch('user/login', this.loginForm).then(() => {
+            this.$router.push({ path: this.redirect || '/' });
+            this.loading = false;
+          }).catch(() => {
+            this.loading = false;
+          });
         } else {
           console.log('error submit!!');
           return false;

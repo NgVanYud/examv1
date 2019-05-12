@@ -6,8 +6,8 @@
  * Time: 10:07 AM
  */
 Route::group([
-    'middleware' => 'jwt.auth',
+  'middleware' => 'jwt.auth',
   'namespace' => 'API'
 ], function() {
-    Route::post('me', 'UserController@me');
+    Route::get('me', 'UserController@me');
 });
