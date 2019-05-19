@@ -56,7 +56,7 @@ const actions = {
       getInfo(state.token)
         .then(response => {
           const user = response.data;
-          const roles = response.roles;
+          const roles = user.roles;
           const permissions = response.permissions;
 
           if (!response) {

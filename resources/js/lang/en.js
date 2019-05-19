@@ -145,6 +145,11 @@ export default {
     confirm: 'Confirm',
     keyword: 'Keyword',
     role: 'Role',
+    fullname: 'Fullname',
+    username: 'Username',
+    action: 'Action',
+    email: 'Email',
+    num: 'Num',
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',

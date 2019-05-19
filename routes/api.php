@@ -26,4 +26,5 @@ Route::group([
     include __DIR__.'/modules/subjects.php';
     include __DIR__.'/modules/terms.php';
     include __DIR__.'/modules/questions.php';
+    include __DIR__.'/modules/roles.php';
 });

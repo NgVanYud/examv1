@@ -20,3 +20,20 @@ export default function checkRole(value) {
     return false;
   }
 }
+
+/**
+ * Check if specified roles includes a set of roles
+ *
+ * @param inneed
+ * @param checked (String)
+ */
+export function include(all, checked) {
+  const counter = all.length;
+  for (let i = 0; i < counter; i++) {
+    if (all[i].name === checked) {
+      return true;
+    }
+  }
+  return false;
+}
+

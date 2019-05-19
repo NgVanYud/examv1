@@ -27,6 +27,11 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
         $bindingInfo = [
             [
+              'podcast' => 'user',
+              'model' => '\App\Models\User',
+              'findBy' => 'uuid'
+            ],
+            [
                 'podcast' => 'subject',
                 'model' => '\App\Models\Subject',
                 'findBy' => 'slug'

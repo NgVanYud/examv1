@@ -24,6 +24,8 @@ import excelRoutes from './modules/excel';
 import permissionRoutes from './modules/permission';
 import userRoutes from './modules/user';
 
+// import ALL_ROLES from '@/utils/auth';
+
 /**
  * Sub-menu only appear when children.length>=1
  * @see https://doc.laravue.dev/guide/essentials/router-and-nav.html
@@ -163,7 +165,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/zip/download',
     alwaysShow: true,
-    meta: { title: 'zip', icon: 'zip', permissions: ['view menu zip'] },
+    meta: { title: 'zip', icon: 'zip' },
     children: [
       {
         path: 'download',

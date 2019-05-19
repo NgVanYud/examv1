@@ -1,58 +1,86 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input size="mini" v-model="query.keyword" :placeholder="$t('table.keyword')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select size="mini" v-model="query.role" :placeholder="$t('table.role')" clearable style="width: 90px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in roles" :key="item" :label="item | uppercaseFirst" :value="item" />
-      </el-select>
-      <el-button size="mini" v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        {{ $t('table.search') }}
-      </el-button>
-      <el-button size="mini" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="handleCreate">
-        {{ $t('table.add') }}
-      </el-button>
-      <el-button size="mini" v-waves :loading="downloading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
-        {{ $t('table.export') }}
-      </el-button>
+      <div class="d-flex">
+        <div>
+          <el-input size="mini" v-model="query.keyword" :placeholder="$t('table.keyword')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+          <el-button size="mini" v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+            {{ $t('table.search') }}
+          </el-button>
+        </div>
+        <div class="ml-auto">
+          <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleCreate">
+            {{ $t('table.add') }}
+          </el-button>
+          <el-button size="mini" v-waves :loading="downloading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+            {{ $t('table.export') }}
+          </el-button>
+          <el-select size="mini" v-model="query.roles" :placeholder="$t('table.role')" clearable class="filter-item" @change="handleFilter">
+            <el-option v-for="item in roles" :key="item.id" :label="item.name" :value="item.id" />
+          </el-select>
+        </div>
+      </div>
+
     </div>
 
-    <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%">
-      <el-table-column align="center" label="ID" width="80">
+    <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%" size="mini">
+      <el-table-column align="center" label="ID" width="50">
         <template slot-scope="scope">
           <span>{{ scope.row.index }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Name">
+      <el-table-column align="center" :label="$t('table.username')" width="100">
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          <span>{{ scope.row.username }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Email">
+      <el-table-column :label="$t('table.email')">
         <template slot-scope="scope">
           <span>{{ scope.row.email }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Role" width="120">
+      <el-table-column :label="$t('table.fullname')">
         <template slot-scope="scope">
-          <span>{{ scope.row.roles.join(', ') }}</span>
+          <span>{{ scope.row.full_name }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Actions" width="350">
+      <el-table-column :label="$t('table.role')">
         <template slot-scope="scope">
-          <router-link :to="'/administrator/users/edit/'+scope.row.id" v-if="!scope.row.roles.includes('admin')">
-            <el-button type="primary" size="small" icon="el-icon-edit" v-permission="['manage user']">
-              Edit
+          <span>{{ scope.row.roles | roles }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="Kích Hoạt" align="center">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.active" type="success">
+            <i class="el-icon-success"></i>
+          </el-tag>
+          <el-tag v-else type="danger">
+            <i class="el-icon-error"></i>
+          </el-tag>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" :label="$t('table.action')">
+        <template slot-scope="scope">
+          <router-link :to = "{ name: 'UserEdit', params: { id: scope.row.uuid }}" v-if="!scope.row.deleted_at && !includeRole(scope.row.roles, allRoles.admin)" >
+<!--            <el-button type="primary" size="mini" icon="el-icon-edit" v-permission="['manage user']">-->
+            <el-button type="primary" size="mini" icon="el-icon-edit" title="Chỉnh sửa">
             </el-button>
           </router-link>
-          <el-button type="warning" size="small" icon="el-icon-edit" v-if="!scope.row.roles.includes('admin')" v-permission="['manage permission']" @click="handleEditPermissions(scope.row.id);">
-            Permissions
+<!--          <el-button type="warning" size="mini" icon="el-icon-edit" v-if="!scope.row.roles.includes('admin')" v-permission="['manage permission']" @click="handleEditPermissions(scope.row.id);">-->
+<!--            Permissions-->
+<!--          </el-button>-->
+<!--          <el-button type="warning" size="mini" icon="el-icon-edit" v-if="!scope.row.roles.includes('admin')" v-permission="['manage permission']" @click="handleEditPermissions(scope.row.id);">-->
+<!--            Permissions-->
+<!--          </el-button>-->
+          <el-button v-if="scope.row.deleted_at" type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row.id, scope.row.name);"  title="Xóa">
           </el-button>
-          <el-button type="danger" size="small" icon="el-icon-delete" v-permission="['manage user']" v-if="scope.row.roles.includes('visitor')" @click="handleDelete(scope.row.id, scope.row.name);">
-            Delete
+          <el-button v-else type="info" size="mini" icon="el-icon-refresh-right" @click="handleDelete(scope.row.id, scope.row.name);" title="Khôi Phục">
           </el-button>
         </template>
       </el-table-column>
@@ -127,18 +155,39 @@
 <script>
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 import UserResource from '@/api/user';
+import RoleResource from '@/api/role';
 import Resource from '@/api/resource';
 import waves from '@/directive/waves'; // Waves directive
 import permission from '@/directive/permission'; // Waves directive
 import checkPermission from '@/utils/permission'; // Permission checking
+import { ALL_ROLES } from '@/utils/auth';
+import { include as includeRole } from '@/utils/role';
 
 const userResource = new UserResource();
+const roleResource = new RoleResource();
 const permissionResource = new Resource('permissions');
 
 export default {
-  name: 'UserList',
+  name: 'UsersList',
   components: { Pagination },
   directives: { waves, permission },
+  filters: {
+    roles(roles) {
+      const rolesArr = [];
+      for (let i = 0; i < roles.length; i++) {
+        rolesArr.push(roles[i].name);
+      }
+      return rolesArr.join(', ');
+    },
+    statusFilter(status) {
+      const statusMap = {
+        published: 'success',
+        draft: 'info',
+        deleted: 'danger',
+      };
+      return statusMap[status];
+    },
+  },
   data() {
     var validateConfirmPassword = (rule, value, callback) => {
       if (value !== this.newUser.password) {
@@ -153,13 +202,14 @@ export default {
       loading: true,
       downloading: false,
       userCreating: false,
+      roles: '',
+      allRoles: ALL_ROLES,
       query: {
         page: 1,
         limit: 15,
-        keyword: '',
-        role: '',
+        roles: '',
       },
-      roles: ['admin', 'manager', 'editor', 'user', 'visitor'],
+      // roles: ['admin', 'manager', 'editor', 'user', 'visitor'],
       nonAdminRoles: ['editor', 'user', 'visitor'],
       newUser: {},
       dialogFormVisible: false,
@@ -257,9 +307,10 @@ export default {
   created() {
     this.resetNewUser();
     this.getList();
-    if (checkPermission(['manage permission'])) {
-      this.getPermissions();
-    }
+    this.getRoles();
+    // if (checkPermission(['manage permission'])) {
+    //   this.getPermissions();
+    // }
   },
   methods: {
     checkPermission,
@@ -281,6 +332,10 @@ export default {
       });
       this.total = meta.total;
       this.loading = false;
+    },
+    async getRoles() {
+      const { data } = await roleResource.list();
+      this.roles = data;
     },
     handleFilter() {
       this.query.page = 1;
@@ -412,7 +467,6 @@ export default {
       const disabled = permission.disabled || permission.name === 'manage permission';
       return { id: permission.id, name: this.$options.filters.uppercaseFirst(permission.name), disabled: disabled };
     },
-
     confirmPermission() {
       const checkedMenu = this.$refs.menuPermissions.getCheckedKeys();
       const checkedOther = this.$refs.otherPermissions.getCheckedKeys();
@@ -429,6 +483,7 @@ export default {
         this.dialogPermissionVisible = false;
       });
     },
+    includeRole,
   },
 };
 </script>

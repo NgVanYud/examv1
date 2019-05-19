@@ -10,4 +10,5 @@ Route::group([
   'namespace' => 'API'
 ], function() {
     Route::get('me', 'UserController@me');
+    Route::apiResource('users', 'UserController');
 });

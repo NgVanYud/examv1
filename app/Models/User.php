@@ -3,15 +3,17 @@
 namespace App\Models;
 
 use App\Models\Traits\Uuid;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Collection;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\Traits\UserAttributes;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable, HasRoles, UserAttributes, Uuid;
+    use Notifiable, HasRoles, UserAttributes, Uuid, SoftDeletes;
 
     const ACTIVE_CODE = 1;
     /**
@@ -73,5 +75,14 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+  public function getRoleIds(): Collection
+  {
+    return $this->roles->pluck('id');
+  }
+
+  public function getPermissionIds(): Collection
+  {
+    return $this->permissions->pluck('id');
+  }
 
 }

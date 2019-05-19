@@ -1,5 +1,13 @@
 import Cookies from 'js-cookie';
 
+export const ALL_ROLES = {
+  'exams_maker': 'Giáo Viên Ra Đề',
+  'curator': 'Cán Bộ Khảo Thí', // khảo thí
+  'protor': 'Giám Thị', // giám thị
+  'admin': 'Quản Trị Hệ Thống',
+  'student': 'Sinh Viên',
+};
+
 const TokenKey = 'Admin-Token';
 
 export function getToken() {
