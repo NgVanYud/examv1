@@ -3,14 +3,19 @@
 namespace App\Repositories\User;
 
 use App\Models\User;
+use App\Repositories\Role\RoleRepository;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\GeneralException;
 use App\Repositories\BaseRepository;
+use App\Events\UserCreated;
+use App\Events\UserUpdated;
 //use App\Events\Backend\Auth\User\UserCreated;
 //use App\Events\Backend\Auth\User\UserUpdated;
 //use App\Events\Backend\Auth\User\UserRestored;
 //use App\Events\Backend\Auth\User\UserConfirmed;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Spatie\Permission\Models\Role;
+
 //use App\Events\Backend\Auth\User\UserDeactivated;
 //use App\Events\Backend\Auth\User\UserReactivated;
 //use App\Events\Backend\Auth\User\UserUnconfirmed;
@@ -24,7 +29,27 @@ use Illuminate\Pagination\LengthAwarePaginator;
  */
 class UserRepository extends BaseRepository
 {
-    /**
+  public $roleRepository;
+
+  /**
+   * PHP 5 allows developers to declare constructor methods for classes.
+   * Classes which have a constructor method call this method on each newly-created object,
+   * so it is suitable for any initialization that the object may need before it is used.
+   *
+   * Note: Parent constructors are not called implicitly if the child class defines a constructor.
+   * In order to run a parent constructor, a call to parent::__construct() within the child constructor is required.
+   *
+   * param [ mixed $args [, $... ]]
+   * @link https://php.net/manual/en/language.oop5.decon.php
+   */
+  public function __construct(RoleRepository $roleRepository)
+  {
+    $this->roleRepository = $roleRepository;
+    $this->makeModel();
+  }
+
+
+  /**
      * @return string
      */
     public function model()
@@ -104,6 +129,7 @@ class UserRepository extends BaseRepository
                 'first_name' => $data['first_name'],
                 'last_name' => $data['last_name'],
                 'email' => $data['email'],
+                'code' => $data['code'],
                 'password' => $data['password'],
                 'active' => isset($data['active']) && $data['active'] == '1' ? 1 : 0,
                 'confirmation_code' => md5(uniqid(mt_rand(), true)),
@@ -162,9 +188,11 @@ class UserRepository extends BaseRepository
                 'first_name' => $data['first_name'],
                 'last_name' => $data['last_name'],
                 'email' => $data['email'],
+                'code' => $data['code'],
+                'active' => $data['active']
             ])) {
                 // Add selected roles/permissions
-                $user->syncRoles($data['roles']);
+                $user->syncRoles($data['role_ids']);
                 $user->syncPermissions($data['permissions']);
 
                 event(new UserUpdated($user));
@@ -355,5 +383,25 @@ class UserRepository extends BaseRepository
                 throw new GeneralException(trans('exceptions.backend.access.users.email_error'));
             }
         }
+    }
+
+
+  /**
+   * Store multiple users with a specifed role
+   *
+   * @param Role $role
+   * @param $data (array of data users)
+   */
+    public function storeMulti($role, $data) {
+      return DB::transaction(function() use ($role, $data) {
+        $users = [];
+        foreach ($data as $user) {
+          \Log::info(print_r($user, true));
+//          $newUser = $this->create($user);
+//          $newUser->assignRole($role);
+//          $users[] = $newUser;
+        }
+        return $users;
+      });
     }
 }

@@ -35,6 +35,7 @@
 <script>
 import RoleResource from '@/api/role';
 import UserResource from '@/api/user';
+import { Message } from 'element-ui';
 
 const userResource = new UserResource();
 const roleResource = new RoleResource();
@@ -82,13 +83,27 @@ export default {
       this.permissionIds = permissions;
     },
     onSubmit() {
-      this.$message('submit!');
+      this.updateUser();
+    },
+    async updateUser() {
+      this.user.role_ids = this.userRoleIds;
+      await userResource.update(this.user.uuid, this.user).then(response => {
+        Message({
+          message: 'Cập nhật người dùng thành công!',
+          type: 'success',
+          duration: 5 * 1000,
+        });
+      }).catch(error => {
+        console.log('Error: ', error);
+        Message({
+          message: 'Có lỗi xảy ra. Vui lòng thử lại!',
+          type: 'error',
+          duration: 5 * 1000,
+        });
+      });
     },
     onCancel() {
-      this.$message({
-        message: 'cancel!',
-        type: 'warning',
-      });
+      this.userDetail(this.user.uuid);
     },
   },
   created() {

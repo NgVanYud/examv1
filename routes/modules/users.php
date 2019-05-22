@@ -10,5 +10,6 @@ Route::group([
   'namespace' => 'API'
 ], function() {
     Route::get('me', 'UserController@me');
+    Route::post('users/store-multiple', 'UserController@storeMulti');
     Route::apiResource('users', 'UserController');
 });
