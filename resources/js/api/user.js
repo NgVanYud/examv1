@@ -20,6 +20,22 @@ class UserResource extends Resource {
       data: permissions,
     });
   }
+
+  active(id) {
+    return request({
+      url: '/' + this.uri + '/active',
+      method: 'post',
+      data: { uuid: id },
+    });
+  }
+
+  deactive(id) {
+    return request({
+      url: '/' + this.uri + '/deactive',
+      method: 'post',
+      data: { uuid: id },
+    });
+  }
 }
 
 export { UserResource as default };

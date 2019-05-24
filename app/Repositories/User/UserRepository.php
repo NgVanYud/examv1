@@ -4,6 +4,8 @@ namespace App\Repositories\User;
 
 use App\Models\User;
 use App\Repositories\Role\RoleRepository;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\GeneralException;
 use App\Repositories\BaseRepository;
@@ -404,4 +406,58 @@ class UserRepository extends BaseRepository
         return $users;
       });
     }
+
+  /**
+   * Get the specified model record from the database.
+   *
+   * @param       $uuid
+   * @param array $columns
+   *
+   * @return Collection|Model
+   */
+  public function getByUuid($uuid, array $columns = ['*'])
+  {
+    $this->unsetClauses();
+
+    $this->newQuery()->eagerLoad();
+
+    return $this->query->where('uuid', $uuid)->first($columns);
+  }
+
+  /**
+   * Delete the specified model record from the database.
+   *
+   * @param $id
+   *
+   * @return bool|null
+   * @throws \Exception
+   */
+  public function deleteByUuid($uuid): bool
+  {
+    $this->unsetClauses();
+
+    return $this->getByUuid($uuid)->delete();
+  }
+
+  /**
+   * Update the specified model record in the database.
+   *
+   * @param       $id
+   * @param array $data
+   * @param array $options
+   *
+   * @return Collection|Model
+   */
+  public function updateByUuid($uuid, array $data, array $options = [])
+  {
+    $this->unsetClauses();
+
+    $model = $this->getByUuid($uuid);
+
+    $model->update($data, $options);
+
+    return $model;
+  }
+
+
 }

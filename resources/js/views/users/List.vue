@@ -24,15 +24,21 @@
     </div>
 
     <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%" size="mini">
-      <el-table-column align="center" label="ID" width="50">
+      <el-table-column align="center" label="STT" width="50">
         <template slot-scope="scope">
           <span>{{ scope.row.index }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('table.username')" width="100">
+      <el-table-column align="center" label="Username" width="100">
         <template slot-scope="scope">
           <span>{{ scope.row.username }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="Mã Số" width="100">
+        <template slot-scope="scope">
+          <span>{{ scope.row.code }}</span>
         </template>
       </el-table-column>
 
@@ -54,7 +60,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Kích Hoạt" align="center">
+      <el-table-column label="Kích Hoạt" align="center" width="100">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.active" type="success">
             <i class="el-icon-success"></i>
@@ -65,7 +71,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('table.action')">
+      <el-table-column align="center" label="Thao Tác">
         <template slot-scope="scope">
           <router-link :to = "{ name: 'UserEdit', params: { id: scope.row.uuid }}" v-if="!scope.row.deleted_at && !includeRole(scope.row.roles, allRoles.admin)" >
 <!--            <el-button type="primary" size="mini" icon="el-icon-edit" v-permission="['manage user']">-->
@@ -78,9 +84,13 @@
 <!--          <el-button type="warning" size="mini" icon="el-icon-edit" v-if="!scope.row.roles.includes('admin')" v-permission="['manage permission']" @click="handleEditPermissions(scope.row.id);">-->
 <!--            Permissions-->
 <!--          </el-button>-->
-          <el-button v-if="scope.row.deleted_at" type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row.id, scope.row.name);"  title="Xóa">
+          <el-button v-if="!scope.row.deleted_at && !includeRole(scope.row.roles, allRoles.admin)" type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row);"  title="Xóa">
           </el-button>
-          <el-button v-else type="info" size="mini" icon="el-icon-refresh-right" @click="handleDelete(scope.row.id, scope.row.name);" title="Khôi Phục">
+          <el-button v-if="scope.row.deleted_at" type="info" size="mini" icon="el-icon-refresh-right" @click="handleRestore(scope.row);" title="Khôi Phục">
+          </el-button>
+          <el-button class="m-0" v-if="!scope.row.active && !includeRole(scope.row.roles, allRoles.admin)" type="success" size="mini" icon="el-icon-check" @click="handleActive(scope.row);"  title="Kích Hoạt">
+          </el-button>
+          <el-button class="m-0" v-if="scope.row.active && !includeRole(scope.row.roles, allRoles.admin)" type="warning" size="mini" icon="el-icon-close" @click="handleDeactive(scope.row);"  title="Khóa Tài Khoản">
           </el-button>
         </template>
       </el-table-column>
@@ -206,7 +216,7 @@ export default {
       allRoles: ALL_ROLES,
       query: {
         page: 1,
-        limit: 15,
+        limit: 10,
         roles: '',
       },
       // roles: ['admin', 'manager', 'editor', 'user', 'visitor'],
@@ -348,16 +358,16 @@ export default {
         this.$refs['userForm'].clearValidate();
       });
     },
-    handleDelete(id, name) {
-      this.$confirm('This will permanently delete user ' + name + '. Continue?', 'Warning', {
+    handleDelete(item) {
+      this.$confirm('Xóa người dùng ' + item.first_name + '. Tiếp tục?', 'Warning', {
         confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
+        cancelButtonText: 'Hủy',
         type: 'warning',
       }).then(() => {
-        userResource.destroy(id).then(response => {
+        userResource.destroy(item.uuid).then(response => {
           this.$message({
             type: 'success',
-            message: 'Delete completed',
+            message: 'Xóa người dùng thành công',
           });
           this.handleFilter();
         }).catch(error => {
@@ -366,9 +376,12 @@ export default {
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: 'Delete canceled',
+          message: 'Hủy xóa người dùng',
         });
       });
+    },
+    handleRestore(id, name) {
+
     },
     async handleEditPermissions(id) {
       this.currentUserId = id;
@@ -482,6 +495,40 @@ export default {
         this.dialogPermissionLoading = false;
         this.dialogPermissionVisible = false;
       });
+    },
+    handleActive(item) {
+      userResource.active(item.uuid).then(response => {
+        this.$message({
+          type: 'success',
+          message: 'Kích hoạt tài khoản người dùng thành công',
+        });
+        this.refreshData();
+      }).catch(error => {
+        console.log(error);
+        this.$message({
+          type: 'error',
+          message: 'Kích hoạt tài khoản người dùng không thành công',
+        });
+      });
+    },
+    handleDeactive(item) {
+      userResource.deactive(item.uuid).then(response => {
+        console.log('active', response);
+        this.$message({
+          type: 'error',
+          message: 'Khóa tài khoản người dùng thành công',
+        });
+        this.refreshData();
+      }).catch(error => {
+        console.log(error);
+        this.$message({
+          type: 'success',
+          message: 'Khóa tài khoản người dùng không thành công',
+        });
+      });
+    },
+    refreshData() {
+      this.getList();
     },
     includeRole,
   },

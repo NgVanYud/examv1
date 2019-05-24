@@ -43,6 +43,7 @@ class UserController extends Controller
     }
 
     public function index(Request $request) {
+      $this->authorize('viewAll', User::class);
       $conditions = [
         'orderBy' => ($request->order_by ? $request->order_by : 'username'),
         'order' => ($request->order && in_array($request->order, [ 'desc', 'asc' ]) ? $request->order : 'asc'),
@@ -108,7 +109,7 @@ class UserController extends Controller
    */
   public function destroy(User $user)
   {
-    //
+    $this->userRepository->deleteByUuid($user->uuid);
   }
 
   public function storeMulti(Request $request) {
@@ -163,5 +164,17 @@ class UserController extends Controller
       }
     }
     return $duplicated;
+  }
+
+  public function active(Request $request) {
+    $uuid = $request->uuid;
+    $user = $this->userRepository->updateByUuid($uuid, [ 'active' => User::ACTIVE_CODE ]);
+    return $user;
+  }
+
+  public function deactive(Request $request) {
+    $uuid = $request->uuid;
+    $user = $this->userRepository->updateByUuid($uuid, [ 'active' => User::DEACTIVE_CODE ]);
+    return $user;
   }
 }

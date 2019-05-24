@@ -16,6 +16,7 @@ class User extends Authenticatable implements JWTSubject
     use Notifiable, HasRoles, UserAttributes, Uuid, SoftDeletes;
 
     const ACTIVE_CODE = 1;
+    const DEACTIVE_CODE = 0;
     /**
      * The attributes that are mass assignable.
      *
