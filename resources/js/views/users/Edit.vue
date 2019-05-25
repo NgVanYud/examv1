@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="editForm" :model="user" :rules="rules" label-width="120px">
+    <el-form ref="editForm" :model="user" :rules="rules" label-width="120px" size="mini">
       <el-form-item label="Tài Khoản" prop="username">
         <el-input v-model="user.username" :disabled="true"/>
       </el-form-item>
@@ -93,6 +93,7 @@ export default {
           type: 'success',
           duration: 5 * 1000,
         });
+        this.$router.push({ name: 'UsersList' });
       }).catch(error => {
         console.log('Error: ', error);
         Message({

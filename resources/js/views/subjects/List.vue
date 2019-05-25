@@ -8,6 +8,11 @@
             {{ $t('table.search') }}
           </el-button>
         </div>
+        <div class="d-inline-block ml-2" v-if="activedActionBtns">
+          <el-tooltip class="item" effect="dark" content="Xóa" placement="top">
+            <el-button icon="el-icon-delete" class="filter-delete" size="mini" circle @click="handleDeleteMulti"></el-button>
+          </el-tooltip>
+        </div>
         <div class="ml-auto">
           <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleCreate">
             {{ $t('table.add') }}
@@ -20,7 +25,7 @@
 
     </div>
 
-    <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%" size="mini">
+    <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%" size="mini" @selection-change="handleSelectedRows">
       <el-table-column
         v-if="includeRoles(this.userRoles, [allRoles.admin], false)"
         type="selection" align="center">
@@ -31,7 +36,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Mã Số" width="130">
+      <el-table-column label="Mã Số" width="100">
         <template slot-scope="scope">
           <span>{{ scope.row.code }}</span>
         </template>
@@ -43,7 +48,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Số Tín Chỉ" align="center" width="100">
+      <el-table-column label="Số Tín Chỉ" align="center" width="85">
         <template slot-scope="scope">
           <span>{{ scope.row.credit }}</span>
         </template>
@@ -66,27 +71,14 @@
 <!--        </template>-->
 <!--      </el-table-column>-->
 
-      <el-table-column align="center" label="Thao Tác">
+      <el-table-column align="center" label="Thao Tác" width="150">
         <template slot-scope="scope">
-          <router-link :to = "{ name: 'SubjectEdit', params: { id: scope.row.uuid }}" v-if="includeRoles(userRoles, [allRoles.admin], false)">
-<!--            <el-button type="primary" size="mini" icon="el-icon-edit" v-permission="['manage user']">-->
+          <router-link :to = "{ name: 'SubjectEdit', params: { slug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.admin], false)">
             <el-button type="primary" size="mini" icon="el-icon-edit" title="Chỉnh sửa">
             </el-button>
           </router-link>
-<!--          <el-button type="warning" size="mini" icon="el-icon-edit" v-if="!scope.row.roles.includes('admin')" v-permission="['manage permission']" @click="handleEditPermissions(scope.row.id);">-->
-<!--            Permissions-->
-<!--          </el-button>-->
-<!--          <el-button type="warning" size="mini" icon="el-icon-edit" v-if="!scope.row.roles.includes('admin')" v-permission="['manage permission']" @click="handleEditPermissions(scope.row.id);">-->
-<!--            Permissions-->
-<!--          </el-button>-->
           <el-button v-if="includeRoles(userRoles, [allRoles.admin], false)" type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row);"  title="Xóa">
           </el-button>
-<!--          <el-button v-if="scope.row.deleted_at" type="info" size="mini" icon="el-icon-refresh-right" @click="handleRestore(scope.row);" title="Khôi Phục">-->
-<!--          </el-button>-->
-<!--          <el-button class="m-0" v-if="!scope.row.active && !includeRole(scope.row.roles, allRoles.admin)" type="success" size="mini" icon="el-icon-check" @click="handleActive(scope.row);"  title="Kích Hoạt">-->
-<!--          </el-button>-->
-<!--          <el-button class="m-0" v-if="scope.row.active && !includeRole(scope.row.roles, allRoles.admin)" type="warning" size="mini" icon="el-icon-close" @click="handleDeactive(scope.row);"  title="Khóa Tài Khoản">-->
-<!--          </el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -158,8 +150,6 @@
 <script>
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 import SubjectResource from '@/api/subject';
-import RoleResource from '@/api/role';
-// import Resource from '@/api/resource';
 import waves from '@/directive/waves'; // Waves directive
 import permission from '@/directive/permission'; // Waves directive
 import checkPermission from '@/utils/permission'; // Permission checking
@@ -167,8 +157,6 @@ import { ALL_ROLES } from '@/utils/auth';
 import { includes as includeRoles } from '@/utils/role';
 
 const subjectResource = new SubjectResource();
-const roleResource = new RoleResource();
-// const permissionResource = new Resource('permissions');
 
 export default {
   name: 'SubjectsList',
@@ -198,6 +186,8 @@ export default {
       loading: true,
       downloading: false,
       itemCreating: false,
+      activedActionBtns: false,
+      selectedItems: [],
       roles: '',
       allRoles: ALL_ROLES,
       query: {
@@ -205,8 +195,6 @@ export default {
         limit: 10,
         keyword: '',
       },
-      // roles: ['admin', 'manager', 'editor', 'user', 'visitor'],
-      nonAdminRoles: ['editor', 'user', 'visitor'],
       newItem: {},
       dialogFormVisible: false,
       dialogPermissionVisible: false,
@@ -220,11 +208,11 @@ export default {
       rules: {
         code: [
           { required: true, message: 'Nhập mã môn học', trigger: ['blur', 'change'] },
-          { min: 3, max: 20, message: 'Độ dài trường mã môn học từ 3 đên 20 ký tự', trigger: ['blur', 'change'] },
+          { min: 5, max: 10, message: 'Độ dài trường mã môn học từ 5 đên 10 ký tự', trigger: ['blur', 'change'] },
         ],
         name: [
           { required: true, message: 'Nhập tên môn học', trigger: ['blur', 'change'] },
-          { min: 3, max: 100, message: 'Độ dài trường tên môn học tư 3 đến 100 ký tự', trigger: ['blur', 'change'] },
+          { min: 5, max: 150, message: 'Độ dài trường tên môn học tư 5 đến 150 ký tự', trigger: ['blur', 'change'] },
         ],
         credit: [
           { required: true, message: 'Nhập số tín chỉ', trigger: ['blur', 'change'] },
@@ -232,27 +220,12 @@ export default {
         ],
         // description: [{ required: true, message: 'Password is required', trigger: 'blur' }],
       },
-      permissionProps: {
-        children: 'children',
-        label: 'name',
-        disabled: 'disabled',
-      },
-      permissions: [],
-      menuPermissions: [],
-      otherPermissions: [],
       userRoles: '',
 
     };
   },
   computed: {
 
-  },
-  created() {
-    this.getList();
-    this.getUserRoles();
-    // if (checkPermission(['manage permission'])) {
-    //   this.getPermissions();
-    // }
   },
   methods: {
     checkPermission,
@@ -266,10 +239,6 @@ export default {
       });
       this.total = meta.total;
       this.loading = false;
-    },
-    async getRoles() {
-      const { data } = await roleResource.list();
-      this.roles = data;
     },
     handleFilter() {
       this.query.page = 1;
@@ -288,7 +257,8 @@ export default {
         cancelButtonText: 'Hủy',
         type: 'warning',
       }).then(() => {
-        subjectResource.destroy(item.uuid).then(response => {
+        subjectResource.destroy(item.slug).then(response => {
+          console.log('xoa', response);
           this.$message({
             type: 'success',
             message: 'Xóa môn học thành công',
@@ -296,6 +266,41 @@ export default {
           this.handleFilter();
         }).catch(error => {
           console.log(error);
+          this.$message({
+            type: 'error',
+            message: 'Xóa môn học không thành công',
+          });
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Hủy xóa môn học',
+        });
+      });
+    },
+    handleDeleteMulti() {
+      this.$confirm('Xóa môn học. Tiếp tục?', 'Warning', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Hủy',
+        type: 'warning',
+      }).then(() => {
+        const deletedItemIds = {
+          items: this.selectedItems.map(item => item.slug),
+        };
+
+        subjectResource.destroyMulti(deletedItemIds).then(response => {
+          console.log('xoa', response);
+          this.$message({
+            type: 'success',
+            message: 'Xóa môn học thành công',
+          });
+          this.handleFilter();
+        }).catch(error => {
+          console.log(error);
+          this.$message({
+            type: 'error',
+            message: 'Xóa môn học không thành công',
+          });
         });
       }).catch(() => {
         this.$message({
@@ -363,50 +368,6 @@ export default {
         this.downloading = false;
       });
     },
-    formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => v[j]));
-    },
-    permissionKeys(permissions) {
-      return permissions.map(permssion => permssion.id);
-    },
-    classifyPermissions(permissions) {
-      const all = []; const menu = []; const other = [];
-      permissions.forEach(permission => {
-        const permissionName = permission.name;
-        all.push(permission);
-        if (permissionName.startsWith('view menu')) {
-          menu.push(this.normalizeMenuPermission(permission));
-        } else {
-          other.push(this.normalizePermission(permission));
-        }
-      });
-      return { all, menu, other };
-    },
-
-    normalizeMenuPermission(permission) {
-      return { id: permission.id, name: this.$options.filters.uppercaseFirst(permission.name.substring(10)), disabled: permission.disabled || false };
-    },
-
-    normalizePermission(permission) {
-      const disabled = permission.disabled || permission.name === 'manage permission';
-      return { id: permission.id, name: this.$options.filters.uppercaseFirst(permission.name), disabled: disabled };
-    },
-    confirmPermission() {
-      const checkedMenu = this.$refs.menuPermissions.getCheckedKeys();
-      const checkedOther = this.$refs.otherPermissions.getCheckedKeys();
-      const checkedPermissions = checkedMenu.concat(checkedOther);
-      this.dialogPermissionLoading = true;
-
-      subjectResource.updatePermission(this.currentUserId, { permissions: checkedPermissions }).then(response => {
-        this.$message({
-          message: 'Permissions has been updated successfully',
-          type: 'success',
-          duration: 5 * 1000,
-        });
-        this.dialogPermissionLoading = false;
-        this.dialogPermissionVisible = false;
-      });
-    },
     handleActive(item) {
       subjectResource.active(item.uuid).then(response => {
         this.$message({
@@ -444,7 +405,20 @@ export default {
     getUserRoles() {
       this.userRoles = this.$store.getters.roles;
     },
+    handleSelectedRows(items) {
+      this.selectedItems = items;
+      if (this.selectedItems.length > 0) {
+        this.activedActionBtns = true;
+      } else {
+        this.activedActionBtns = false;
+      }
+    },
     includeRoles,
+  },
+  created() {
+    console.log('creating...');
+    this.getList();
+    this.getUserRoles();
   },
 };
 </script>

@@ -57,6 +57,32 @@ class SubjectRepository extends BaseRepository
     }
 
   /**
+   * Get the specified model record form the database by slug
+   */
+    public function getBySlug($slug, array $columns = ['*']) {
+      $this->unsetClauses();
+
+      $this->newQuery()->eagerLoad();
+
+      return $this->where('slug', $slug)->first($columns);
+    }
+
+    public function deleteBySlug($slug) {
+      return $this->getBySlug($slug)->delete();
+    }
+
+  /**
+   * Delete multi records by an array of slugs
+   */
+    public function deleteMultipleBySlug($slugs) {
+      DB::transaction(function () use ($slugs) {
+        foreach ($slugs as $slug) {
+          $this->deleteBySlug($slug);
+        }
+      }, 3);
+    }
+
+  /**
    * Get the specified model record from the database.
    *
    * @param       $id

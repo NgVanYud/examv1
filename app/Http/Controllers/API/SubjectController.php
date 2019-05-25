@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateChapterRequest;
 use App\Http\Requests\UpdateQuestionRequest;
 use App\Http\Requests\UpdateSubjectRequest;
 use App\Http\Resources\Subject\SubjectCollection;
+use App\Http\Resources\Subject\SubjectResource;
 use App\Models\Subject;
 use App\Repositories\Subject\ChapterRepository;
 use App\Repositories\Subject\SubjectRepository;
@@ -105,9 +106,9 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $subject)
     {
-        //
+        return new SubjectResource($subject);
     }
 
     /**
@@ -141,9 +142,15 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $subject)
     {
-        //
+        $this->subjectRepository->deleteBySlug($subject->slug);
+    }
+
+    public function destroyMulti(Request $request) {
+      $slugs = $request->items;
+
+      $this->subjectRepository->deleteMultipleBySlug($slugs);
     }
 
     public function storeChapter(StoreChapterRequest $request, $subjectId) {

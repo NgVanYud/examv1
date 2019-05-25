@@ -55,6 +55,7 @@ class UserController extends Controller
       $keyword = $request->keyword;
       if(!$conditions['roles']) {
         $users = $this->userRepository
+          ->with(['roles', 'permissions'])
           ->where('username',"%{$keyword}%", 'like')
           ->orWhere('first_name', 'like', "%{$keyword}%")
           ->orWhere('last_name', 'like', "%{$keyword}%")
@@ -64,6 +65,7 @@ class UserController extends Controller
           ->paginate($conditions['perPage']);
       } else {
         $users = $this->userRepository
+          ->with(['roles', 'permissions'])
           ->where('username',"%{$keyword}%", 'like')
           ->orWhere('first_name', 'like', "%{$keyword}%")
           ->orWhere('last_name', 'like', "%{$keyword}%")

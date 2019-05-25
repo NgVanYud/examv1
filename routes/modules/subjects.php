@@ -25,6 +25,7 @@ Route::group([
     Route::get('subjects/{subjectId}/formats', 'ExamFormatController@index');
     Route::get('subjects/{subjectId}/formats/{formatId}', 'ExamFormatController@show');
 
+    Route::post('subjects/delete-multi', 'SubjectController@destroyMulti');
     Route::resource('subjects', 'SubjectController');
 
     Route::get('test', function() {

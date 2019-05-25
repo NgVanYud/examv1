@@ -10,6 +10,8 @@ class Subject extends Model
 {
     use Sluggable, SubjectAttributes;
 
+    public $hidden = ['id'];
+
     public $fillable = ['code', 'name', 'slug', 'credit', 'description'];
 
     /**
