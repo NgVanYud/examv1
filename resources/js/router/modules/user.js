@@ -6,7 +6,7 @@ const userRoutes = {
   component: Layout,
   redirect: '/users/list',
   meta: {
-    title: 'users',
+    title: 'Người dùng',
     icon: 'user',
     permissions: ['view menu components'],
     roles: [ALL_ROLES['admin']],
@@ -16,7 +16,7 @@ const userRoutes = {
       path: 'list',
       component: () => import('@/views/users/List'),
       name: 'UsersList',
-      meta: { title: 'users', icon: 'user' },
+      meta: { title: 'Người dùng', icon: 'user' },
     },
     {
       path: 'edit/:id',

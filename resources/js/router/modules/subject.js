@@ -9,24 +9,24 @@ const subjectRoutes = {
     title: 'Môn học',
     icon: 'subject',
     permissions: ['view menu components'],
-    roles: [ALL_ROLES['admin']],
+    roles: [ALL_ROLES['admin'], ALL_ROLES['exams_maker']],
   },
   children: [
     {
       path: 'list',
-      component: () => import('@/views/users/List'),
+      component: () => import('@/views/subjects/List'),
       name: 'SubjectsList',
-      meta: { title: 'Danh Sách Môn Học', icon: 'subject' },
+      meta: { title: 'Môn học', icon: 'subject' },
     },
     {
       path: 'edit/:id',
-      component: () => import('@/views/users/Edit'),
-      name: 'UserEdit',
-      meta: { title: 'Chỉnh sửa user' },
+      component: () => import('@/views/subjects/Edit'),
+      name: 'SubjectEdit',
+      meta: { title: 'Chỉnh sửa môn học' },
       hidden: true,
     },
   ],
 };
 
-export default userRoutes;
+export default subjectRoutes;
 

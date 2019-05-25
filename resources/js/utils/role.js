@@ -37,3 +37,26 @@ export function include(all, checked) {
   return false;
 }
 
+/**
+ * Check if specified roles includes a set of roles
+ *
+ * @param all String[]
+ * @param checked String[]
+ */
+export function includes(all, checked, needsAll = false) {
+  const checkCounter = checked.length;
+  let validCounter = 0;
+  for (let i = 0; i < checkCounter; i++) {
+    if (all.includes(checked[i])) {
+      validCounter += 1;
+    }
+  }
+  if (validCounter === checkCounter && needsAll) {
+    return true;
+  }
+  if (validCounter > 0 && !needsAll) {
+    return true;
+  }
+  return false;
+}
+

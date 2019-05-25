@@ -52,12 +52,23 @@ class UserController extends Controller
         'roles' => ($request->roles ? $request->roles: ''),
       ];
       $users = null;
+      $keyword = $request->keyword;
       if(!$conditions['roles']) {
         $users = $this->userRepository
+          ->where('username',"%{$keyword}%", 'like')
+          ->orWhere('first_name', 'like', "%{$keyword}%")
+          ->orWhere('last_name', 'like', "%{$keyword}%")
+          ->orWhere('code', 'like', "%{$keyword}%")
+          ->orWhere('email', 'like', "%{$keyword}%")
           ->orderBy($conditions['orderBy'], $conditions['order'])
           ->paginate($conditions['perPage']);
       } else {
         $users = $this->userRepository
+          ->where('username',"%{$keyword}%", 'like')
+          ->orWhere('first_name', 'like', "%{$keyword}%")
+          ->orWhere('last_name', 'like', "%{$keyword}%")
+          ->orWhere('code', 'like', "%{$keyword}%")
+          ->orWhere('email', 'like', "%{$keyword}%")
           ->role($conditions['roles'])
           ->orderBy($conditions['orderBy'], $conditions['order'])
           ->paginate($conditions['perPage']);

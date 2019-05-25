@@ -24,6 +24,9 @@
     </div>
 
     <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%" size="mini">
+      <el-table-column
+        type="selection" align="center">
+      </el-table-column>
       <el-table-column align="center" label="STT" width="50">
         <template slot-scope="scope">
           <span>{{ scope.row.index }}</span>
@@ -218,6 +221,7 @@ export default {
         page: 1,
         limit: 10,
         roles: '',
+        keyword: '',
       },
       // roles: ['admin', 'manager', 'editor', 'user', 'visitor'],
       nonAdminRoles: ['editor', 'user', 'visitor'],

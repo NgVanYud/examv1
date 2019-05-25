@@ -46,15 +46,34 @@ class SubjectController extends Controller
      */
     public function index(Request $request)
     {
-        $conditions = [
-            'orderBy' => ($request->order_by ? $request->order_by : 'name'),
-            'sortDesc' => ($request->sort_desc == 'true' ? 'desc' : 'asc'),
-            'perPage' => ($request->per_page && intval($request->per_page) > 0 ? $request->per_page: null)
-        ];
-        return new SubjectCollection($this->subjectRepository
-            ->orderBy($conditions['orderBy'], $conditions['sortDesc'])
-            ->paginate($conditions['perPage'])
-        );
+//        $conditions = [
+//            'orderBy' => ($request->order_by ? $request->order_by : 'name'),
+//            'sortDesc' => ($request->sort_desc == 'true' ? 'desc' : 'asc'),
+//            'perPage' => ($request->per_page && intval($request->per_page) > 0 ? $request->per_page: null)
+//        ];
+//        return new SubjectCollection($this->subjectRepository
+//            ->orderBy($conditions['orderBy'], $conditions['sortDesc'])
+//            ->paginate($conditions['perPage'])
+//        );
+
+//      $this->authorize('viewAll', User::class);
+      $conditions = [
+        'orderBy' => ($request->order_by ? $request->order_by : 'code'),
+        'order' => ($request->order && in_array($request->order, [ 'desc', 'asc' ]) ? $request->order : 'asc'),
+        'perPage' => ($request->limit && intval($request->limit) > 0 ? $request->limit: 10),
+      ];
+      $subjects = null;
+      $keyword = $request->keyword;
+        $subjects = $this->subjectRepository
+//        ->where('code',"%{$keyword}%", 'like')
+        ->where('code',"%{$keyword}%", 'like')
+        ->orWhere('name', 'like', "%{$keyword}%")
+        ->orWhere('credit', 'like', "%{$keyword}%")
+        ->orWhere('description', 'like', "%{$keyword}%")
+        ->orderBy($conditions['orderBy'], $conditions['order'])
+        ->paginate($conditions['perPage']);
+
+      return new SubjectCollection($subjects);
     }
 
     /**
