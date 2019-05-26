@@ -11,7 +11,8 @@ Route::group([
 ], function() {
     Route::get('me', 'UserController@me');
     Route::post('users/store-multiple', 'UserController@storeMulti');
-    Route::post('users/active', 'UserController@active');
+    Route::post('users/active', 'UserController@active')->middleware('role:'.config('access.roles_list.admin'));
     Route::post('users/deactive', 'UserController@deactive');
-    Route::apiResource('users', 'UserController');
+    Route::get('users/teachers', 'UserController@getTeacher');
+    Route::apiResource('users', 'UserController')->middleware('role:'.config('access.roles_list.admin'));
 });

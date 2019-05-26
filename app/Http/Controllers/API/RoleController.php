@@ -38,6 +38,23 @@ class RoleController extends Controller
       return RoleResource::collection($this->roleRepository->get());
     }
 
+  /**
+   * @param $roles (an array of ids)
+   * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+   *
+   * Get roles except a specified roles
+   *
+   */
+    public function getExcept($roles) {
+      return $this->roleRepository->getExcept($roles);
+    }
+
+    public function getTeacher() {
+      $studentRoles = $this->roleRepository->getByColumn(config('access.roles_list.student'), 'name');
+      $except = [ $studentRoles->id ];
+      return RoleResource::collection($this->getExcept($except));
+    }
+
     /**
      * Store a newly created resource in storage.
      *

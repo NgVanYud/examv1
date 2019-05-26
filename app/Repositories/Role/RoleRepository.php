@@ -19,4 +19,13 @@ class RoleRepository extends BaseRepository
     return Role::class;
   }
 
+  /**
+   * Get roles excepts some
+   *
+   * $roles (array of ids)
+   */
+  public function getExcept($roles, $columns = ['*']) {
+    return $this->get($columns)->except($roles);
+  }
+
 }

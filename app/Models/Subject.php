@@ -10,8 +10,6 @@ class Subject extends Model
 {
     use Sluggable, SubjectAttributes;
 
-    public $hidden = ['id'];
-
     public $fillable = ['code', 'name', 'slug', 'credit', 'description'];
 
     /**
@@ -51,5 +49,9 @@ class Subject extends Model
 
     public function formats() {
       return $this->hasMany(Format::class);
+    }
+
+    public function examMakers() {
+      return $this->belongsToMany(Subject::class, 'exams_maker_subject', 'exam_maker_id', 'subject_id');
     }
 }

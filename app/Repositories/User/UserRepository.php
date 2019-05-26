@@ -2,6 +2,7 @@
 
 namespace App\Repositories\User;
 
+use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use App\Repositories\Role\RoleRepository;
 use Illuminate\Database\Eloquent\Collection;
@@ -459,5 +460,38 @@ class UserRepository extends BaseRepository
     return $model;
   }
 
+  public function getByConditions($info = []) {
+    $conditions = [
+      'orderBy' => ($info['orderBy'] ? $info['orderBy'] : 'username'),
+      'order' => ($info['order'] && in_array($info['order'], [ 'desc', 'asc' ]) ? $info['order'] : 'asc'),
+      'perPage' => ($info['perPage'] && intval($info['perPage']) > 0 ? $info['perPage']: 10),
+      'keyword' => ($info['keyword'] ? $info['keyword']: ''),
+      'roles' => ($info['roles'] ? $info['roles'] : ''),
+    ];
+    $users = null;
+    if(!$conditions['roles']) {
+      $users = $this
+        ->with(['roles', 'permissions'])
+        ->where('username',"%{$conditions['keyword']}%", 'like')
+        ->orWhere('first_name', 'like', "%{$conditions['keyword']}%")
+        ->orWhere('last_name', 'like', "%{$conditions['keyword']}%")
+        ->orWhere('code', 'like', "%{$conditions['keyword']}%")
+        ->orWhere('email', 'like', "%{$conditions['keyword']}%")
+        ->orderBy($conditions['orderBy'], $conditions['order'])
+        ->paginate($conditions['perPage']);
+    } else {
+      $users = $this
+        ->with(['roles', 'permissions'])
+        ->where('username',"%{$conditions['keyword']}%", 'like')
+        ->orWhere('first_name', 'like', "%{$conditions['keyword']}%")
+        ->orWhere('last_name', 'like', "%{$conditions['keyword']}%")
+        ->orWhere('code', 'like', "%{$conditions['keyword']}%")
+        ->orWhere('email', 'like', "%{$conditions['keyword']}%")
+        ->role($conditions['roles'])
+        ->orderBy($conditions['orderBy'], $conditions['order'])
+        ->paginate($conditions['perPage']);
+    }
+    return $users;
+  }
 
 }

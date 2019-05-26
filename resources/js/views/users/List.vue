@@ -131,25 +131,31 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="'Create new user'" :visible.sync="dialogFormVisible">
-      <div class="form-container" v-loading="userCreating">
-        <el-form ref="userForm" :rules="rules" :model="newUser" label-position="left" label-width="150px" style="max-width: 500px;">
-          <el-form-item :label="$t('user.role')" prop="role">
-            <el-select v-model="newUser.role" class="filter-item" placeholder="Please select role">
-              <el-option v-for="item in nonAdminRoles" :key="item" :label="item | uppercaseFirst" :value="item" />
+    <el-dialog title="Tạo mới người dùng" :visible.sync="dialogFormVisible">
+      <div class="form-container" v-loading="itemCreating">
+        <el-form ref="itemForm" :rules="rules" :model="newItem" label-position="left" label-width="150px" style="max-width: 500px;" size="mini">
+          <el-form-item label="Tài Khoản" prop="username">
+            <el-input v-model="newItem.username"/>
+          </el-form-item>
+          <el-form-item label="Mã Số" prop="code">
+            <el-input v-model="newItem.code"/>
+          </el-form-item>
+          <el-form-item label="Họ" prop="last_name">
+            <el-input v-model="newItem.last_name"/>
+          </el-form-item>
+          <el-form-item label="Tên" prop="first_name">
+            <el-input v-model="newItem.first_name"/>
+          </el-form-item>
+          <el-form-item label="Email" prop="email">
+            <el-input v-model="newItem.email"/>
+          </el-form-item>
+          <el-form-item label="Kích Hoạt" prop="active">
+            <el-switch v-model="newItem.active"></el-switch>
+          </el-form-item>
+          <el-form-item label="Quyền" prop="roles">
+            <el-select v-model="newItem.roles" placeholder="Chọn Nhóm" multiple>
+              <el-option v-for="item in roles" :label="item.name" :value="item.id" :key="item.id"/>
             </el-select>
-          </el-form-item>
-          <el-form-item :label="$t('user.name')" prop="name">
-            <el-input v-model="newUser.name" />
-          </el-form-item>
-          <el-form-item :label="$t('user.email')" prop="email">
-            <el-input v-model="newUser.email" />
-          </el-form-item>
-          <el-form-item :label="$t('user.password')" prop="password">
-            <el-input v-model="newUser.password" show-password />
-          </el-form-item>
-          <el-form-item :label="$t('user.confirmPassword')" prop="confirmPassword">
-            <el-input v-model="newUser.confirmPassword" show-password />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -202,19 +208,19 @@ export default {
     },
   },
   data() {
-    var validateConfirmPassword = (rule, value, callback) => {
-      if (value !== this.newUser.password) {
-        callback(new Error('Password is mismatched!'));
-      } else {
-        callback();
-      }
-    };
+    // var validateConfirmPassword = (rule, value, callback) => {
+    //   if (value !== this.newItem.password) {
+    //     callback(new Error('Password is mismatched!'));
+    //   } else {
+    //     callback();
+    //   }
+    // };
     return {
       list: null,
       total: 0,
       loading: true,
       downloading: false,
-      userCreating: false,
+      itemCreating: false,
       roles: '',
       allRoles: ALL_ROLES,
       query: {
@@ -225,7 +231,7 @@ export default {
       },
       // roles: ['admin', 'manager', 'editor', 'user', 'visitor'],
       nonAdminRoles: ['editor', 'user', 'visitor'],
-      newUser: {},
+      newItem: {},
       dialogFormVisible: false,
       dialogPermissionVisible: false,
       dialogPermissionLoading: false,
@@ -236,14 +242,29 @@ export default {
         rolePermissions: [],
       },
       rules: {
-        role: [{ required: true, message: 'Role is required', trigger: 'change' }],
-        name: [{ required: true, message: 'Name is required', trigger: 'blur' }],
-        email: [
-          { required: true, message: 'Email is required', trigger: 'blur' },
-          { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] },
+        username: [
+          { required: true, message: 'Vui lòng nhập tài khoản người dùng.', trigger: ['change', 'blur'] },
+          { min: 3, max: 15, message: 'Độ dài tài khoản người dùng từ 3 đến 15 ký tự.', trigger: ['change', 'blur'] },
         ],
-        password: [{ required: true, message: 'Password is required', trigger: 'blur' }],
-        confirmPassword: [{ validator: validateConfirmPassword, trigger: 'blur' }],
+        code: [
+          { required: true, message: 'Vui lòng nhập mã số người dùng.', trigger: ['change', 'blur'] },
+          { min: 3, max: 15, message: 'Độ dài mã số người dùng từ 3 đến 15 ký tự.', trigger: ['change', 'blur'] },
+        ],
+        first_name: [
+          { required: true, message: 'Vui lòng nhập tên người dùng.', trigger: ['change', 'blur'] },
+          { min: 1, max: 20, message: 'Độ dài tên người dùng từ 1 đến 20 ký tự.', trigger: ['change', 'blur'] },
+        ],
+        last_name: [
+          { required: true, message: 'Vui lòng nhập họ người dùng.', trigger: ['change', 'blur'] },
+          { min: 2, max: 60, message: 'Độ dài họ người dùng từ 2 đến 60 ký tự.', trigger: ['change', 'blur'] },
+        ],
+        email: [
+          { type: 'email', required: true, message: 'Vui lòng nhập email người dùng.', trigger: ['change', 'blur'] },
+          { min: 3, max: 100, message: 'Độ dài email từ 3 đến 100 ký tự.', trigger: ['change', 'blur'] },
+        ],
+        roles: [
+          { type: 'array', required: true, message: 'Vui lòng nhập email người dùng.', trigger: ['change', 'blur'] },
+        ],
       },
       permissionProps: {
         children: 'children',
@@ -339,7 +360,7 @@ export default {
     async getList() {
       const { limit, page } = this.query;
       this.loading = true;
-      const { data, meta } = await userResource.list(this.query);
+      const { data, meta } = await userResource.teachers(this.query);
       this.list = data;
       this.list.forEach((element, index) => {
         element['index'] = (page - 1) * limit + index + 1;
@@ -348,7 +369,7 @@ export default {
       this.loading = false;
     },
     async getRoles() {
-      const { data } = await roleResource.list();
+      const { data } = await roleResource.teachers();
       this.roles = data;
     },
     handleFilter() {
@@ -359,7 +380,7 @@ export default {
       this.resetNewUser();
       this.dialogFormVisible = true;
       this.$nextTick(() => {
-        this.$refs['userForm'].clearValidate();
+        this.$refs['itemForm'].clearValidate();
       });
     },
     handleDelete(item) {
@@ -405,15 +426,15 @@ export default {
       });
     },
     createUser() {
-      this.$refs['userForm'].validate((valid) => {
+      this.$refs['itemForm'].validate((valid) => {
         if (valid) {
-          this.newUser.roles = [this.newUser.role];
-          this.userCreating = true;
+          this.newItem.roles = [this.newItem.role];
+          this.itemCreating = true;
           userResource
-            .store(this.newUser)
+            .store(this.newItem)
             .then(response => {
               this.$message({
-                message: 'New user ' + this.newUser.name + '(' + this.newUser.email + ') has been created successfully.',
+                message: 'New user ' + this.newItem.name + '(' + this.newItem.email + ') has been created successfully.',
                 type: 'success',
                 duration: 5 * 1000,
               });
@@ -425,7 +446,7 @@ export default {
               console.log(error);
             })
             .finally(() => {
-              this.userCreating = false;
+              this.itemCreating = false;
             });
         } else {
           console.log('error submit!!');
@@ -434,7 +455,7 @@ export default {
       });
     },
     resetNewUser() {
-      this.newUser = {
+      this.newItem = {
         name: '',
         email: '',
         password: '',

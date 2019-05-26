@@ -12,6 +12,13 @@ class RoleResource extends Resource {
       method: 'get',
     });
   }
+
+  teachers() {
+    return request({
+      url: '/' + this.uri + '/teachers',
+      method: 'get',
+    });
+  }
 }
 
 export { RoleResource as default };

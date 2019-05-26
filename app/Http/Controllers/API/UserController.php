@@ -78,6 +78,22 @@ class UserController extends Controller
       return UserResource::collection($users);
     }
 
+    public function getTeacher(Request $request) {
+      $studentRoles = $this->roleRepository->getByColumn(config('access.roles_list.student'), 'name');
+      $roleIds = $request->roles ? $request->roles : ($this->roleRepository->getExcept([$studentRoles->id])->pluck('id'));
+
+      $this->authorize('viewAll', User::class);
+      $conditions = [
+        'orderBy' => ($request->order_by ? $request->order_by : 'username'),
+        'order' => ($request->order && in_array($request->order, [ 'desc', 'asc' ]) ? $request->order : 'asc'),
+        'perPage' => ($request->limit && intval($request->limit) > 0 ? $request->limit: 10),
+        'keyword' => ($request->keyword ? $request->keyword: ''),
+        'roles' => ($request->roles ? $request->roles: $roleIds),
+      ];
+
+      return UserResource::collection($this->userRepository->getByConditions($conditions));
+    }
+
   /**
    * Store a newly created resource in storage.
    *

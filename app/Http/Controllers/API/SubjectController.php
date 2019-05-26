@@ -16,6 +16,8 @@ use App\Repositories\Subject\ChapterRepository;
 use App\Repositories\Subject\SubjectRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class SubjectController extends Controller
 {
@@ -47,32 +49,25 @@ class SubjectController extends Controller
      */
     public function index(Request $request)
     {
-//        $conditions = [
-//            'orderBy' => ($request->order_by ? $request->order_by : 'name'),
-//            'sortDesc' => ($request->sort_desc == 'true' ? 'desc' : 'asc'),
-//            'perPage' => ($request->per_page && intval($request->per_page) > 0 ? $request->per_page: null)
-//        ];
-//        return new SubjectCollection($this->subjectRepository
-//            ->orderBy($conditions['orderBy'], $conditions['sortDesc'])
-//            ->paginate($conditions['perPage'])
-//        );
-
-//      $this->authorize('viewAll', User::class);
+      $user = Auth::user();
       $conditions = [
         'orderBy' => ($request->order_by ? $request->order_by : 'code'),
         'order' => ($request->order && in_array($request->order, [ 'desc', 'asc' ]) ? $request->order : 'asc'),
         'perPage' => ($request->limit && intval($request->limit) > 0 ? $request->limit: 10),
       ];
-      $subjects = null;
+      $subjects = new Collection();
       $keyword = $request->keyword;
+      if($user->hasRole(config('access.roles_list.admin'))) {
         $subjects = $this->subjectRepository
-//        ->where('code',"%{$keyword}%", 'like')
-        ->where('code',"%{$keyword}%", 'like')
-        ->orWhere('name', 'like', "%{$keyword}%")
-        ->orWhere('credit', 'like', "%{$keyword}%")
-        ->orWhere('description', 'like', "%{$keyword}%")
-        ->orderBy($conditions['orderBy'], $conditions['order'])
-        ->paginate($conditions['perPage']);
+          ->where('code',"%{$keyword}%", 'like')
+          ->orWhere('name', 'like', "%{$keyword}%")
+          ->orWhere('credit', 'like', "%{$keyword}%")
+          ->orWhere('description', 'like', "%{$keyword}%")
+          ->orderBy($conditions['orderBy'], $conditions['order'])
+          ->paginate($conditions['perPage']);
+      } else if($user->hasRole(config('access.roles_list.exams_maker'))) {
+
+      }
 
       return new SubjectCollection($subjects);
     }

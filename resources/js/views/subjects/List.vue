@@ -77,7 +77,7 @@
             <el-button type="primary" size="mini" icon="el-icon-edit" title="Chỉnh sửa">
             </el-button>
           </router-link>
-          <el-button v-if="includeRoles(userRoles, [allRoles.admin], false)" type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row);"  title="Xóa">
+          <el-button v-if="includeRoles(userRoles, [allRoles.admin], true)" type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row);"  title="Xóa">
           </el-button>
         </template>
       </el-table-column>
@@ -234,9 +234,11 @@ export default {
       this.loading = true;
       const { data, meta } = await subjectResource.list(this.query);
       this.list = data;
-      this.list.forEach((element, index) => {
-        element['index'] = (page - 1) * limit + index + 1;
-      });
+      if (this.list.length > 0) {
+        this.list.forEach((element, index) => {
+          element['index'] = (page - 1) * limit + index + 1;
+        });
+      }
       this.total = meta.total;
       this.loading = false;
     },
@@ -259,10 +261,17 @@ export default {
       }).then(() => {
         subjectResource.destroy(item.slug).then(response => {
           console.log('xoa', response);
-          this.$message({
-            type: 'success',
-            message: 'Xóa môn học thành công',
-          });
+          if (response.error) {
+            this.$message({
+              type: 'error',
+              message: 'Xóa môn học không thành công',
+            });
+          } else {
+            this.$message({
+              type: 'success',
+              message: 'Xóa môn học thành công',
+            });
+          }
           this.handleFilter();
         }).catch(error => {
           console.log(error);

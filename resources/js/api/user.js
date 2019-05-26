@@ -36,6 +36,14 @@ class UserResource extends Resource {
       data: { uuid: id },
     });
   }
+
+  teachers(query) {
+    return request({
+      url: '/' + this.uri + '/teachers',
+      method: 'get',
+      params: query,
+    });
+  }
 }
 
 export { UserResource as default };
