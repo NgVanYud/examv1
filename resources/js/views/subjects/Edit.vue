@@ -61,12 +61,20 @@ export default {
       this.$refs['itemForm'].validate((valid) => {
         if (valid) {
           subjectResource.update(this.item.slug, this.item).then(response => {
-            Message({
-              message: 'Cập nhật môn học thành công!',
-              type: 'success',
-              duration: 5 * 1000,
-            });
-            this.$router.push({ name: 'SubjectsList' });
+            if (response.error) {
+              this.$message({
+                message: 'Cập nhật môn học không thành công do dũ liệu trùng lặp hoặc không hợp lệ',
+                type: 'error',
+                duration: 5 * 1000,
+              });
+            } else {
+              Message({
+                message: 'Cập nhật môn học thành công!',
+                type: 'success',
+                duration: 5 * 1000,
+              });
+              this.$router.push({ name: 'SubjectsList' });
+            }
           }).catch(error => {
             console.log('Error: ', error);
             Message({

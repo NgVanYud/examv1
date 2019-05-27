@@ -51,7 +51,8 @@ class RoleController extends Controller
 
     public function getTeacher() {
       $studentRoles = $this->roleRepository->getByColumn(config('access.roles_list.student'), 'name');
-      $except = [ $studentRoles->id ];
+      $adminRole = $this->roleRepository->getByColumn(config('access.roles_list.admin'), 'name');
+      $except = [ $studentRoles->id, $adminRole->id ];
       return RoleResource::collection($this->getExcept($except));
     }
 

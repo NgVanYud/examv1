@@ -18,6 +18,8 @@ use App\Events\UserUpdated;
 //use App\Events\Backend\Auth\User\UserConfirmed;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 //use App\Events\Backend\Auth\User\UserDeactivated;
 //use App\Events\Backend\Auth\User\UserReactivated;
@@ -125,18 +127,18 @@ class UserRepository extends BaseRepository
      * @throws \Exception
      * @throws \Throwable
      */
-    public function create(array $data) : User
+    public function create(array $data, $knowPwd = false) : User
     {
-        return DB::transaction(function () use ($data) {
+        $pwd = Str::random(config('access.password_length', 10));
+        return DB::transaction(function () use ($data, $pwd, $knowPwd) {
             $user = parent::create([
                 'first_name' => $data['first_name'],
                 'last_name' => $data['last_name'],
                 'email' => $data['email'],
                 'code' => $data['code'],
-                'password' => $data['password'],
-                'active' => isset($data['active']) && $data['active'] == '1' ? 1 : 0,
-                'confirmation_code' => md5(uniqid(mt_rand(), true)),
-                'confirmed' => isset($data['confirmed']) && $data['confirmed'] == '1' ? 1 : 0,
+                'username' => $data['username'],
+                'password' => Hash::make($pwd),
+                'active' => (isset($data['active']) && $data['active'] == '1') ? 1 : 0,
             ]);
 
             // See if adding any additional permissions
@@ -146,12 +148,12 @@ class UserRepository extends BaseRepository
 
             if ($user) {
                 // User must have at least one role
-                if (! count($data['roles'])) {
+                if (! count($data['role_ids'])) {
                     throw new GeneralException(__('exceptions.backend.access.users.role_needed_create'));
                 }
 
                 // Add selected roles/permissions
-                $user->syncRoles($data['roles']);
+                $user->syncRoles($data['role_ids']);
                 $user->syncPermissions($data['permissions']);
 
                 //Send confirmation email if requested and account approval is off
@@ -161,6 +163,9 @@ class UserRepository extends BaseRepository
 
                 event(new UserCreated($user));
 
+                if ($knowPwd) {
+                  $user->plain_pwd = $pwd;
+                }
                 return $user;
             }
 
@@ -188,6 +193,7 @@ class UserRepository extends BaseRepository
 
         return DB::transaction(function () use ($user, $data) {
             if ($user->update([
+                'username' => $data['username'],
                 'first_name' => $data['first_name'],
                 'last_name' => $data['last_name'],
                 'email' => $data['email'],
@@ -469,9 +475,11 @@ class UserRepository extends BaseRepository
       'roles' => ($info['roles'] ? $info['roles'] : ''),
     ];
     $users = null;
+//    $currentUser = auth()->user();
     if(!$conditions['roles']) {
       $users = $this
         ->with(['roles', 'permissions'])
+//        ->whereNotIn('id', [ $currentUser->id ])
         ->where('username',"%{$conditions['keyword']}%", 'like')
         ->orWhere('first_name', 'like', "%{$conditions['keyword']}%")
         ->orWhere('last_name', 'like', "%{$conditions['keyword']}%")
@@ -482,6 +490,7 @@ class UserRepository extends BaseRepository
     } else {
       $users = $this
         ->with(['roles', 'permissions'])
+//        ->whereNotIn('id', [ $currentUser->id ])
         ->where('username',"%{$conditions['keyword']}%", 'like')
         ->orWhere('first_name', 'like', "%{$conditions['keyword']}%")
         ->orWhere('last_name', 'like', "%{$conditions['keyword']}%")

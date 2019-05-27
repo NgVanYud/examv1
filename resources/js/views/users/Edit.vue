@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="editForm" :model="user" :rules="rules" label-width="120px" size="mini">
+    <el-form ref="itemForm" :model="user" :rules="rules" label-width="120px" size="mini">
       <el-form-item label="Tài Khoản" prop="username">
         <el-input v-model="user.username" :disabled="true"/>
       </el-form-item>
@@ -15,9 +15,6 @@
       </el-form-item>
       <el-form-item label="Email" prop="email">
         <el-input v-model="user.email"/>
-      </el-form-item>
-      <el-form-item label="Kích Hoạt" prop="active">
-        <el-switch v-model="user.active"></el-switch>
       </el-form-item>
       <el-form-item label="Quyền" prop="roles">
         <el-select v-model="userRoleIds" placeholder="Chọn Quyền" multiple>
@@ -86,21 +83,39 @@ export default {
       this.updateUser();
     },
     async updateUser() {
-      this.user.role_ids = this.userRoleIds;
-      await userResource.update(this.user.uuid, this.user).then(response => {
-        Message({
-          message: 'Cập nhật người dùng thành công!',
-          type: 'success',
-          duration: 5 * 1000,
-        });
-        this.$router.push({ name: 'UsersList' });
-      }).catch(error => {
-        console.log('Error: ', error);
-        Message({
-          message: 'Có lỗi xảy ra. Vui lòng thử lại!',
-          type: 'error',
-          duration: 5 * 1000,
-        });
+      this.$refs['itemForm'].validate((valid) => {
+        if (valid) {
+          this.user.role_ids = this.userRoleIds;
+          userResource.update(this.user.uuid, this.user).then(response => {
+            if (response.error) {
+              Message({
+                message: 'Cập nhật người dùng không thành công do dũ liệu trùng lặp hoặc không hợp lệ',
+                type: 'error',
+                duration: 5 * 1000,
+              });
+            } else {
+              Message({
+                message: 'Cập nhật người dùng thành công!',
+                type: 'success',
+                duration: 5 * 1000,
+              });
+              this.$router.push({ name: 'UsersList' });
+            }
+          }).catch(error => {
+            console.log('Error: ', error);
+            Message({
+              message: 'Có lỗi xảy ra. Vui lòng thử lại!',
+              type: 'error',
+              duration: 5 * 1000,
+            });
+          });
+        } else {
+          Message({
+            message: 'Dữ liệu không hợp lệ. Vui lòng nhập lại!',
+            type: 'error',
+            duration: 5 * 1000,
+          });
+        }
       });
     },
     onCancel() {
@@ -116,8 +131,6 @@ export default {
 </script>
 
 <style scoped>
-  .line{
-    text-align: center;
-  }
+
 </style>
 

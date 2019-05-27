@@ -328,19 +328,27 @@ export default {
           subjectResource
             .store(this.newItem)
             .then(response => {
-              this.$message({
-                message: 'Tạo mới môn học ' + this.newItem.name + ' thành công',
-                type: 'success',
-                duration: 5 * 1000,
-              });
-              this.resetnewItem();
-              this.dialogFormVisible = false;
-              this.handleFilter();
+              if (response.error) {
+                this.$message({
+                  message: 'Tạo mới môn học không thành công do dũ liệu trùng lặp hoặc không hợp lệ',
+                  type: 'error',
+                  duration: 5 * 1000,
+                });
+              } else {
+                this.$message({
+                  message: 'Tạo mới môn học thành công',
+                  type: 'success',
+                  duration: 5 * 1000,
+                });
+                this.resetnewItem();
+                this.dialogFormVisible = false;
+                this.handleFilter();
+              }
             })
             .catch(error => {
               console.log(error);
               this.$message({
-                message: 'Tạo mới môn học ' + this.newItem.name + ' không thành công',
+                message: 'Tạo mới môn học không thành công',
                 type: 'error',
                 duration: 5 * 1000,
               });
@@ -350,6 +358,11 @@ export default {
             });
         } else {
           console.log('error submit!!');
+          this.$message({
+            message: 'Dữ liệu không hợp lệ. Vui lòng nhập lại!',
+            type: 'error',
+            duration: 5 * 1000,
+          });
           return false;
         }
       });
@@ -357,10 +370,9 @@ export default {
     resetnewItem() {
       this.newItem = {
         name: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        role: 'user',
+        code: '',
+        credit: '',
+        description: '',
       };
     },
     handleDownload() {

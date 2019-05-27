@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Notifications\UserNeedsPasswordReset;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -25,6 +26,8 @@ class UserCreated
      */
     public function handle(\App\Events\UserCreated $event)
     {
+      $user = $event->user;
+      $user->notify(new UserNeedsPasswordReset($user->createPwdResetToken(), $user));
 
     }
 }

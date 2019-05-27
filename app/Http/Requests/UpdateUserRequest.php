@@ -27,10 +27,9 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
       return [
-        'active' => 'boolean',
         'email' => 'min:3|max:254|unique:users,email,'.$this->user->id,
-        'username' => 'required|min:3|max:24|unique:users,username,'.$this->user->id,
-        'code' => 'required|min:3|max:19|unique:users,code,'.$this->user->id,
+        'username' => 'required|min:3|max:15|unique:users,username,'.$this->user->id,
+        'code' => 'required|min:3|max:15|unique:users,code,'.$this->user->id,
         'first_name' => 'required|min:1|max:254',
         'last_name' => 'required|min:1|max:254',
         'role_ids' => 'required|array|min:1',

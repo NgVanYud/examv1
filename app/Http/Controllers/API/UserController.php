@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Exceptions\GeneralException;
+use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\User\UserCollection;
 use Illuminate\Validation\ValidationException;
@@ -79,10 +80,11 @@ class UserController extends Controller
     }
 
     public function getTeacher(Request $request) {
-      $studentRoles = $this->roleRepository->getByColumn(config('access.roles_list.student'), 'name');
-      $roleIds = $request->roles ? $request->roles : ($this->roleRepository->getExcept([$studentRoles->id])->pluck('id'));
-
       $this->authorize('viewAll', User::class);
+      $studentRole = $this->roleRepository->getByColumn(config('access.roles_list.student'), 'name');
+      $adminRole = $this->roleRepository->getByColumn(config('access.roles_list.admin'), 'name');
+      $roleIds = $request->roles ? $request->roles : ($this->roleRepository->getExcept([$studentRole->id, $adminRole->id])->pluck('id'));
+
       $conditions = [
         'orderBy' => ($request->order_by ? $request->order_by : 'username'),
         'order' => ($request->order && in_array($request->order, [ 'desc', 'asc' ]) ? $request->order : 'asc'),
@@ -100,11 +102,10 @@ class UserController extends Controller
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
-  public function store(Request $request)
+  public function store(StoreUserRequest $request)
   {
     $data = $request->all();
-    return $data;
-//    $role = $data->role
+    return $this->userRepository->create($data, true);
   }
 
   /**
@@ -205,5 +206,9 @@ class UserController extends Controller
     $uuid = $request->uuid;
     $user = $this->userRepository->updateByUuid($uuid, [ 'active' => User::DEACTIVE_CODE ]);
     return $user;
+  }
+
+  public function resetPwd(Request $request) {
+
   }
 }

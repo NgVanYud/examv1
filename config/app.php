@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Hệ Thống Thi Trắc Nghiệm Online'),
 
     /*
     |--------------------------------------------------------------------------
@@ -226,6 +226,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'auth.password.tokens' => Illuminate\Auth\Passwords\TokenRepositoryInterface::class
     ],
 
 ];

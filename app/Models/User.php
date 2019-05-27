@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Traits\SendUserPasswordReset;
 use App\Models\Traits\Uuid;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,9 +13,9 @@ use Spatie\Permission\Traits\HasRoles;
 use App\Models\Traits\UserAttributes;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements JWTSubject, CanResetPassword
 {
-    use Notifiable, HasRoles, UserAttributes, Uuid, SoftDeletes;
+    use Notifiable, HasRoles, UserAttributes, Uuid, SoftDeletes, SendUserPasswordReset;
 
     const ACTIVE_CODE = 1;
     const DEACTIVE_CODE = 0;
@@ -32,7 +34,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'id', 'password', 'remember_token',
+        'password', 'remember_token',
     ];
 
     protected $dates = ['last_login_at', 'deleted_at'];
@@ -84,6 +86,21 @@ class User extends Authenticatable implements JWTSubject
   public function getPermissionIds(): Collection
   {
     return $this->permissions->pluck('id');
+  }
+
+  /**
+   * Get the e-mail address where password reset links are sent.
+   *
+   * @return string
+   */
+  public function getEmailForPasswordReset()
+  {
+    return $this->email;
+  }
+
+  public function createPwdResetToken() {
+    $token = app('auth.password.broker')->createToken($this);
+    return $token;
   }
 
 }

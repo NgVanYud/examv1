@@ -149,21 +149,23 @@
           <el-form-item label="Email" prop="email">
             <el-input v-model="newItem.email"/>
           </el-form-item>
-          <el-form-item label="Kích Hoạt" prop="active">
-            <el-switch v-model="newItem.active"></el-switch>
-          </el-form-item>
+<!--          <el-form-item label="Kích Hoạt" prop="active">-->
+<!--            <el-switch v-model="newItem.active"></el-switch>-->
+<!--          </el-form-item>-->
           <el-form-item label="Quyền" prop="roles">
-            <el-select v-model="newItem.roles" placeholder="Chọn Nhóm" multiple>
+            <el-select v-model="newItem.role_ids" placeholder="Chọn Nhóm" multiple>
               <el-option v-for="item in roles" :label="item.name" :value="item.id" :key="item.id"/>
             </el-select>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">
-            {{ $t('table.cancel') }}
+<!--            {{ $t('table.cancel') }}-->
+            Hủy
           </el-button>
           <el-button type="primary" @click="createUser()">
-            {{ $t('table.confirm') }}
+<!--            {{ $t('table.confirm') }}-->
+            Tạo Mới
           </el-button>
         </div>
       </div>
@@ -262,8 +264,8 @@ export default {
           { type: 'email', required: true, message: 'Vui lòng nhập email người dùng.', trigger: ['change', 'blur'] },
           { min: 3, max: 100, message: 'Độ dài email từ 3 đến 100 ký tự.', trigger: ['change', 'blur'] },
         ],
-        roles: [
-          { type: 'array', required: true, message: 'Vui lòng nhập email người dùng.', trigger: ['change', 'blur'] },
+        role_ids: [
+          { required: true, message: 'Vui lòng chọn nhóm người dùng.', trigger: ['change', 'blur'] },
         ],
       },
       permissionProps: {
@@ -428,39 +430,58 @@ export default {
     createUser() {
       this.$refs['itemForm'].validate((valid) => {
         if (valid) {
-          this.newItem.roles = [this.newItem.role];
           this.itemCreating = true;
           userResource
             .store(this.newItem)
             .then(response => {
-              this.$message({
-                message: 'New user ' + this.newItem.name + '(' + this.newItem.email + ') has been created successfully.',
-                type: 'success',
-                duration: 5 * 1000,
-              });
-              this.resetNewUser();
-              this.dialogFormVisible = false;
-              this.handleFilter();
+              console.log(response);
+              if (response.error) {
+                this.$message({
+                  message: 'Tạo mới người dùng không thành công do dữ liệu  trùng lặp hoặc không hợp lệ.',
+                  type: 'error',
+                  duration: 5 * 1000,
+                });
+              } else {
+                this.$message({
+                  message: 'Tạo mới người dùng thành công.',
+                  type: 'success',
+                  duration: 5 * 1000,
+                });
+                this.resetNewUser();
+                this.dialogFormVisible = false;
+                this.handleFilter();
+              }
             })
             .catch(error => {
               console.log(error);
+              this.$message({
+                message: 'Tạo mới người dùng không thành công.',
+                type: 'error',
+                duration: 5 * 1000,
+              });
             })
             .finally(() => {
               this.itemCreating = false;
             });
         } else {
           console.log('error submit!!');
+          this.$message({
+            message: 'Dữ liệu không hợp lệ. Vui lòng nhập lại!',
+            type: 'error',
+            duration: 5 * 1000,
+          });
           return false;
         }
       });
     },
     resetNewUser() {
       this.newItem = {
-        name: '',
+        username: '',
         email: '',
-        password: '',
-        confirmPassword: '',
-        role: 'user',
+        code: '',
+        first_name: '',
+        last_name: '',
+        role_ids: '',
       };
     },
     handleDownload() {

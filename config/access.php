@@ -104,6 +104,12 @@ return [
      */
     'socialite_session_name' => 'socialite_provider',
 
+  /**
+   * Set the length of default password
+   */
+
+    'password_length' => 10,
+
     /*
      * List roles in app
      */

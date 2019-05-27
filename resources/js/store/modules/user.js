@@ -10,6 +10,7 @@ const state = {
   introduction: '',
   roles: [],
   permissions: [],
+  uuid: '',
 };
 
 const mutations = {
@@ -30,6 +31,9 @@ const mutations = {
   },
   SET_PERMISSIONS: (state, permissions) => {
     state.permissions = permissions;
+  },
+  SET_UUID: (state, uuid) => {
+    state.uuid = uuid;
   },
 };
 
@@ -73,6 +77,7 @@ const actions = {
           commit('SET_PERMISSIONS', permissionsName);
           commit('SET_NAME', user.full_name);
           commit('SET_USERNAME', user.username);
+          commit('SET_UUID', user.uuid);
           resolve({
             roles: rolesName,
             permissions: permissionsName,
