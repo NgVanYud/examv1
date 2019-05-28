@@ -15,13 +15,13 @@ return [
 
     'accepted' => 'Thuộc tính :attribute được chấp nhận',
     'active_url' => 'Thuộc tính :attribute không phải là URL hợp lệ.',
-    'after' => 'The :attribute must be a date after :date.',
+    'after' => 'Giá trị :attribute phải muộn hơn so với :date.',
     'after_or_equal' => 'The :attribute must be a date after or equal to :date.',
     'alpha' => 'The :attribute may only contain letters.',
     'alpha_dash' => 'The :attribute may only contain letters, numbers, dashes and underscores.',
     'alpha_num' => 'The :attribute may only contain letters and numbers.',
     'array' => 'Thuộc tính :attribute yêu cầu dạng mảng.',
-    'before' => 'The :attribute must be a date before :date.',
+    'before' => 'Giá trị :attribute phải có giá trị trước ngày :date.',
     'before_or_equal' => 'The :attribute must be a date before or equal to :date.',
     'between' => [
         'numeric' => 'The :attribute must be between :min and :max.',
@@ -78,7 +78,7 @@ return [
     'max' => [
         'numeric' => 'Giá trị thuộc tính :attribute không được phép lớn hơn :max.',
         'file' => 'The :attribute may not be greater than :max kilobytes.',
-        'string' => 'The :attribute may not be greater than :max characters.',
+        'string' => 'Độ dài :attribute không được lớn hơn :max ký tự.',
         'array' => 'The :attribute may not have more than :max items.',
     ],
     'mimes' => 'The :attribute must be a file of type: :values.',
@@ -86,12 +86,12 @@ return [
     'min' => [
         'numeric' => 'Thuộc tính :attribute phải có giá trị nhỏ nhất là :min.',
         'file' => 'The :attribute must be at least :min kilobytes.',
-        'string' => 'The :attribute must be at least :min characters.',
+        'string' => 'Độ dài :attribute tối thiểu là :min ký tự.',
         'array' => 'The :attribute must have at least :min items.',
     ],
     'not_in' => 'The selected :attribute is invalid.',
     'not_regex' => 'The :attribute format is invalid.',
-    'numeric' => 'The :attribute must be a number.',
+    'numeric' => 'Giá trị :attribute phải là một số.',
     'present' => 'The :attribute field must be present.',
     'regex' => 'The :attribute format is invalid.',
     'required' => 'Thuộc tính :attribute không được bỏ trống.',
@@ -147,6 +147,12 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'credit' => 'số tín chỉ',
+        'code' => 'mã code',
+        'end' => 'ngày kết thúc',
+        'begin' => 'ngày bắt đầu',
+        'name' => 'tên'
+    ],
 
 ];

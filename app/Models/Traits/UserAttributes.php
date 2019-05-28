@@ -32,6 +32,10 @@ trait UserAttributes {
         return $this->last_name." ".$this->first_name;
     }
 
+    public function setCodeAttribute($code) {
+      $this->attributes['code'] = strtoupper($code);
+    }
+
     /**
      * @return string
      */

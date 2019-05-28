@@ -13,7 +13,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
+        \Illuminate\Database\Eloquent\ModelNotFoundException::class,
     ];
 
     /**
@@ -46,6 +46,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        return response()->json([
+            'error' => true,
+            'code' => $exception->getCode(),
+            'message' => $exception->getMessage()
+        ]);
     }
 }

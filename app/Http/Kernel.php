@@ -3,6 +3,9 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Spatie\Permission\Middlewares\PermissionMiddleware;
+use Spatie\Permission\Middlewares\RoleMiddleware;
+use Spatie\Permission\Middlewares\RoleOrPermissionMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -62,6 +65,9 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'jwt.auth' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
         'jwt.refresh' => \Tymon\JWTAuth\Http\Middleware\RefreshToken::class,
+        'role' => RoleMiddleware::class,
+        'permission' => PermissionMiddleware::class,
+        'role_or_permission' => RoleOrPermissionMiddleware::class
     ];
 
     /**

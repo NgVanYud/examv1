@@ -14,7 +14,10 @@ class UserResource extends Resource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return array_merge(parent::toArray($request), [
+          'roles' => $this->resource->roles,
+          'permissions' => $this->resource->permissions
+        ]);
     }
 
     /**
@@ -26,8 +29,8 @@ class UserResource extends Resource
     public function with($request)
     {
         return [
-            'roles' => $this->resource->roles,
-            'permissions' => $this->resource->permissions
+            'roles' => $this->resource->getRoleIds(),
+            'permissions' => $this->resource->getPermissionIds(),
         ];
     }
 

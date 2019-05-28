@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Responses\JsonResponse;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -87,7 +88,7 @@ class LoginController extends Controller
      */
     protected function respondWithToken($token)
     {
-        return new JsonResponse(__('messages.login.error'), [
+        return new JsonResponse(__('messages.login.success'), [
                 'access_token' => $token,
                 'token_type' => 'bearer',
                 'expires_in' => auth()->factory()->getTTL() * 60
@@ -140,6 +141,18 @@ class LoginController extends Controller
     protected function guard()
     {
         return Auth::guard('api');
+    }
+
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+        return array_merge($request->only([$this->username(), 'password']),
+            ['active' => User::ACTIVE_CODE]);
     }
 
 

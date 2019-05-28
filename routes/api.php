@@ -23,4 +23,8 @@ Route::group([
 ], function() {
     include __DIR__.'/modules/auth.php';
     include __DIR__.'/modules/users.php';
+    include __DIR__.'/modules/subjects.php';
+    include __DIR__.'/modules/terms.php';
+    include __DIR__.'/modules/questions.php';
+    include __DIR__.'/modules/roles.php';
 });
