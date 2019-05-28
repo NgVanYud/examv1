@@ -73,16 +73,16 @@
 
       <el-table-column align="center" label="Thao Tác" width="150">
         <template slot-scope="scope">
-          <router-link :to = "{ name: 'SubjectEdit', params: { slug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.admin], false)">
-            <el-button type="primary" size="mini" icon="el-icon-edit" title="Chỉnh sửa">
+<!--          <router-link :to = "{ name: 'SubjectDetail', params: { slug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.admin, allRoles.exams_maker], false)">-->
+<!--            <el-button type="primary" size="mini" icon="el-icon-edit" title="Chỉnh sửa">-->
+<!--            </el-button>-->
+<!--          </router-link>-->
+          <router-link :to = "{ name: 'SubjectDetail', params: { slug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.admin, allRoles.exams_maker], false)">
+            <el-button type="warning" size="mini" icon="el-icon-document" title="Tùy Chọn">
             </el-button>
           </router-link>
           <el-button v-if="includeRoles(userRoles, [allRoles.admin], true)" type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row);"  title="Xóa">
           </el-button>
-          <router-link :to = "{ name: 'SubjectEdit', params: { slug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.exams_maker], false)">
-            <el-button type="warning" size="mini" icon="el-icon-document" title="Nội dung">
-            </el-button>
-          </router-link>
 <!--          <router-link :to = "{ name: 'SubjectEdit', params: { slug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.admin], false)">-->
 <!--            <el-button type="warning" size="mini" icon="el-icon-document" title="Giáo viên ra đề">-->
 <!--            </el-button>-->

@@ -36,7 +36,6 @@ class UpdateChapterRequest extends FormRequest
               ->where('name', $this->name);
           })
         ],
-        'is_actived' => 'numeric'
       ];
     }
 }

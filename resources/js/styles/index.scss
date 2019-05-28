@@ -193,3 +193,17 @@ aside {
 .multiselect--active {
   z-index: 1000 !important;
 }
+
+
+//table
+.table {
+  color: #909399;
+}
+.table-sm {
+  font-size: 12px;
+  th, td {
+    height: 31px;
+    padding: 6px 10px;
+    line-height: 23px;
+  }
+}

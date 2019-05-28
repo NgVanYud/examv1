@@ -19,9 +19,9 @@ const subjectRoutes = {
       meta: { title: 'Môn học', icon: 'subject', noCache: true },
     },
     {
-      path: 'edit/:slug',
-      component: () => import('@/views/subjects/Edit'),
-      name: 'SubjectEdit',
+      path: 'detail/:slug',
+      component: () => import('@/views/subjects/Detail'),
+      name: 'SubjectDetail',
       meta: { title: 'Chỉnh sửa môn học', noCache: true },
       hidden: true,
     },

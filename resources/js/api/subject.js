@@ -42,6 +42,21 @@ class SubjectResource extends Resource {
       data: { user_uuid: userId },
     });
   }
+  storeChapter(data, subjectId) {
+    return request({
+      url: '/' + this.uri + '/' + subjectId + '/chapters',
+      method: 'post',
+      data: data,
+    });
+  }
+
+  updateChapter(data, subjectId, chapterId) {
+    return request({
+      url: '/' + this.uri + '/' + subjectId + '/chapters/' + chapterId + '/update',
+      method: 'post',
+      data: data,
+    });
+  }
 }
 
 export { SubjectResource as default };
