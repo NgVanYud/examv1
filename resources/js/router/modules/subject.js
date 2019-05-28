@@ -25,6 +25,20 @@ const subjectRoutes = {
       meta: { title: 'Chỉnh sửa môn học', noCache: true },
       hidden: true,
     },
+    {
+      path: 'chapters/:slug',
+      component: () => import('@/views/subjects/Chapter'),
+      name: 'ChaptersList',
+      meta: { title: 'Nội dung môn học', noCache: true },
+      hidden: true,
+    },
+    {
+      path: 'teachers/:slug',
+      component: () => import('@/views/subjects/Chapter'),
+      name: 'ChaptersList',
+      meta: { title: 'Nội dung môn học', noCache: true },
+      hidden: true,
+    },
   ],
 };
 

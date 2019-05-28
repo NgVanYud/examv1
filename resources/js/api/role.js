@@ -13,12 +13,21 @@ class RoleResource extends Resource {
     });
   }
 
+  /**
+   * Get all users is teacher
+   * @return {AxiosPromise}
+   */
   teachers() {
     return request({
       url: '/' + this.uri + '/teachers',
       method: 'get',
     });
   }
+
+  // detailByName(roleName) {
+  //   return request({
+  //   })
+  // }
 }
 
 export { RoleResource as default };

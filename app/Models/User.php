@@ -103,4 +103,8 @@ class User extends Authenticatable implements JWTSubject, CanResetPassword
     return $token;
   }
 
+  public function subjects() {
+    return $this->belongsToMany(Subject::class, 'exams_maker_subject', 'exam_maker_id', 'subject_id');
+  }
+
 }

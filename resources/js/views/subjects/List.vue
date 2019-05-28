@@ -79,6 +79,14 @@
           </router-link>
           <el-button v-if="includeRoles(userRoles, [allRoles.admin], true)" type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row);"  title="Xóa">
           </el-button>
+          <router-link :to = "{ name: 'SubjectEdit', params: { slug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.exams_maker], false)">
+            <el-button type="warning" size="mini" icon="el-icon-document" title="Nội dung">
+            </el-button>
+          </router-link>
+<!--          <router-link :to = "{ name: 'SubjectEdit', params: { slug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.admin], false)">-->
+<!--            <el-button type="warning" size="mini" icon="el-icon-document" title="Giáo viên ra đề">-->
+<!--            </el-button>-->
+<!--          </router-link>-->
         </template>
       </el-table-column>
     </el-table>

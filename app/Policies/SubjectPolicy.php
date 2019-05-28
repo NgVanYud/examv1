@@ -3,25 +3,32 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Repositories\Role\RoleRepository;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SubjectPolicy
 {
     use HandlesAuthorization;
 
-  public function before($user, $ability)
+  public $roleRepository;
+
+  /**
+   * Create a new policy instance.
+   *
+   * @return void
+   */
+  public function __construct(RoleRepository $roleRepository)
   {
-    $rolesAdmin = $this->roleRepository->getByColumn(config('access.roles_list.admin'), 'name', ['id']);
-    return $user->hasRole($rolesAdmin->id);
+    $this->roleRepository = $roleRepository;
   }
 
-    /**
-     * Create a new policy instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
+  public function before($user, $ability)
+  {
+    $adminRole = $this->roleRepository->getByColumn(config('access.roles_list.admin'), 'name', ['id']);
+    $examsMakerRole = $this->roleRepository->getByColumn(config('access.roles_list.exams_maker'), 'name', ['id']);
+
+    return $user->hasAnyRole([$adminRole->id, $examsMakerRole->id]);
+  }
+
+
 }

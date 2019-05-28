@@ -14,5 +14,6 @@ Route::group([
     Route::post('users/active', 'UserController@active')->middleware('role:'.config('access.roles_list.admin'));
     Route::post('users/deactive', 'UserController@deactive')->middleware('role:'.config('access.roles_list.admin'));
     Route::get('users/teachers', 'UserController@getTeacher')->middleware('role:'.config('access.roles_list.admin'));
+    Route::post('users/by-role', 'RoleController@getUsersByRoleName')->middleware('role:'.config('access.roles_list.admin'));
     Route::apiResource('users', 'UserController')->middleware('role:'.config('access.roles_list.admin'));
 });

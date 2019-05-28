@@ -44,6 +44,14 @@ class UserResource extends Resource {
       params: query,
     });
   }
+
+  getByRoleName(data) {
+    return request({
+      url: '/' + this.uri + '/by-role',
+      method: 'post',
+      data: data,
+    });
+  }
 }
 
 export { UserResource as default };

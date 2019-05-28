@@ -96,6 +96,14 @@ class UserController extends Controller
       return UserResource::collection($this->userRepository->getByConditions($conditions));
     }
 
+    public function getByRole(Request $request) {
+      $roleId = $request->role_id;
+      $users = $this->userRepository
+        ->roles($roleId)
+        ->get();
+      return UserResource::collection($users);
+    }
+
   /**
    * Store a newly created resource in storage.
    *
