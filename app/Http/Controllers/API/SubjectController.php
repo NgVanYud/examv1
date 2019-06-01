@@ -9,6 +9,9 @@ use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateChapterRequest;
 use App\Http\Requests\UpdateQuestionRequest;
 use App\Http\Requests\UpdateSubjectRequest;
+use App\Http\Resources\Chapter\ChapterResource;
+use App\Http\Resources\Question\QuestionCollection;
+use App\Http\Resources\Question\QuestionResource;
 use App\Http\Resources\Subject\SubjectCollection;
 use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\User\UserResource;
@@ -71,16 +74,18 @@ class SubjectController extends Controller
           ->orderBy($conditions['orderBy'], $conditions['order'])
           ->paginate($conditions['perPage']);
       } else if($user->hasRole(config('access.roles_list.exams_maker'))) {
+//        return $user->subjects;
         $subjects = $user->subjects()
-          ->where('code',"%{$keyword}%", 'like')
-          ->orWhere('name', 'like', "%{$keyword}%")
-          ->orWhere('credit', 'like', "%{$keyword}%")
-          ->orWhere('description', 'like', "%{$keyword}%")
+//          ->where('exam_maker_id', $user->id)
+//          ->where('code',"%{$keyword}%", 'like')
+//          ->orWhere('name', 'like', "%{$keyword}%")
+//          ->orWhere('credit', 'like', "%{$keyword}%")
+//          ->orWhere('description', 'like', "%{$keyword}%")
           ->orderBy($conditions['orderBy'], $conditions['order'])
           ->paginate($conditions['perPage']);
       }
-
       return new SubjectCollection($subjects);
+
     }
 
     /**
@@ -181,7 +186,7 @@ class SubjectController extends Controller
     }
 
     public function getChapters($subjectId) {
-      return $this->subjectRepository->getChapters($subjectId);
+      return ChapterResource::collection($this->subjectRepository->getChapters($subjectId));
     }
 
     public function storeQuestion(StoreQuestionRequest $request, $subjectId, $chapterId) {
@@ -205,7 +210,7 @@ class SubjectController extends Controller
     }
 
     public function getQuestions(Request $request, $subjectId) {
-      return $this->subjectRepository->getQuestions($subjectId, $request->all());
+      return QuestionResource::collection($this->subjectRepository->getQuestions($subjectId, $request->all()));
     }
 
     public function getExamMakers(Request $request, $id) {
@@ -225,5 +230,10 @@ class SubjectController extends Controller
       $examMakerUuid = $request->user_uuid;
       $examMaker = $this->userRepository->getByUuid($examMakerUuid);
       return $examMaker->subjects()->detach($subjectId);
+    }
+
+    public function getExamFormat(Request $request, $subjectId) {
+      $subject = $this->subjectRepository->getById($subjectId);
+      return $subject->format;
     }
 }

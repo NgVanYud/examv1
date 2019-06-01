@@ -192,16 +192,16 @@ class SubjectRepository extends BaseRepository
       $order = $conditions['order'] ? $conditions['order'] : 'asc';
       $perPage = $conditions['per_page'] ? $conditions['per_page'] : 10;
       if($chapterId) {
-        return new QuestionCollection($this->questionRepository
+        return $this->questionRepository
           ->where('subject_id', $subjectId)
           ->where('chapter_id', $chapterId)
           ->orderBy($orderBy, $order)
-          ->paginate($perPage));
+          ->paginate($perPage);
       } else {
-        return new QuestionCollection($this->questionRepository
+        return $this->questionRepository
           ->where('subject_id', $subjectId)
           ->orderBy($orderBy, $order)
-          ->paginate($perPage));
+          ->paginate($perPage);
       }
       throw new GeneralException(
         __('exceptions.invalid_data'),

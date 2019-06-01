@@ -69,9 +69,8 @@
         </el-table-column>
 
         <el-table-column label="Số Câu Hỏi" align="center" width="100">
-          <!--                <template slot-scope="scope">-->
-          <template>
-            <span>39</span>
+          <template slot-scope="scope">
+            <span>{{ scope.row.question_num }}</span>
           </template>
         </el-table-column>
 
@@ -151,7 +150,8 @@ export default {
       subjectResource.chapters({
         limit: 100,
       }, this.subject.id).then(response => {
-        this.allChapters = response;
+        const { data } = response;
+        this.allChapters = data;
         this.allChapters.forEach((element, index) => {
           element['index'] = index + 1;
         });
@@ -171,7 +171,6 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           subjectResource.storeChapter(this.newChapter, this.subject.id).then(response => {
-            console.log('response: ', response);
             this.resetForm(formName);
             this.loading = true;
             this.listChapters();
@@ -249,7 +248,6 @@ export default {
             this.loading = false;
           });
         } else {
-          console.log('error submit!!');
           this.$message({
             message: 'Dữ liệu không hợp lệ. Vui lòng nhập lại!',
             type: 'error',

@@ -57,6 +57,44 @@ class SubjectResource extends Resource {
       data: data,
     });
   }
+
+  getFormatExam(subjectId) {
+    return request({
+      url: '/' + this.uri + '/' + subjectId + '/format',
+      method: 'get',
+    });
+  }
+
+  updateExamFormat(data, subjectId, formatId) {
+    return request({
+      url: '/' + this.uri + '/' + subjectId + '/' + 'formats' + '/' + formatId + '/update',
+      method: 'post',
+      data: data,
+    });
+  }
+
+  storeExamFormat(data, subjectId) {
+    return request({
+      url: '/' + this.uri + '/' + subjectId + '/formats',
+      method: 'post',
+      data: data,
+    });
+  }
+
+  questions(query, subjectId) {
+    return request({
+      url: '/' + this.uri + '/' + subjectId + '/questions',
+      method: 'get',
+      params: query,
+    });
+  }
+  storeQuestion(data, subjectId, chapterId) {
+    return request({
+      url: '/' + this.uri + '/' + subjectId + '/' + 'chapters' + '/' + chapterId + '/questions',
+      method: 'post',
+      data: data,
+    });
+  }
 }
 
 export { SubjectResource as default };

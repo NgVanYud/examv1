@@ -47,11 +47,11 @@ class Subject extends Model
       return $this->hasMany(Question::class);
     }
 
-    public function formats() {
-      return $this->hasMany(Format::class);
+    public function format() {
+      return $this->hasOne(Format::class, 'subject_id');
     }
 
     public function examMakers() {
-      return $this->belongsToMany(User::class, 'exams_maker_subject', 'subject_id','exam_maker_id');
+      return $this->belongsToMany('App\Models\User', 'exams_maker_subject', 'subject_id','exam_maker_id');
     }
 }

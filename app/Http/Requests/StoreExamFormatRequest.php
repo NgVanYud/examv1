@@ -24,8 +24,8 @@ class StoreExamFormatRequest extends FormRequest
     public function rules()
     {
         return [
-          'format.*' => 'required',
-          'timeout' => 'required|numeric'
+//          'format' => 'required',
+//          'timeout' => 'required'
         ];
     }
 }

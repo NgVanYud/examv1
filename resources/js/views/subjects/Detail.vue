@@ -10,11 +10,14 @@
       <el-tab-pane label="Nội Dung Môn Học" name="content" v-if="includeRoles(userRoles, [allRoles['exams_maker']], false)">
         <subject-content-tab></subject-content-tab>
       </el-tab-pane>
-      <el-tab-pane label="Danh Sách Câu Hỏi" name="questions" v-if="includeRoles(userRoles, [allRoles['exams_maker']], false)">
-        Câu H
+      <el-tab-pane label="Định Dạng Đề Thi" name="exam-format" v-if="includeRoles(userRoles, [allRoles['exams_maker']], false)">
+        <exam-format-tab></exam-format-tab>
       </el-tab-pane>
-      <el-tab-pane label="Định Dạng Đề Thi" name="format-exam" v-if="includeRoles(userRoles, [allRoles['exams_maker']], false)">
-        Đề
+      <el-tab-pane label="Danh Sách Câu Hỏi" name="questions" v-if="includeRoles(userRoles, [allRoles['exams_maker']], false)">
+        <question-tab></question-tab>
+      </el-tab-pane>
+      <el-tab-pane label="Tạo Câu Hỏi" name="question_creation" v-if="includeRoles(userRoles, [allRoles['exams_maker']], false)">
+        <question-creation-tab></question-creation-tab>
       </el-tab-pane>
       <el-tab-pane label="Task" name="task">Task</el-tab-pane>
     </el-tabs>
@@ -32,6 +35,9 @@ import RoleResource from '@/api/role';
 import SubjectContentTab from './components/tabs/SubjectContent';
 import EditTab from './components/tabs/Edit';
 import TeacherTab from './components/tabs/Teacher';
+import QuestionTab from './components/tabs/Question';
+import ExamFormatTab from './components/tabs/ExamFormat';
+import QuestionCreationTab from './components/tabs/QuestionCreation';
 
 import { ALL_ROLES } from '@/utils/auth';
 import { includes as includeRoles } from '@/utils/role';
@@ -49,6 +55,9 @@ export default {
     EditTab,
     TeacherTab,
     SubjectContentTab,
+    QuestionTab,
+    ExamFormatTab,
+    QuestionCreationTab,
   },
   filters: {
     roles(roles) {

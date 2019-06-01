@@ -26,6 +26,7 @@ Route::group([
       Route::post('subjects/{subjectId}/formats', 'ExamFormatController@store');
       Route::post('subjects/{subjectId}/formats/{formatId}/update', 'ExamFormatController@update');
       Route::get('subjects/{subjectId}/formats', 'ExamFormatController@index');
+      Route::get('subjects/{subjectId}/format', 'SubjectController@getExamFormat');
       Route::get('subjects/{subjectId}/formats/{formatId}', 'ExamFormatController@show');
   });
 

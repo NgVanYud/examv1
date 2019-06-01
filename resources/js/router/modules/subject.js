@@ -39,6 +39,13 @@ const subjectRoutes = {
       meta: { title: 'Nội dung môn học', noCache: true },
       hidden: true,
     },
+    {
+      path: 'question/edit/:id',
+      name: 'QuestionEdit',
+      component: () => import('@/views/questions/Edit'),
+      meta: { title: 'Chỉnh sửa câu hỏi', noCache: true },
+      hidden: true,
+    },
   ],
 };
 

@@ -71,7 +71,7 @@ class ExamFormatController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreExamFormatRequest $request, $subjectId)
+    public function store(Request $request, $subjectId)
     {
       $formatData = [
         'format' => $request['format'],
