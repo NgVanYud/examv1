@@ -16,9 +16,8 @@
 //});
 //Route::get('password/email/{email}', [Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email.get');
 
-Route::post('password/reset', 'API\UserController::class@resetPwd')->name('password.reset');
+Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.reset');
 Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset.form');
-
 
 Route::group(['middleware' => 'web'], function () {
   Route::get('/{any}', 'LaravueController@index')->where('any', '.*');
