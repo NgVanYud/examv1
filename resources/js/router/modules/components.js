@@ -13,12 +13,12 @@ const componentRoutes = {
     // permissions: ['view menu components'],
   },
   children: [
-    {
-      path: 'tinymce',
-      component: () => import('@/views/components-demo/Tinymce'),
-      name: 'TinymceDemo',
-      meta: { title: 'tinymce' },
-    },
+    // {
+    //   path: 'tinymce',
+    //   component: () => import('@/views/components-demo/Tinymce'),
+    //   name: 'TinymceDemo',
+    //   meta: { title: 'tinymce' },
+    // },
     {
       path: 'markdown',
       component: () => import('@/views/components-demo/Markdown'),

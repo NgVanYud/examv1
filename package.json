@@ -38,6 +38,17 @@
     "webpack-bundle-analyzer": "^3.3.2"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-alignment": "^11.1.0",
+    "@ckeditor/ckeditor5-basic-styles": "^11.1.0",
+    "@ckeditor/ckeditor5-build-classic": "^12.1.0",
+    "@ckeditor/ckeditor5-build-decoupled-document": "^12.1.0",
+    "@ckeditor/ckeditor5-easy-image": "^11.0.1",
+    "@ckeditor/ckeditor5-essentials": "^11.0.1",
+    "@ckeditor/ckeditor5-heading": "^11.0.1",
+    "@ckeditor/ckeditor5-link": "^11.0.1",
+    "@ckeditor/ckeditor5-list": "^12.0.1",
+    "@ckeditor/ckeditor5-paragraph": "^11.0.1",
+    "@ckeditor/ckeditor5-vue": "^1.0.0-beta.2",
     "camelcase": "^5.3.1",
     "clipboard": "^2.0.4",
     "driver.js": "^0.9.5",

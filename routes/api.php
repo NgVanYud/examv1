@@ -28,4 +28,5 @@ Route::group([
     include __DIR__.'/modules/questions.php';
     include __DIR__.'/modules/roles.php';
     include __DIR__.'/modules/chapters.php';
+    include __DIR__.'/modules/files.php';
 });
