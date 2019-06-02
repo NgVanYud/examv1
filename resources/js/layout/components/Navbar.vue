@@ -1,25 +1,25 @@
 <template>
-  <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+  <div class="navbar d-flex">
+    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="" @toggleClick="toggleSideBar" />
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+    <breadcrumb id="breadcrumb-container" class="" />
 
-    <div class="right-menu">
+    <div class="right-menu ml-auto">
       <template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
-        <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
-          <size-select id="size-select" class="right-menu-item hover-effect" />
-        </el-tooltip>
+<!--        <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">-->
+<!--          <size-select id="size-select" class="right-menu-item hover-effect" />-->
+<!--        </el-tooltip>-->
 
         <lang-select class="right-menu-item hover-effect" />
 
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
-        <div class="avatar-wrapper">
+        <div class="avatar-wrapper d-flex align-items-center">
           <img :src="avatar+'/128'" class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
@@ -48,7 +48,7 @@ import { mapGetters } from 'vuex';
 import Breadcrumb from '@/components/Breadcrumb';
 import Hamburger from '@/components/Hamburger';
 import Screenfull from '@/components/Screenfull';
-import SizeSelect from '@/components/SizeSelect';
+// import SizeSelect from '@/components/SizeSelect';
 import LangSelect from '@/components/LangSelect';
 import Search from '@/components/HeaderSearch';
 
@@ -57,7 +57,7 @@ export default {
     Breadcrumb,
     Hamburger,
     Screenfull,
-    SizeSelect,
+    // SizeSelect,
     LangSelect,
     Search,
   },
@@ -88,6 +88,7 @@ export default {
   position: relative;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  justify-content: normal;
 
   .hamburger-container {
     line-height: 46px;
@@ -114,7 +115,6 @@ export default {
   .right-menu {
     float: right;
     height: 100%;
-    line-height: 50px;
 
     &:focus {
       outline: none;
@@ -139,16 +139,13 @@ export default {
     }
 
     .avatar-container {
-      margin-right: 30px;
-
       .avatar-wrapper {
-        margin-top: 5px;
         position: relative;
 
         .user-avatar {
           cursor: pointer;
-          width: 40px;
-          height: 40px;
+          width: 35px;
+          height: 35px;
           border-radius: 4px;
         }
 

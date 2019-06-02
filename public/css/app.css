@@ -10558,3 +10558,7 @@ aside a:hover {
   padding: 6px 10px;
   line-height: 23px;
 }
+
+.title-partial {
+  margin-bottom: 15px;
+}

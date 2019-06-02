@@ -2,7 +2,7 @@
   <div>
     <div class="mb-4">
       <div>
-        <h5>Danh sách giáo viên ra đề môn học <b>{{ this.subject.name }}</b></h5>
+        <h6 class="title-partial">Danh sách giáo viên ra đề môn học <strong>{{ this.subject.name }}</strong></h6>
       </div>
       <div class="filter-container">
         <div class="d-flex flex-row-reverse">
@@ -77,7 +77,7 @@
 
     <div>
       <div>
-        <h5>Danh sách tài khoản người dùng giáo viên</h5>
+        <h6 class="title-partial">Danh sách tài khoản người dùng giáo viên</h6>
       </div>
       <el-table v-loading="loading" :data="allExamMakers" border fit highlight-current-row style="width: 100%" size="mini">
         <el-table-column

@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <svg-icon :icon-class="isFullscreen?'exit-fullscreen':'fullscreen'" @click="click" />
+  <div class="">
+    <div class="h-100 d-flex align-items-center">
+      <svg-icon :icon-class="isFullscreen?'exit-fullscreen':'fullscreen'" @click="click" />
+    </div>
   </div>
 </template>
 

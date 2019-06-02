@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div>
+      <h6 class="title-partial">Chỉnh Sửa Thông Tin Môn Học <strong>{{ subject.name }}</strong></h6>
+    </div>
     <el-form ref="subjectForm" :model="subject" :rules="rules" label-width="120px" size="mini">
       <el-form-item label="Mã Số" prop="code">
         <el-input v-model="subject.code"/>
