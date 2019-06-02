@@ -2,7 +2,7 @@
 
 Route::group([
   'namespace' => 'API',
-  'middleware' => 'jwt.auth',
+  'middleware' => ['jwt.auth'],
 ], function () {
-  Route::resource('questions', 'QuestionController');
+//  Route::resource('questions', 'QuestionController');
 });

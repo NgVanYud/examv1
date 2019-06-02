@@ -1,6 +1,9 @@
 <template>
   <div class="row">
     <div class="col-md-5">
+      <div>
+        <h6 class="title-partial">Thông Tin Cơ Bản</h6>
+      </div>
       <table class="table table-bordered table-sm">
         <tbody>
         <tr>
@@ -37,6 +40,9 @@
       </div>
     </div>
     <div class="col-md-7">
+      <div>
+        <h6 class="title-partial">Thông Tin Môn Số Lượng Câu Hỏi</h6>
+      </div>
       <el-table v-loading="loading" :data="allChapters" border fit highlight-current-row style="width: 100%" size="mini">
         <!--              <el-table-column-->
         <!--                v-if="includeRoles(this.userRoles, [allRoles.admin], false)"-->

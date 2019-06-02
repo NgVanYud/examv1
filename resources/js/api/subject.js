@@ -95,6 +95,31 @@ class SubjectResource extends Resource {
       data: data,
     });
   }
+  activeQuestion(subjectId, questionId) {
+    return request({
+      url: '/' + this.uri + '/' + subjectId + '/' + 'questions' + '/' + questionId + '/active',
+      method: 'post',
+    });
+  }
+  deactiveQuestion(subjectId, questionId) {
+    return request({
+      url: '/' + this.uri + '/' + subjectId + '/' + 'questions' + '/' + questionId + '/deactive',
+      method: 'post',
+    });
+  }
+  showQuestion(subjectId, questionId) {
+    return request({
+      url: '/' + this.uri + '/' + subjectId + '/' + 'questions' + '/' + questionId + '/show',
+      method: 'get',
+    });
+  }
+  updateQuestion(data, subjectId, chapterId, questionId) {
+    return request({
+      url: '/' + this.uri + '/' + subjectId + '/chapters/' + chapterId + '/questions/' + questionId + '/update',
+      method: 'post',
+      data: data,
+    });
+  }
 }
 
 export { SubjectResource as default };

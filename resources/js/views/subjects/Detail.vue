@@ -88,9 +88,6 @@ export default {
       allRoles: ALL_ROLES,
       // Edit
       item: {},
-
-      // Chapter
-
     };
   },
   computed: {
@@ -108,7 +105,7 @@ export default {
       }
     },
     changeTab(tab) {
-      console.log(tab.name);
+      // console.log(tab.name);
     },
     itemDetail(idKey) {
       // this.loading = true;

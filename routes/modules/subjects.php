@@ -21,6 +21,9 @@ Route::group([
       Route::post('subjects/{subjectId}/chapters/{chapterId}/questions', 'SubjectController@storeQuestion');
       Route::post('subjects/{subjectId}/chapters/{chapterId}/questions/{questionId}/update', 'SubjectController@updateQuestion');
       Route::get('subjects/{subjectId}/questions', 'SubjectController@getQuestions');
+      Route::post('subjects/{subjectId}/questions/{questionId}/deactive', 'QuestionController@deactive');
+      Route::post('subjects/{subjectId}/questions/{questionId}/active', 'QuestionController@active');
+      Route::get('subjects/{subjectId}/questions/{questionId}/show', 'QuestionController@show');
 
       //Format
       Route::post('subjects/{subjectId}/formats', 'ExamFormatController@store');

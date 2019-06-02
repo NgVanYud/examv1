@@ -13,6 +13,7 @@ use App\Exceptions\GeneralException;
 use App\Http\Requests\StoreChapterRequest;
 use App\Http\Resources\Question\QuestionCollection;
 use App\Models\Option;
+use App\Models\Question;
 use App\Models\Subject;
 use App\Repositories\BaseRepository;
 use Illuminate\Support\Facades\DB;
@@ -134,7 +135,8 @@ class SubjectRepository extends BaseRepository
         $question = $this->questionRepository->create([
           'content' => $data['content'],
           'subject_id' => $data['subject_id'],
-          'chapter_id' => $data['chapter_id']
+          'chapter_id' => $data['chapter_id'],
+          'is_actived' => $data['is_actived'] ? Question::ACTIVE_CODE : Question::INACTIVE_CODE,
         ]);
         $options = $data['options'];
         $optionCounter = count($options);
@@ -157,28 +159,21 @@ class SubjectRepository extends BaseRepository
     public function updateQuestion($questionId, $data) {
       return DB::transaction( function () use ($questionId, $data) {
         $questionData = [
-          'content' => $data['content']
+          'content' => $data['content'],
+          'is_actived' => $data['is_actived'],
         ];
         $question = $this->questionRepository->updateById($questionId, $questionData);
         $options = $question->options;
         //Check if the id of answer exists into the options array
-        if($options->contains('id', $data['answer'])) {
-          $optionsData = $data['options'];
-          foreach ($options as $key => $option) {
-            $option->update([
-              'content' => $optionsData[$key],
-              'question_id' => $questionId,
-              'is_correct' => $option->id == $data['answer'] ? Option::CODE_CORRECT : Option::CODE_INCORRECT
-            ]);
-          }
-          return $question;
-        } else {
-          throw new GeneralException(
-            __('exceptions.invalid_data'),
-            422
-          );
+        $optionsData = $data['options'];
+        foreach ($options as $key => $option) {
+          $option->update([
+            'content' => $optionsData[$key],
+            'question_id' => $questionId,
+            'is_correct' => $key == $data['answer'] ? Option::CODE_CORRECT : Option::CODE_INCORRECT
+          ]);
         }
-
+        return $question;
       });
       throw new GeneralException(
         __('exceptions.general'),
@@ -187,7 +182,7 @@ class SubjectRepository extends BaseRepository
     }
 
     public function getQuestions($subjectId, $conditions) {
-      $chapterId = $conditions['chapter'] ? $conditions['chapter'] : '';
+      $chapterId = isset($conditions['chapter']) ? $conditions['chapter'] : '';
       $orderBy = $conditions['order_by'] ? $conditions['order_by'] : 'id';
       $order = $conditions['order'] ? $conditions['order'] : 'asc';
       $perPage = $conditions['per_page'] ? $conditions['per_page'] : 10;

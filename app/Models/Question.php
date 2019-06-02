@@ -13,7 +13,7 @@ class Question extends Model
   const ACTIVE_CODE = 1;
   const INACTIVE_CODE = 0;
 
-  protected $fillable = [ 'content', 'is_actived', 'chapter_id', 'subject_id' ];
+  protected $fillable = [ 'id', 'content', 'is_actived', 'chapter_id', 'subject_id' ];
 
   protected $casts = [
     'is_actived' => 'boolean'
