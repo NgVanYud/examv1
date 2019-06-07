@@ -26,12 +26,12 @@ class UpdateTermRequest extends FormRequest
         return [
             'name' => 'required|min:5|max:200|unique:terms,name,'.$this->term->id,
 //            'begin' => 'required|date|after:tomorrow',
-            'begin' => 'required|date_format:Y-m-d',
+            'begin' => 'required',
 //            'end' => 'required|date|after:begin',
-            'end' => 'required|date_format:Y-m-d|after:begin',
+            'end' => 'required|after:begin',
             'code' => 'required|min:3|max:15|unique:terms,code,'.$this->term->id,
-            'active' => 'boolean',
-            'subjects' => ''
+//            'active' => 'boolean',
+            'subjects' => 'required'
         ];
     }
 }

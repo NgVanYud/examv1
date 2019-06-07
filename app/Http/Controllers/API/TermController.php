@@ -40,9 +40,9 @@ class TermController extends Controller
         $conditions = [
             'orderBy' => ($request->order_by ? $request->order_by : 'name'),
             'sortDesc' => ($request->sort_desc == 'true' ? 'desc' : 'asc'),
-            'perPage' => ($request->per_page && intval($request->per_page) > 0 ? $request->per_page: null)
+            'perPage' => ($request->limit && intval($request->limit) > 0 ? $request->limit: null)
         ];
-        return new TermCollection($this->termRepository
+        return TermResouce::collection($this->termRepository
             ->orderBy($conditions['orderBy'], $conditions['sortDesc'])
             ->paginate($conditions['perPage'])
         );
@@ -57,7 +57,7 @@ class TermController extends Controller
      */
     public function store(StoreTermRequest $request)
     {
-        return $this->termRepository->create($request->all());
+        return new TermResouce($this->termRepository->create($request->all()));
     }
 
     /**

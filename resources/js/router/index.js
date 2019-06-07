@@ -24,6 +24,7 @@ import excelRoutes from './modules/excel';
 import permissionRoutes from './modules/permission';
 import userRoutes from './modules/user';
 import subjectRouters from './modules/subject';
+import termRouters from './modules/term';
 
 // import ALL_ROLES from '@/utils/auth';
 
@@ -127,6 +128,7 @@ export const constantRoutes = [
 export const asyncRoutes = [
   userRoutes,
   subjectRouters,
+  termRouters,
   permissionRoutes,
   componentRoutes,
   chartsRoutes,
