@@ -1,4 +1,4 @@
-// import request from '@/utils/request';
+import request from '@/utils/request';
 import Resource from '@/api/resource';
 
 class TermResource extends Resource {
@@ -22,6 +22,22 @@ class TermResource extends Resource {
   //     withCredentials: false,
   //   });
   // }
+
+  subjectTermDetail(query) {
+    return request({
+      url: '/subject-term' + '/' + 'detail',
+      method: 'get',
+      params: query,
+    });
+  }
+
+  storeSetting(data, termId, subjectId) {
+    return request({
+      url: '/subject-term' + '/' + termId + '/' + subjectId + '/setting',
+      method: 'post',
+      data,
+    });
+  }
 }
 
 export { TermResource as default };

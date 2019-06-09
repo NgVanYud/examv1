@@ -1,33 +1,20 @@
 <template>
   <div class="app-container">
-    <h6 class="title-partial">Thiết Lập Thông Tin Môn Thi</h6>
-    <el-form ref="editTermForm" :model="subjectTerm" :rules="rules" label-width="120px" size="mini">
-      <el-form-item label="Mã Số" prop="code">
-        <el-input v-model="term.code"/>
+    <h6 class="title-partial">Thiết Lập Thông Tin Môn Thi "{{ subject.name }}" Trong Đợt Thi</h6>
+    <el-form ref="editTermForm" :model="subjectTerm" :rules="rules" label-width="160px" size="mini">
+      <el-form-item label="Số Lượng Đề Thi" prop="original_exam_num">
+        <el-input type="number" v-model="subjectTerm.original_exam_num" v-model.number="subjectTerm.original_exam_num" :min="1" :max="10"/>
       </el-form-item>
-      <el-form-item label="Tên" prop="name">
-        <el-input v-model="term.name"/>
-      </el-form-item>
-      <el-form-item label="Thời Gian">
-        <el-col :span="11" prop="begin">
-          <el-form-item prop="begin">
-            <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="Bắt đầu" v-model="term.begin" style="width: 100%;"></el-date-picker>
-          </el-form-item>
-        </el-col>
-        <el-col class="line text-center" :span="2">-</el-col>
-        <el-col :span="11">
-          <el-form-item prop="end">
-            <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="Kết thúc" v-model="term.end" style="width: 100%;"></el-date-picker>
-          </el-form-item>
-        </el-col>
-      </el-form-item>
-      <el-form-item label="Môn Học" prop="subjects">
-        <el-select v-model="term.subjects" placeholder="Chọn môn học" multiple>
-          <el-option v-for="item in subjects" :label="item.name" :value="item.id" :key="item.id"/>
+      <el-form-item label="Danh Sách Cán Bộ Coi Thi" prop="protors">
+        <el-select v-model="subjectTerm.protors" placeholder="Chọn cán bộ coi thi" multiple>
+          <el-option v-for="item in protors" :label="item.username + ' - ' + item.full_name" :value="item.id" :key="item.id"/>
         </el-select>
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="updateTerm('editTermForm')">Cập Nhật</el-button>
+      <el-form-item label="Danh Sách Sinh Viên">
+        <upload-excel :load-fullfill="loadedStudents"></upload-excel>
+      </el-form-item>
+        <el-form-item>
+        <el-button type="primary" @click="storeSettingTerm('editTermForm')">Cập Nhật</el-button>
         <el-button @click="resetForm('editTermForm')">Reset</el-button>
       </el-form-item>
     </el-form>
@@ -36,25 +23,49 @@
 
 <script>
 import SubjectResource from '@/api/subject';
+import UserResource from '@/api/user';
 import TermResource from '@/api/term';
+import UploadExcel from '@/views/excel/UploadExcel';
 // import waves from '@/directive/waves'; // Waves directive
 // import permission from '@/directive/permission'; // Waves directive
 // import checkPermission from '@/utils/permission'; // Permission checking
-// import { ALL_ROLES } from '@/utils/auth';
+import { ALL_ROLES } from '@/utils/auth';
 // import { includes as includeRoles } from '@/utils/role';
 
-// import { getNotification } from '@/utils/notification';
+import { getNotification } from '@/utils/notification';
 
 const subjectResource = new SubjectResource();
 const termResource = new TermResource();
+const userResource = new UserResource();
 export default {
   name: 'SettingSubject',
+  components: {
+    UploadExcel,
+  },
   data() {
     return {
       term: {},
       subject: {},
-      subjectTerm: {},
-    }
+      subjectTerm: {
+        original_exam_num: '',
+        protors: [],
+        students: [],
+      },
+      protors: [],
+      rules: {
+        original_exam_num: [
+          { required: true, message: 'Nhập số đề thi', trigger: ['blur', 'change'] },
+          { type: 'number', message: 'Giá trị số đề thi phải là số từ 1 đến 10', trigger: ['blur', 'change'] },
+        ],
+        protors: [
+          { required: true, message: 'Chọn cán bộ coi thi', trigger: ['blur', 'change'] },
+          // { type: 'number', message: 'Giá trị số đề thi phải là số từ 1 đến 10', trigger: ['blur', 'change'] },
+        ],
+      },
+      studentAccounts: [],
+      autoWidth: true,
+      bookType: 'xlsx',
+    };
   },
   methods: {
     termDetail(termId) {
@@ -68,17 +79,98 @@ export default {
             element['index'] = index + 1;
           });
         }
+        const subjectId = this.$route.params.subjectId;
+        this.subjectDetail(subjectId);
+        this.subjectTermDetail(this.term.id, subjectId);
       }).catch(error => {
         console.log(error);
       }).finally(() => {
         this.loading = false;
       });
     },
+    subjectDetail(idKey) {
+      subjectResource.getById(idKey).then(response => {
+        const { data } = response;
+        this.subject = data;
+      }).catch(() => {
+
+      }).finally(() => {
+      });
+    },
+    subjectTermDetail(termId, subjectId) {
+      termResource.subjectTermDetail({ termId: termId, subjectId: subjectId }).then(response => {
+        const { data } = response;
+        if (data.length > 0) {
+          this.subjectTerm.original_exam_num = data[0].original_exam_num;
+        }
+      }).catch(error => {
+        console.log(error);
+      });
+    },
+    loadedProtors(data) {
+      this.subjectTerm.protors = data;
+    },
+    loadedStudents(data) {
+      this.subjectTerm.students = data;
+    },
+    storeSettingTerm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          termResource.storeSetting(this.subjectTerm, this.term.id, this.$route.params.subjectId).then(response => {
+            if (response.error) {
+              getNotification('Thiết lập', 'thông tin môn thi', 'error');
+            } else {
+              this.studentAccounts = response;
+              console.log('thiet lap xong: ', response);
+              this.handleDownload();
+              getNotification('Thiết lập', 'thông tin môn thi', 'success');
+            }
+          }).catch(error => {
+            console.log(error);
+          });
+        } else {
+          getNotification('Thiết lập', 'thông tin môn thi', 'error', 'Do dữ liêu không hợp lệ');
+        }
+      });
+    },
+    getAllProtors() {
+      // const subjectExamMakerUuids = this.subjectExamMakers.map(examMaker => examMaker.uuid);
+      // this.query.except_users = subjectExamMakerUuids;
+      // this.query.role_name = this.allRoles['exams_maker'];
+      userResource.getByRoleName({ role_name: ALL_ROLES['protor'], limit: 200 }).then(response => {
+        const { data } = response;
+        this.protors = data;
+      }).catch(error => {
+        console.log(error);
+      }).finally(() => {
+      });
+    },
+    handleDownload() {
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['Mã Số', 'Họ', 'Tên', 'Tài Khoản', 'Mât Khẩu'];
+        const filterVal = ['code', 'last_name', 'first_name', 'username', 'plain_pwd'];
+        const list = this.studentAccounts;
+        const data = this.formatJson(filterVal, list);
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: 'ds_account_' + this.term.code,
+          autoWidth: this.autoWidth,
+          bookType: this.bookType,
+        });
+      });
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        return v[j];
+      }));
+    },
   },
   created() {
-    const termId = this.$route.params.id;
+    const termId = this.$route.params.termId;
     this.termDetail(termId);
-  }
+    this.getAllProtors();
+  },
 };
 </script>
 

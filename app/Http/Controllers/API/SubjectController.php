@@ -236,4 +236,8 @@ class SubjectController extends Controller
       $subject = $this->subjectRepository->getById($subjectId);
       return $subject->format;
     }
+
+    public function getById(Request $request, $subjectId) {
+      return new SubjectResource($this->subjectRepository->getById($subjectId));
+    }
 }

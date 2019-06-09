@@ -134,7 +134,7 @@ class UserRepository extends BaseRepository
             $user = parent::create([
                 'first_name' => $data['first_name'],
                 'last_name' => $data['last_name'],
-                'email' => $data['email'],
+                'email' => isset($data['email']) ? $data['email']:'',
                 'code' => $data['code'],
                 'username' => $data['username'],
                 'password' => Hash::make($pwd),
@@ -401,14 +401,13 @@ class UserRepository extends BaseRepository
    * @param Role $role
    * @param $data (array of data users)
    */
-    public function storeMulti($role, $data) {
-      return DB::transaction(function() use ($role, $data) {
+    public function storeMulti($data, $knowPwd = false) {
+      return DB::transaction(function() use ($data, $knowPwd) {
         $users = [];
         foreach ($data as $user) {
-          \Log::info(print_r($user, true));
-//          $newUser = $this->create($user);
+          $newUser = $this->create($user, $knowPwd);
 //          $newUser->assignRole($role);
-//          $users[] = $newUser;
+          $users[] = $newUser;
         }
         return $users;
       });

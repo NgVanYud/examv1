@@ -2,8 +2,8 @@
   <div>
     <input ref="excel-upload-input" class="excel-upload-input" type="file" accept=".xlsx, .xls" @change="handleClick">
     <div class="drop" @drop="handleDrop" @dragover="handleDragover" @dragenter="handleDragover">
-      Drop excel file here or
-      <el-button :loading="loading" style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">Browse</el-button>
+      Kéo Thả File hoặc
+      <el-button :loading="loading" style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">Tải File</el-button>
     </div>
   </div>
 </template>
@@ -130,8 +130,8 @@ export default {
 .drop{
   border: 2px dashed #bbb;
   width: 600px;
-  height: 160px;
-  line-height: 160px;
+  height: 80px;
+  line-height: 80px;
   margin: 0 auto;
   font-size: 24px;
   border-radius: 5px;

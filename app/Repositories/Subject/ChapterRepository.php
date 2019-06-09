@@ -81,4 +81,10 @@ class ChapterRepository extends BaseRepository
     }
     return false;
   }
+
+  public function getRandomQuestions($chapterId, $num) {
+    $chapter = $this->getById($chapterId);
+    $questions = $chapter->questions()->inRandomOrder()->take($num)->get();
+    return $questions;
+  }
 }

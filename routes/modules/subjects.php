@@ -42,6 +42,8 @@ Route::group([
     Route::post('subjects/delete-multi', 'SubjectController@destroyMulti');
     Route::resource('subjects', 'SubjectController')->only([ 'store', 'destroy', 'update' ]);
   });
+
+  Route::get('subjects/{subjectId}/get-by-id', 'SubjectController@getById');
   Route::resource('subjects', 'SubjectController')->only([ 'index', 'show' ])->middleware('role:'.config('access.roles_list.admin').'|'.config('access.roles_list.exams_maker'));
 
     Route::get('test', function() {

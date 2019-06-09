@@ -27,7 +27,8 @@ class UserCreated
     public function handle(\App\Events\UserCreated $event)
     {
       $user = $event->user;
-      $user->notify(new UserNeedsPasswordReset($user->createPwdResetToken(), $user));
-
+      if(!$user->hasRole(config('access.roles_list.student'))) {
+        $user->notify(new UserNeedsPasswordReset($user->createPwdResetToken(), $user));
+      }
     }
 }

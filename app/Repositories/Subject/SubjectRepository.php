@@ -35,7 +35,19 @@ class SubjectRepository extends BaseRepository
    *
    * param [ mixed $args [, $... ]]
    * @link https://php.net/manual/en/language.oop5.decon.php
+   *
    */
+
+  /**
+   * Specify Model class name.
+   *
+   * @return mixed
+   */
+  public function model()
+  {
+    return Subject::class;
+  }
+
   public function __construct(
     ChapterRepository $chapterRepository,
     QuestionRepository $questionRepository,
@@ -45,17 +57,6 @@ class SubjectRepository extends BaseRepository
     $this->questionRepository = $questionRepository;
     $this->optionRepository = $optionRepository;
   }
-
-
-  /**
-     * Specify Model class name.
-     *
-     * @return mixed
-     */
-    public function model()
-    {
-        return Subject::class;
-    }
 
   /**
    * Get the specified model record form the database by slug

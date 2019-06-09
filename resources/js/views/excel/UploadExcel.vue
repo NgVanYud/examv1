@@ -19,6 +19,15 @@ export default {
       tableHeader: [],
     };
   },
+  props: {
+    allData: {
+      required: false,
+    },
+    loadFullfill: {
+      type: Function,
+      required: false,
+    },
+  },
   methods: {
     beforeUpload(file) {
       const isLt1M = file.size / 1024 / 1024 < 1;
@@ -28,7 +37,7 @@ export default {
       }
 
       this.$message({
-        message: 'Please do not upload files larger than 1m in size.',
+        message: 'Kích thước của file upload không vượt quá 1MB.',
         type: 'warning',
       });
       return false;
@@ -36,6 +45,9 @@ export default {
     handleSuccess({ results, header }) {
       this.tableData = results;
       this.tableHeader = header;
+      if (this.loadFullfill) {
+        this.loadFullfill(results);
+      }
     },
   },
 };
