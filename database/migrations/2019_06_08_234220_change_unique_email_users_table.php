@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateQuizsTable extends Migration
+class ChangeUniqueEmailUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateQuizsTable extends Migration
      */
     public function up()
     {
-        Schema::create('quizs', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('code', 25);
-            $table->string('name');
-            $table->softDeletes();
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+          $table->dropUnique('users_email_unique');
         });
     }
 
@@ -29,6 +25,8 @@ class CreateQuizsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('quizs');
+      Schema::table('users', function (Blueprint $table) {
+        $table->unique('email');
+      });
     }
 }

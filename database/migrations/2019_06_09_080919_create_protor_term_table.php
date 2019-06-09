@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateQuizsTable extends Migration
+class CreateProtorTermTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateQuizsTable extends Migration
      */
     public function up()
     {
-        Schema::create('quizs', function (Blueprint $table) {
+        Schema::create('protor_term', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('code', 25);
-            $table->string('name');
-            $table->softDeletes();
+            $table->integer('protor_id');
+            $table->integer('subject_term_id');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateQuizsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('quizs');
+        Schema::dropIfExists('protor_term');
     }
 }
