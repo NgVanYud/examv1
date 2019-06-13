@@ -17,6 +17,8 @@ class CreateSubjectTermTable extends Migration
             $table->increments('id');
             $table->integer('subject_id');
             $table->integer('term_id');
+            $table->tinyInteger('original_exam_num')->default(0);
+            $table->tinyInteger('progression')->default(0);
             $table->timestamps();
         });
     }

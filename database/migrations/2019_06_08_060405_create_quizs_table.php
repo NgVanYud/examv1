@@ -16,7 +16,9 @@ class CreateQuizsTable extends Migration
         Schema::create('quizs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code', 25);
-            $table->string('name');
+            $table->json('detail');
+            $table->integer('subject_term_id');
+            $table->tinyInteger('is_actived')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

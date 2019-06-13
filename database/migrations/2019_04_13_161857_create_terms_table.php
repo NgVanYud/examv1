@@ -20,7 +20,8 @@ class CreateTermsTable extends Migration
             $table->date('begin');
             $table->date('end');
             $table->uuid('uuid');
-            $table->tinyInteger('active')->default(0)->unsigned();
+            $table->tinyInteger('is_actived')->default(0)->unsigned();
+            $table->tinyInteger('is_done')->default(0)->unsigned();
             $table->softDeletes();
             $table->timestamps();
         });

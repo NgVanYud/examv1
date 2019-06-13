@@ -17,7 +17,7 @@ class CreateChaptersTable extends Migration
           $table->increments('id');
           $table->string('name');
           $table->integer('subject_id');
-          $table->tinyInteger('is_actived');
+          $table->tinyInteger('is_actived')->default(0);
           $table->string('slug');
           $table->timestamps();
           $table->softDeletes();

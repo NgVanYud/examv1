@@ -13,9 +13,9 @@ class CreateExamsMakerSubjectTable extends Migration
      */
     public function up()
     {
-        Schema::create('exams_maker_subject', function (Blueprint $table) {
+        Schema::create('quizs_maker_subject', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('exam_maker_id');
+            $table->integer('quizs_maker_id');
             $table->integer('subject_id');
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ class CreateExamsMakerSubjectTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exams_maker_subject');
+        Schema::dropIfExists('quizs_maker_subject');
     }
 }
