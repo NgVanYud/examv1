@@ -38,6 +38,10 @@ class TermResource extends Resource {
       data,
     });
   }
+
+  subjectForTerm() {
+
+  }
 }
 
 export { TermResource as default };

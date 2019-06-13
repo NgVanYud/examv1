@@ -83,6 +83,8 @@ class SubjectController extends Controller
 //          ->orWhere('description', 'like', "%{$keyword}%")
           ->orderBy($conditions['orderBy'], $conditions['order'])
           ->paginate($conditions['perPage']);
+      } else if ($user->hasRole(config('access.roles_list.curator'))) {
+        $subjects = $this->subjectRepository->get();
       }
       return new SubjectCollection($subjects);
 

@@ -25,6 +25,7 @@ import permissionRoutes from './modules/permission';
 import userRoutes from './modules/user';
 import subjectRouters from './modules/subject';
 import termRouters from './modules/term';
+import subjectTermRoutes from './modules/subject-term';
 
 // import ALL_ROLES from '@/utils/auth';
 
@@ -129,6 +130,7 @@ export const asyncRoutes = [
   userRoutes,
   subjectRouters,
   termRouters,
+  subjectTermRoutes,
   permissionRoutes,
   componentRoutes,
   chartsRoutes,

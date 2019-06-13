@@ -74,7 +74,7 @@ export default {
         const { data, subjects } = response;
         this.term = data;
         this.termSubjects = subjects;
-        if (this.termSubjects.length > 0) {
+        if (this.termSubjects && this.termSubjects.length > 0) {
           this.termSubjects.forEach((element, index) => {
             element['index'] = index + 1;
           });

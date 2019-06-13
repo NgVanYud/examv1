@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Exceptions\GeneralException;
 use App\Exports\UsersExport;
 use App\Http\Requests\StoreSettingSubjectTermRequest;
+use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\Term\SubjectTermResource;
+use App\Repositories\Subject\SubjectRepository;
 use App\Repositories\Term\SubjectTermRepository;
 use App\Repositories\Term\TermRepository;
 use Illuminate\Http\Request;
@@ -16,6 +19,8 @@ class SubjectTermController extends Controller
 {
     public $subjectTermRepository;
     public $termRepository;
+    public $protorTermRepository;
+    public $subjectRepository;
 
   /**
    * PHP 5 allows developers to declare constructor methods for classes.
@@ -28,10 +33,11 @@ class SubjectTermController extends Controller
    * param [ mixed $args [, $... ]]
    * @link https://php.net/manual/en/language.oop5.decon.php
    */
-  public function __construct(SubjectTermRepository $subjectTermRepository, TermRepository $termRepository)
+  public function __construct(SubjectTermRepository $subjectTermRepository, TermRepository $termRepository, SubjectRepository $subjectRepository)
   {
     $this->subjectTermRepository = $subjectTermRepository;
     $this->termRepository = $termRepository;
+    $this->subjectRepository = $subjectRepository;
   }
 
   public function index() {
@@ -54,6 +60,14 @@ class SubjectTermController extends Controller
 
   public function exportUserData($data, $filename = 'ds_user') {
     return Excel::download(new UsersExport($data), $filename.'.xlsx');
+  }
+
+  public function subjectsForTerm(Request $request) {
+    $currentUser = auth()->user();
+    $subjectTerms = $this->subjectTermRepository->getSubjectIdsForTermByUser(config('access.roles_list.protor'), $currentUser);
+    return SubjectTermResource::collection($subjectTerms);
+//    $subjects = $this->subjectRepository->whereIn('id', $subjectIds)->get();
+    return new SubjectResource($subjects);
   }
 
 }

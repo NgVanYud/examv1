@@ -82,6 +82,7 @@ export default {
     async getSubjectList() {
       this.loading = true;
       const { data } = await subjectResource.list({ limit: 200, page: 1 });
+      console.log('thong tin mon hoc: ', data);
       this.subjects = data;
     },
     termDetail(termId) {

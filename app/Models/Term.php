@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\Uuid;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -17,7 +18,7 @@ class Term extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'begin', 'end', 'uuid', 'code', 'active'
+        'name', 'begin', 'end', 'uuid', 'code', 'active', 'is_done'
     ];
 
 
@@ -30,6 +31,7 @@ class Term extends Model
      */
     protected $casts = [
         'active' => 'boolean',
+        'is_done' => 'boolean',
     ];
 
 
@@ -42,10 +44,27 @@ class Term extends Model
     }
 
     public function subjects() {
-        return $this->belongsToMany(Subject::class)->withPivot('original_exam_num', 'progression');
+        return $this->belongsToMany(Subject::class)->withPivot('original_exam_num', 'progression', 'id');
     }
 
     public function quizs() {
       return $this->belongsToMany(Quiz::class, 'quiz_term', 'subject_term_id', 'quiz_id');
     }
+
+  public function scopeActived(Builder $query) {
+    return $query->where('active', '=', 1);
+  }
+
+  public function scopeDeactived(Builder $query) {
+    return $query->where('active', '=', 0);
+  }
+
+  public function scopeDone(Builder $query): Builder
+  {
+    return $query->where('is_done', '=', 1);
+  }
+
+  public function scopeNotDone(Builder $query) {
+    return $query->where('is_done', '=', 0);
+  }
 }

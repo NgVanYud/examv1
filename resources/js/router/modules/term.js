@@ -9,7 +9,7 @@ const termRoutes = {
     title: 'Đợt Thi',
     icon: 'term',
     // permissions: ['view menu components'],
-    roles: [ALL_ROLES['admin'], ALL_ROLES['exams_maker']],
+    roles: [ALL_ROLES['curator']],
   },
   children: [
     {
@@ -44,6 +44,13 @@ const termRoutes = {
       component: () => import('@/views/terms/SettingSubject'),
       name: 'SettingTermSubject',
       meta: { title: 'Chỉnh sửa đợt thi', noCache: true },
+      hidden: true,
+    },
+    {
+      path: 'active/:termId/:subjectId',
+      component: () => import('@/views/terms/SettingSubject'),
+      name: 'ActiveTerm',
+      meta: { title: 'Kích hoạt đợt thi', noCache: true },
       hidden: true,
     },
   ],

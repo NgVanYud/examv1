@@ -4,6 +4,7 @@
 namespace App\Repositories\Term;
 //
 //
+use App\Exceptions\GeneralException;
 use App\Models\SubjectTerm;
 use App\Repositories\BaseRepository;
 use App\Repositories\Quiz\QuizRepository;
@@ -157,5 +158,29 @@ class SubjectTermRepository extends BaseRepository
       $newData[] = $currentItem;
     }
     return $newData;
+  }
+
+  /**
+   * Lấy mảng các SubjectTerm đang chờ để thi theo tài khoản người coi thi
+   * @param $role
+   * @param $user
+   * @return array
+   * @throws GeneralException
+   */
+  public function getSubjectIdsForTermByUser($role, $user) {
+    if($user->hasRole($role)) {
+      // danh sach subject_term ma nguoi dung trong thi
+      $subjectTermOfUser = $user->subjectTerms;
+      $subjectTerms = [];
+      foreach ($subjectTermOfUser as $subjectTerm) {
+        $tmpTerm = $this->termRepository->getById($subjectTerm->term_id);
+        if($tmpTerm && $tmpTerm->active && !$tmpTerm->is_done) {
+          $subjectTerms[] = $subjectTerm;
+        }
+      }
+      return $subjectTerms;
+    } else {
+      throw new GeneralException('You do not have permission', 401);
+    }
   }
 }

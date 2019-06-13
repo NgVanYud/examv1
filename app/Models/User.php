@@ -111,4 +111,11 @@ class User extends Authenticatable implements JWTSubject, CanResetPassword
     return $this->hasOne(StudentTerm::class, 'student_id');
   }
 
+  /**
+   * Giao vien coi thi
+   */
+  public function subjectTerms() {
+    return $this->belongsToMany(SubjectTerm::class, 'protor_term', 'protor_id', 'subject_term_id');
+  }
+
 }

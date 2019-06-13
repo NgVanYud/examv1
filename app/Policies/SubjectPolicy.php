@@ -26,8 +26,8 @@ class SubjectPolicy
   {
     $adminRole = $this->roleRepository->getByColumn(config('access.roles_list.admin'), 'name', ['id']);
     $examsMakerRole = $this->roleRepository->getByColumn(config('access.roles_list.exams_maker'), 'name', ['id']);
-
-    return $user->hasAnyRole([$adminRole->id, $examsMakerRole->id]);
+    $curatorRole = $this->roleRepository->getByColumn(config('access.roles_list.curator'), 'name', ['id']);
+    return $user->hasAnyRole([$adminRole->id, $examsMakerRole->id, $curatorRole->id]);
   }
 
 

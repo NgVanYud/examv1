@@ -26,19 +26,21 @@
                         </div>
                     @endif
 
-                    <form>
+                    <form method="POST" acction="{{ route('password.reset') }}">
+                        @csrf
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Email address</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            <label for="exampleInputEmail1">Email</label>
+                            <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" value="{{ $email }}" disabled>
+                        </div>
+                        <input type="hidden" value="{{ $token }}">
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Mật Khẩu Mới</label>
+                            <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Mật Khẩu">
+                            <small id="emailHelp" class="form-text text-muted">Password tối thiểu 8 ký tự</small>
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                            <label for="exampleInputPassword1">Xác Nhận Mật Khẩu Mới</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Xác nhận mật khẩu">
                         </div>
 
                         <button type="submit" class="btn btn-primary">Submit</button>
