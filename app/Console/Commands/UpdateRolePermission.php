@@ -60,7 +60,8 @@ class UpdateRolePermission extends Command
             if(!$role_model::whereName($name)->exists()){
                 $new = new $role_model;
                 $new->unguard();
-                $new->fill(['name' => $name]);
+                $guard_name = $name == config('access.roles_list.student') ? 'student' : 'manager';
+                $new->fill(['name' => $name, 'guard_name' => $guard_name]);
                 if($new->save()) $role_created++;
             }
         }
@@ -70,7 +71,8 @@ class UpdateRolePermission extends Command
             if(!$perm_model::whereName($permission)->exists()){
                 $new = new $perm_model();
                 $new->unguard();
-                $new->fill(['name' => mb_convert_case(str_replace('_', ' ', $permission), MB_CASE_TITLE, "UTF-8")]);
+                $guard_name = $role == 'student' ? 'student' : 'manager';
+                $new->fill(['name' => mb_convert_case(str_replace('_', ' ', $permission), MB_CASE_TITLE, "UTF-8"), 'guard_name' => $guard_name]);
                 if($new->save()) $perm_created++;
                 $role_name = config('access.roles_list.' . $role, '');
                 /** @var Role $role */
