@@ -7,6 +7,6 @@ $factory->define(\App\Models\Subject::class, function (Faker $faker) {
     return [
         'name' => $faker->unique()->text(40),
         'credit' => $faker->randomDigitNotNull,
-        'code' => strtoupper($faker->unique(true)->text(10)),
+        'code' => $faker->unique()->regexify('SJ[0-9]{6}'),
     ];
 });
