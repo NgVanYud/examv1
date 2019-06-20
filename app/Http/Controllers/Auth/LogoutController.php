@@ -33,6 +33,8 @@ class LogoutController extends Controller
     public function logout(Request $request)
     {
         auth('api')->logout();
+        auth('manager')->logout();
+        auth('student')->logout();
 
         return new \App\Responses\JsonResponse(__('messages.logout.success'),[], []);
     }

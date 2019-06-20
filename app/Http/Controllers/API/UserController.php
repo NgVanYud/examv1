@@ -5,7 +5,12 @@ namespace App\Http\Controllers\API;
 use App\Exceptions\GeneralException;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\User\ManagerResource;
+use App\Http\Resources\User\StudentResource;
 use App\Http\Resources\User\UserCollection;
+use App\Models\Manager;
+use App\Models\Student;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use phpDocumentor\Reflection\Types\Boolean;
 use Validator;
@@ -18,96 +23,100 @@ use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-    public $userRepository;
-    public $roleRepository;
+  public $userRepository;
+  public $roleRepository;
 
-    /**
-     * PHP 5 allows developers to declare constructor methods for classes.
-     * Classes which have a constructor method call this method on each newly-created object,
-     * so it is suitable for any initialization that the object may need before it is used.
-     *
-     * Note: Parent constructors are not called implicitly if the child class defines a constructor.
-     * In order to run a parent constructor, a call to parent::__construct() within the child constructor is required.
-     *
-     * param [ mixed $args [, $... ]]
-     * @link https://php.net/manual/en/language.oop5.decon.php
-     */
-    public function __construct(UserRepository $userRepository, RoleRepository $roleRepository)
-    {
-        $this->userRepository = $userRepository;
-        $this->roleRepository = $roleRepository;
-    }
+  /**
+   * PHP 5 allows developers to declare constructor methods for classes.
+   * Classes which have a constructor method call this method on each newly-created object,
+   * so it is suitable for any initialization that the object may need before it is used.
+   *
+   * Note: Parent constructors are not called implicitly if the child class defines a constructor.
+   * In order to run a parent constructor, a call to parent::__construct() within the child constructor is required.
+   *
+   * param [ mixed $args [, $... ]]
+   * @link https://php.net/manual/en/language.oop5.decon.php
+   */
+  public function __construct(UserRepository $userRepository, RoleRepository $roleRepository)
+  {
+    $this->userRepository = $userRepository;
+    $this->roleRepository = $roleRepository;
+  }
 
-    public function me()
-    {
-        return new UserResource(auth()->user());
-    }
+  public function me()
+  {
+    $user = auth()->user();
+    return new UserResource($user);
+  }
 
-    public function index(Request $request) {
-      $this->authorize('viewAll', User::class);
-      $conditions = [
-        'orderBy' => ($request->order_by ? $request->order_by : 'username'),
-        'order' => ($request->order && in_array($request->order, [ 'desc', 'asc' ]) ? $request->order : 'asc'),
-        'perPage' => ($request->limit && intval($request->limit) > 0 ? $request->limit: 10),
-        'search' => ($request->search ? $request->search: ''),
-        'roles' => ($request->roles ? $request->roles: ''),
-      ];
-      $users = null;
-      $keyword = $request->keyword;
-      if(!$conditions['roles']) {
-        $users = $this->userRepository
-          ->with(['roles', 'permissions'])
-          ->where('username',"%{$keyword}%", 'like')
-          ->orWhere('first_name', 'like', "%{$keyword}%")
-          ->orWhere('last_name', 'like', "%{$keyword}%")
-          ->orWhere('code', 'like', "%{$keyword}%")
-          ->orWhere('email', 'like', "%{$keyword}%")
-          ->orderBy($conditions['orderBy'], $conditions['order'])
-          ->paginate($conditions['perPage']);
-      } else {
-        $users = $this->userRepository
-          ->with(['roles', 'permissions'])
-          ->where('username',"%{$keyword}%", 'like')
-          ->orWhere('first_name', 'like', "%{$keyword}%")
-          ->orWhere('last_name', 'like', "%{$keyword}%")
-          ->orWhere('code', 'like', "%{$keyword}%")
-          ->orWhere('email', 'like', "%{$keyword}%")
-          ->role($conditions['roles'])
-          ->orderBy($conditions['orderBy'], $conditions['order'])
-          ->paginate($conditions['perPage']);
-      }
-      return UserResource::collection($users);
-    }
-
-    public function getTeacher(Request $request) {
-      $this->authorize('viewAll', User::class);
-      $studentRole = $this->roleRepository->getByColumn(config('access.roles_list.student'), 'name');
-      $adminRole = $this->roleRepository->getByColumn(config('access.roles_list.admin'), 'name');
-      $roleIds = $request->roles ? $request->roles : ($this->roleRepository->getExcept([$studentRole->id, $adminRole->id])->pluck('id'));
-
-      $conditions = [
-        'orderBy' => ($request->order_by ? $request->order_by : 'username'),
-        'order' => ($request->order && in_array($request->order, [ 'desc', 'asc' ]) ? $request->order : 'asc'),
-        'perPage' => ($request->limit && intval($request->limit) > 0 ? $request->limit: 10),
-        'keyword' => ($request->keyword ? $request->keyword: ''),
-        'roles' => ($request->roles ? $request->roles: $roleIds),
-      ];
-
-      return UserResource::collection($this->userRepository->getByConditions($conditions));
-    }
-
-    public function getByRole(Request $request) {
-      $roleId = $request->role_id;
+  public function index(Request $request)
+  {
+    $this->authorize('viewAll', User::class);
+    $conditions = [
+      'orderBy' => ($request->order_by ? $request->order_by : 'username'),
+      'order' => ($request->order && in_array($request->order, ['desc', 'asc']) ? $request->order : 'asc'),
+      'perPage' => ($request->limit && intval($request->limit) > 0 ? $request->limit : 10),
+      'search' => ($request->search ? $request->search : ''),
+      'roles' => ($request->roles ? $request->roles : ''),
+    ];
+    $users = null;
+    $keyword = $request->keyword;
+    if (!$conditions['roles']) {
       $users = $this->userRepository
-        ->roles($roleId)
-        ->get();
-      return UserResource::collection($users);
+        ->with(['roles', 'permissions'])
+        ->where('username', "%{$keyword}%", 'like')
+        ->orWhere('first_name', 'like', "%{$keyword}%")
+        ->orWhere('last_name', 'like', "%{$keyword}%")
+        ->orWhere('code', 'like', "%{$keyword}%")
+        ->orWhere('email', 'like', "%{$keyword}%")
+        ->orderBy($conditions['orderBy'], $conditions['order'])
+        ->paginate($conditions['perPage']);
+    } else {
+      $users = $this->userRepository
+        ->with(['roles', 'permissions'])
+        ->where('username', "%{$keyword}%", 'like')
+        ->orWhere('first_name', 'like', "%{$keyword}%")
+        ->orWhere('last_name', 'like', "%{$keyword}%")
+        ->orWhere('code', 'like', "%{$keyword}%")
+        ->orWhere('email', 'like', "%{$keyword}%")
+        ->role($conditions['roles'])
+        ->orderBy($conditions['orderBy'], $conditions['order'])
+        ->paginate($conditions['perPage']);
     }
+    return UserResource::collection($users);
+  }
+
+  public function getTeacher(Request $request)
+  {
+    $this->authorize('viewAll', User::class);
+    $studentRole = $this->roleRepository->getByColumn(config('access.roles_list.student'), 'name');
+    $adminRole = $this->roleRepository->getByColumn(config('access.roles_list.admin'), 'name');
+    $roleIds = $request->roles ? $request->roles : ($this->roleRepository->getExcept([$studentRole->id, $adminRole->id])->pluck('id'));
+
+    $conditions = [
+      'orderBy' => ($request->order_by ? $request->order_by : 'username'),
+      'order' => ($request->order && in_array($request->order, ['desc', 'asc']) ? $request->order : 'asc'),
+      'perPage' => ($request->limit && intval($request->limit) > 0 ? $request->limit : 10),
+      'keyword' => ($request->keyword ? $request->keyword : ''),
+      'roles' => ($request->roles ? $request->roles : $roleIds),
+    ];
+
+    return UserResource::collection($this->userRepository->getByConditions($conditions));
+  }
+
+  public function getByRole(Request $request)
+  {
+    $roleId = $request->role_id;
+    $users = $this->userRepository
+      ->roles($roleId)
+      ->get();
+    return UserResource::collection($users);
+  }
 
   /**
    * Store a newly created resource in storage.
    *
-   * @param  \Illuminate\Http\Request  $request
+   * @param \Illuminate\Http\Request $request
    * @return \Illuminate\Http\Response
    */
   public function store(StoreUserRequest $request)
@@ -119,7 +128,7 @@ class UserController extends Controller
   /**
    * Display the specified resource.
    *
-   * @param  \App\Model\Chapter  $chapter
+   * @param \App\Model\Chapter $chapter
    * @return \Illuminate\Http\Response
    */
   public function show(User $user)
@@ -130,8 +139,8 @@ class UserController extends Controller
   /**
    * Update the specified resource in storage.
    *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  \App\Model\Chapter  $chapter
+   * @param \Illuminate\Http\Request $request
+   * @param \App\Model\Chapter $chapter
    * @return \Illuminate\Http\Response
    */
   public function update(UpdateUserRequest $request, User $user)
@@ -142,7 +151,7 @@ class UserController extends Controller
   /**
    * Remove the specified resource from storage.
    *
-   * @param  \App\Model\Chapter  $chapter
+   * @param \App\Model\Chapter $chapter
    * @return \Illuminate\Http\Response
    */
   public function destroy(User $user)
@@ -150,12 +159,13 @@ class UserController extends Controller
     $this->userRepository->deleteByUuid($user->uuid);
   }
 
-  public function storeMulti(Request $request) {
+  public function storeMulti(Request $request)
+  {
     $data = json_decode($request->getContent(), true);
     $users = $data['users'];
-    if($this->checkUnique($users, 'username')) {
+    if ($this->checkUnique($users, 'username')) {
       throw new GeneralException('Username người dùng không được trùng nhau', 400);
-    } else if($this->checkUnique($users, 'code')) {
+    } else if ($this->checkUnique($users, 'code')) {
       throw new GeneralException('Mã số người dùng không được trùng nhau', 400);
     } else {
       try {
@@ -187,36 +197,40 @@ class UserController extends Controller
    *
    * @return Boolean
    */
-  public function checkUnique($arr, $key) {
+  public function checkUnique($arr, $key)
+  {
     $arrLength = count($arr);
     $duplicated = false;
-    for($i = 0; $i < $arrLength - 1; $i++) {
-      for($j = 1; $j < $arrLength; $j++) {
-        if($arr[$i][$key] == $arr[$j][$key]) {
+    for ($i = 0; $i < $arrLength - 1; $i++) {
+      for ($j = 1; $j < $arrLength; $j++) {
+        if ($arr[$i][$key] == $arr[$j][$key]) {
           $duplicated = true;
           break;
         }
       }
-      if($duplicated) {
+      if ($duplicated) {
         break;
       }
     }
     return $duplicated;
   }
 
-  public function active(Request $request) {
+  public function active(Request $request)
+  {
     $uuid = $request->uuid;
-    $user = $this->userRepository->updateByUuid($uuid, [ 'active' => User::ACTIVE_CODE ]);
+    $user = $this->userRepository->updateByUuid($uuid, ['active' => User::ACTIVE_CODE]);
     return $user;
   }
 
-  public function deactive(Request $request) {
+  public function deactive(Request $request)
+  {
     $uuid = $request->uuid;
-    $user = $this->userRepository->updateByUuid($uuid, [ 'active' => User::DEACTIVE_CODE ]);
+    $user = $this->userRepository->updateByUuid($uuid, ['active' => User::DEACTIVE_CODE]);
     return $user;
   }
 
-  public function resetPwd(Request $request) {
+  public function resetPwd(Request $request)
+  {
 
   }
 }

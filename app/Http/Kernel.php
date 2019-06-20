@@ -54,6 +54,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'assign.guard' => \App\Http\Middleware\AssignGuard::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
@@ -67,7 +68,7 @@ class Kernel extends HttpKernel
         'jwt.refresh' => \Tymon\JWTAuth\Http\Middleware\RefreshToken::class,
         'role' => RoleMiddleware::class,
         'permission' => PermissionMiddleware::class,
-        'role_or_permission' => RoleOrPermissionMiddleware::class
+        'role_or_permission' => RoleOrPermissionMiddleware::class,
     ];
 
     /**
@@ -84,5 +85,11 @@ class Kernel extends HttpKernel
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
+        \App\Http\Middleware\AssignGuard::class,
+        \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
+        \Tymon\JWTAuth\Http\Middleware\RefreshToken::class,
+        RoleMiddleware::class,
+        PermissionMiddleware::class,
+        RoleOrPermissionMiddleware::class,
     ];
 }

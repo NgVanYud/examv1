@@ -10,6 +10,6 @@ Route::group([
     'namespace' => 'Auth'
 ], function() {
     Route::post('login', 'LoginController@login');
-    Route::post('logout', 'LogoutController@logout');
+    Route::post('logout', 'LogoutController@logout')->middleware('jwt.auth');
     Route::post('refresh', 'AuthController@refresh');
 });

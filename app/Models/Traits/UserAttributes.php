@@ -35,35 +35,4 @@ trait UserAttributes {
     public function setCodeAttribute($code) {
       $this->attributes['code'] = strtoupper($code);
     }
-
-    /**
-     * @return string
-     */
-    public function getShowButtonAttribute()
-    {
-        return '<a href="'."#".
-            '" data-toggle="tooltip" data-placement="top" title="'.
-            __('buttons.general.crud.view').
-            '" class="btn btn-info"><i class="fa fa-eye"></i></a>';
-    }
-
-    /**
-     * @return string
-     */
-    public function getEditButtonAttribute()
-    {
-        return '<a href="'.
-            "#".
-            '" data-toggle="tooltip" data-placement="top" title="'.
-            "ten button".
-            '" class="btn btn-primary"><i class="fa fa-pencil"></i></a>';
-    }
-
-    public function getActionButtonsAttribute() {
-        return
-            '<div class="btn-group" role="group" aria-label="'.'Me cha'.'">
-            '.$this->show_button.'
-            '.$this->edit_button.'
-		</div>';
-    }
 }

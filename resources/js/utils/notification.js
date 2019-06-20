@@ -1,12 +1,8 @@
 import { Message } from 'element-ui';
 
-export function getNotification(action, obj, type = 'error', reason = '', time = 5000) {
-  const statusMap = {
-    'error': 'không thành công',
-    'success': 'thành công',
-  };
+export function getNotification(action, obj, status, reason = '', type = 'error', time = 5000) {
   Message({
-    message: action + ' ' + obj + ' ' + statusMap[type] + '. ' + reason,
+    message: action + ' ' + obj + ' ' + status + '. ' + reason,
     type: type,
     duration: time,
   });

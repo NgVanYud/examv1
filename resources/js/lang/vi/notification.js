@@ -12,6 +12,7 @@ const data = {
     invalid: 'không hợp lệ',
     valid: 'hợp lệ',
   },
+  reason: '%{object} is %{status}',
 };
 
 export default data;

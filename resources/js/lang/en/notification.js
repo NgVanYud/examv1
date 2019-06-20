@@ -12,6 +12,7 @@ const data = {
     invalid: 'invalid',
     valid: 'valid',
   },
+  reason: '%{object} is %{status}',
 };
 
 export default data;

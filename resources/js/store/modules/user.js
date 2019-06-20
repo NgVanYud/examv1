@@ -11,6 +11,7 @@ const state = {
   roles: [],
   permissions: [],
   uuid: '',
+  group: '',
 };
 
 const mutations = {
@@ -35,6 +36,9 @@ const mutations = {
   SET_UUID: (state, uuid) => {
     state.uuid = uuid;
   },
+  SET_GROUP: (state, group) => {
+    state.group = group;
+  },
 };
 
 const actions = {
@@ -44,9 +48,14 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username, password: password })
         .then(response => {
-          commit('SET_TOKEN', response.data.access_token);
-          setToken(response.data.access_token);
-          resolve();
+          if (response.error) {
+            reject(response);
+          } else {
+            commit('SET_TOKEN', response.data.access_token);
+            commit('SET_GROUP', response.data.group);
+            setToken(response.data.access_token);
+            resolve(response);
+          }
         })
         .catch(error => {
           reject(error);

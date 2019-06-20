@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-      <h3 class="title">{{ $t('login.title') }}</h3>
+      <h3 class="title">{{ $t('form.login.title') }}</h3>
       <lang-select class="set-language" />
       <el-form-item prop="username">
         <span class="svg-container">
@@ -39,6 +39,7 @@
 
 <script>
 import LangSelect from '@/components/LangSelect';
+import { getNotification } from '@/utils/notification';
 // import { validEmail } from '@/utils/validate';
 
 export default {
@@ -61,7 +62,7 @@ export default {
     };
     return {
       loginForm: {
-        username: 'GV000001',
+        username: 'MN000001',
         password: '123@abc',
       },
       loginRules: {
@@ -97,8 +98,18 @@ export default {
           this.$store.dispatch('user/login', this.loginForm).then(() => {
             this.$router.push({ path: this.redirect || '/' });
             this.loading = false;
-          }).catch(() => {
+          }).catch((error) => {
             this.loading = false;
+            console.log(error);
+            getNotification(
+              this.$t('notification.action.login'),
+              this.$t('notification.object.system'),
+              this.$t('notification.status.error'),
+              this.$t('notification.reason', {
+                object: this.$t('notification.object.info').charAt(0).toUpperCase() + this.$t('notification.object.info').slice(1),
+                status: this.$t('notification.status.invalid'),
+              }),
+            );
           });
         } else {
           console.log('error submit!!');

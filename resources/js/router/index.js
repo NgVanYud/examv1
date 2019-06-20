@@ -26,6 +26,7 @@ import userRoutes from './modules/user';
 import subjectRouters from './modules/subject';
 import termRouters from './modules/term';
 import subjectTermRoutes from './modules/subject-term';
+import authRoutes from './modules/auth';
 
 // import ALL_ROLES from '@/utils/auth';
 
@@ -35,13 +36,13 @@ import subjectTermRoutes from './modules/subject-term';
  **/
 
 /**
-* hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
-* alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
-*                                if not set alwaysShow, only more than one route under the children
-*                                it will becomes nested mode, otherwise not show the root menu
-* redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
-* name:'router-name'             the name is used by <keep-alive> (must set!!!)
-* meta : {
+ * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
+ * alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
+ *                                if not set alwaysShow, only more than one route under the children
+ *                                it will becomes nested mode, otherwise not show the root menu
+ * redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
+ * name:'router-name'             the name is used by <keep-alive> (must set!!!)
+ * meta : {
     roles: ['admin', 'editor']   will control the page roles (you can set multiple roles)
     title: 'title'               the name show in sub-menu and breadcrumb (recommend set)
     icon: 'svg-name'             the icon show in the sidebar
@@ -49,7 +50,13 @@ import subjectTermRoutes from './modules/subject-term';
     breadcrumb: false            if false, the item will hidden in breadcrumb (default is true)
     affix: true                  if true, the tag will affix in the tags-view
   }
-**/
+ **/
+
+const withPrefix = (prefix, routes) =>
+  routes.map((route) => {
+    route.path = prefix + route.path;
+    return route;
+  });
 
 export const constantRoutes = [
   {
@@ -63,8 +70,10 @@ export const constantRoutes = [
       },
     ],
   },
+  ...withPrefix('/auth', authRoutes),
   {
     path: '/login',
+    name: 'Login',
     component: () => import('@/views/login/index'),
     hidden: true,
   },
@@ -75,12 +84,12 @@ export const constantRoutes = [
   },
   {
     path: '/404',
-    redirect: { name: 'Page404' },
     component: () => import('@/views/ErrorPage/404'),
     hidden: true,
   },
   {
     path: '/401',
+    name: 'Page401',
     component: () => import('@/views/ErrorPage/401'),
     hidden: true,
   },

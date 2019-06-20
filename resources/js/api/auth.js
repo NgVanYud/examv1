@@ -1,4 +1,5 @@
 import request from '@/utils/request';
+import store from '@/store';
 
 export function login(data) {
   return request({
@@ -9,9 +10,25 @@ export function login(data) {
 }
 
 export function getInfo() {
+  const userGroup = store.state.user.group;
+  if (userGroup === 'student') {
+    return getInfoStudent();
+  } else if (userGroup === 'manager') {
+    return getInfoManager();
+  }
+}
+
+function getInfoStudent() {
   return request({
-    url: 'me',
-    method: 'get',
+    url: 'student/me',
+    method: 'post',
+  });
+}
+
+function getInfoManager() {
+  return request({
+    url: 'manager/me',
+    method: 'post',
   });
 }
 

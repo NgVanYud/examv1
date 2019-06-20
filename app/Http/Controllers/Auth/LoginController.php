@@ -29,6 +29,11 @@ class LoginController extends Controller
 
     public $decayMinutes = 1;
 
+    protected $additionalCondition = [
+      'is_actived' => \App\Models\Auth\User::ACTIVED_CODE
+    ];
+    protected $userGroup = null;
+
     /**
      * PHP 5 allows developers to declare constructor methods for classes.
      * Classes which have a constructor method call this method on each newly-created object,
@@ -44,7 +49,6 @@ class LoginController extends Controller
     {
 
     }
-
 
     /**
      * Get a JWT via given credentials.
@@ -90,6 +94,7 @@ class LoginController extends Controller
     {
         return new JsonResponse(__('messages.login.success'), [
                 'access_token' => $token,
+                'group' => $this->userGroup,
                 'token_type' => 'bearer',
                 'expires_in' => auth()->factory()->getTTL() * 60
             ], []
@@ -107,7 +112,14 @@ class LoginController extends Controller
     }
 
     public function attemptLogin($request) {
-        return $this->guard()->attempt($this->credentials($request));
+        if(Auth::guard('manager')->attempt($this->credentials($request))) {
+          $this->userGroup = config('access.user_groups.manager');
+          return $this->getGuard('manager')->attempt($this->credentials($request));
+        } else if (Auth::guard('student')->attempt($this->credentials($request))) {
+          $this->userGroup = config('access.user_groups.student');
+          return $this->getGuard('student')->attempt($this->credentials($request));
+        }
+        return $this->getGuard('student')->attempt($this->credentials($request));
     }
 
     /**
@@ -128,7 +140,6 @@ class LoginController extends Controller
                 'required' => __('validation.required'),
                 'string' => __('validation.login_form.invalid'),
                 'min' => __('validation.login_form.invalid'),
-                'min' => __('validation.login_form.invalid'),
             ]
         )->validate();
     }
@@ -138,9 +149,9 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Contracts\Auth\StatefulGuard
      */
-    protected function guard()
+    protected function getGuard($guardName)
     {
-        return Auth::guard('api');
+        return Auth::guard($guardName);
     }
 
     /**
@@ -151,8 +162,7 @@ class LoginController extends Controller
      */
     protected function credentials(Request $request)
     {
-        return array_merge($request->only([$this->username(), 'password']),
-            ['active' => User::ACTIVE_CODE]);
+        return array_merge($request->only([$this->username(), 'password']), $this->additionalCondition);
     }
 
 
