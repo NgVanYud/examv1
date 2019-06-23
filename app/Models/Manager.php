@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Models\Auth\User as Authenticable;
-use App\Models\Traits\SendUserPasswordReset;
+use App\Notifications\UserNeedsPasswordReset;
+use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
 
-class Manager extends Authenticable
+class Manager extends Authenticable implements CanResetPassword
 {
 
-  use SendUserPasswordReset;
+  use CanResetPasswordTrait;
 
   protected $table = 'managers';
 
@@ -25,4 +27,14 @@ class Manager extends Authenticable
   protected $dates = [
     'last_login_at', 'deleted_at', 'password_changed_at'
   ];
+
+  /**
+   * Send the password reset notification.
+   *
+   * @param string $token
+   */
+  public function sendPasswordResetNotification($token)
+  {
+    $this->notify(new UserNeedsPasswordReset($token, $this));
+  }
 }

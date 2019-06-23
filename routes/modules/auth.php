@@ -11,5 +11,6 @@ Route::group([
 ], function() {
     Route::post('login', 'LoginController@login');
     Route::post('logout', 'LogoutController@logout')->middleware('jwt.auth');
+    Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->middleware('assign.guard:manager');
     Route::post('refresh', 'AuthController@refresh');
 });

@@ -38,3 +38,12 @@ export function logout() {
     method: 'post',
   });
 }
+
+export function sendResetLinkEmail(data) {
+  return request({
+    url: '/auth/password/email',
+    method: 'post',
+    data: data,
+  });
+}
+

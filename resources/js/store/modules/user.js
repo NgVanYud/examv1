@@ -49,7 +49,8 @@ const actions = {
       login({ username: username, password: password })
         .then(response => {
           if (response.error) {
-            reject(response);
+            // reject(response);
+            throw new Error();
           } else {
             commit('SET_TOKEN', response.data.access_token);
             commit('SET_GROUP', response.data.group);

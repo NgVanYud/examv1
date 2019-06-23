@@ -1,10 +1,11 @@
 import variables from '@/styles/element-variables.scss';
+import i18n from '@/lang';
 
 export default {
   /**
    * @type {String}
    */
-  title: 'Laravel Vue Admin',
+  title: i18n.t('appName'),
   theme: variables.theme,
 
   /**
