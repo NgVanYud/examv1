@@ -6,15 +6,19 @@ import notification from './vi/notification';
 import role from './vi/role';
 import permission from './vi/permission';
 import form from './vi/form';
+import button from './vi/button';
 
 export default {
   // common: {
   //   back: 'Quay lại',
   //   return: 'Trở về',
   // },
+  schoolName: 'Học Viện Kỹ Thuật Mật Mã',
+  appName: 'Hệ Thống Thi Trắc Nghiệm Online',
   route: route,
   navbar: navbar,
   form: form,
+  button: button,
   documentation: {
     documentation: 'Tài liệu',
     github: 'Github Repository',

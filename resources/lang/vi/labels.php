@@ -156,4 +156,9 @@ return [
             ],
         ],
     ],
+    'form' => [
+      'email' => 'Email',
+      'new_password' => 'Mật Khẩu Mới',
+      'retype_new_password' => 'Xác Nhận Mật Khẩu',
+    ],
 ];

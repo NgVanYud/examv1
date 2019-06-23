@@ -76,7 +76,7 @@ return [
             'thank_you_for_using_app' => 'Thank you for using our application!',
 
             'password_reset_subject' => 'Reset Password',
-            'password_cause_of_email' => 'You are receiving this email because we received a password reset request for your account.',
+            'password_cause_of_email' => 'You are receiving this email for resetting password for your :username account.',
             'password_if_not_requested' => 'If you did not request a password reset, no further action is required.',
             'reset_password' => 'Click here to reset your password',
 

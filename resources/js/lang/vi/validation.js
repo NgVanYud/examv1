@@ -80,7 +80,7 @@ const data = {
   numeric: 'The %{attribute} must be a number.',
   present: 'The %{attribute} field must be present.',
   regex: 'The %{attribute} format is invalid.',
-  required: 'The %{attribute} field is required.',
+  required: 'Trường %{attribute} không được bỏ trống.',
   required_if: 'The %{attribute} field is required when %{other} is %{value}.',
   required_unless: 'The %{attribute} field is required unless %{other} is in %{value}s.',
   required_with: 'The %{attribute} field is required when %{value}s is present.',
@@ -101,6 +101,7 @@ const data = {
   uploaded: 'The %{attribute} failed to upload.',
   url: 'The %{attribute} format is invalid.',
   uuid: 'The %{attribute} must be a valid UUID.',
+  invalid: 'Trường %{attribute} không hợp lệ.',
 
   attributes: {
     credit: 'số tín chỉ',
@@ -108,6 +109,9 @@ const data = {
     end: 'ngày kết thúc',
     begin: 'ngày bắt đầu',
     name: 'tên',
+    username: 'username',
+    password: 'mật khẩu',
+    email: 'email',
   },
 };
 

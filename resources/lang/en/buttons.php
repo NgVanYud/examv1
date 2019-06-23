@@ -51,5 +51,7 @@ return [
 
         'save' => 'Save',
         'view' => 'View',
+        'submit' => 'Submit',
+        'reset' => 'Reset',
     ],
 ];

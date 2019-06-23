@@ -149,7 +149,10 @@ return [
       'code' => 'mã code',
       'end' => 'ngày kết thúc',
       'begin' => 'ngày bắt đầu',
-      'name' => 'tên'
+      'name' => 'tên',
+      'new_password' => 'new password',
+      'retype_new_password' => 'confirmed password',
+      'email' => 'email',
     ],
 
 ];

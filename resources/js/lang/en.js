@@ -6,11 +6,15 @@ import notification from './en/notification';
 import role from './en/role';
 import permission from './en/permission';
 import form from './en/form';
+import button from './en/button';
 
 export default {
+  schoolName: 'The Academy of Cryptography Techniques',
+  appName: 'Online Multiple Choice System',
   route: route,
   navbar: navbar,
   form: form,
+  button: button,
   documentation: {
     documentation: 'Documentation',
     laravel: 'Laravel',

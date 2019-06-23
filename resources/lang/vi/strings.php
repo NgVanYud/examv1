@@ -76,7 +76,7 @@ return [
             'thank_you_for_using_app' => 'Thank you for using our application!',
 
             'password_reset_subject' => 'Thiết Lập Mật Khẩu',
-            'password_cause_of_email' => 'Hệ thống của chúng tôi vừa cấp cho bạn một tài khoản truy cập với username là :username . Kich hoạt tài khoản bằng cách click vào nút dưới đây:',
+            'password_cause_of_email' => 'Email này được gửi tới bạn để reset mật khẩu cho tài khoản :username trên hệ thống của chúng tôi.',
             'password_if_not_requested' => 'Nếu không phải là bạn, vui lòng bỏ qua email này. Xin lỗi vì đã làm phiền bạn.',
             'reset_password' => 'Click here to reset your password',
 

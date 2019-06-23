@@ -101,6 +101,7 @@ const data = {
   uploaded: 'The %{attribute} failed to upload.',
   url: 'The %{attribute} format is invalid.',
   uuid: 'The %{attribute} must be a valid UUID.',
+  invalid: 'The %{attribute} is invalid.',
 
   attributes: {
     credit: 'credit',
@@ -108,6 +109,9 @@ const data = {
     end: 'end date',
     begin: 'begin date',
     name: 'name',
+    username: 'username',
+    password: 'password',
+    email: 'email',
   },
 };
 

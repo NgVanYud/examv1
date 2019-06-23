@@ -152,7 +152,10 @@ return [
         'code' => 'mã code',
         'end' => 'ngày kết thúc',
         'begin' => 'ngày bắt đầu',
-        'name' => 'tên'
+        'name' => 'tên',
+        'new_password' => 'mật khẩu mới',
+        'retype_new_password' => 'xác nhận mật khẩu',
+        'email' => 'email',
     ],
 
 ];

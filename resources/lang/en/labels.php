@@ -156,4 +156,10 @@ return [
             ],
         ],
     ],
+
+  'form' => [
+    'email' => 'Email',
+    'new_password' => 'New Password',
+    'retype_new_password' => 'Retype New Password',
+  ],
 ];

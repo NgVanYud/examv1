@@ -1,6 +1,6 @@
 const data = {
   login: {
-    title: 'Login Form',
+    title: 'Sign In',
     logIn: 'Log in',
     username: 'Username',
     password: 'Password',
@@ -8,6 +8,9 @@ const data = {
     thirdparty: 'Or connect with',
     thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !',
     email: 'Email',
+  },
+  forgotPwd: {
+    title: 'Reset Password',
   },
   field: {
 
