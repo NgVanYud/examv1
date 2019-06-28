@@ -10027,6 +10027,126 @@ a.text-dark:hover, a.text-dark:focus {
   display: block;
 }
 
+/* reset element-ui css */
+.auth-form-container .el-input {
+  display: inline-block;
+  height: 47px;
+  width: 85%;
+}
+
+.auth-form-container .el-input input {
+  background: transparent;
+  border: 0px;
+  -webkit-appearance: none;
+  border-radius: 0px;
+  padding: 12px 5px 12px 15px;
+  color: #eee;
+  height: 47px;
+  /*set the input background color when autofill*/
+}
+
+@-webkit-keyframes autofill {
+  to {
+    background: transparent;
+  }
+}
+
+.auth-form-container .el-input input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+  -webkit-text-fill-color: #fff !important;
+  -webkit-animation-name: autofill;
+  -webkit-animation-fill-mode: both;
+}
+
+.auth-form-container .el-form-item {
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  color: #454545;
+}
+
+.auth-form-container .el-form-item.is-error {
+  border-color: #f8cfcf;
+}
+
+.auth-form-container .el-form-item__error {
+  color: #f4aaaa;
+  font-weight: 700;
+  margin-top: 3px;
+}
+
+.auth-form-container {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.auth-form-container .auth-form-wrapper {
+  width: 835px;
+  max-width: 100%;
+  padding: 35px;
+  border-radius: 15px;
+  background-color: #f2f3e90d;
+}
+
+.auth-form-container .auth-form-footer {
+  font-size: 14px;
+  color: #fff;
+  margin-bottom: 10px;
+  margin-top: 40px;
+}
+
+.auth-form-container .auth-form-footer hr {
+  height: 2px;
+  background-image: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+}
+
+.auth-form-container .svg-container {
+  padding: 6px 5px 6px 15px;
+  color: #889aa4;
+  vertical-align: middle;
+  width: 30px;
+  display: inline-block;
+}
+
+.auth-form-container .svg-container svg {
+  fill: #889aa4;
+}
+
+.auth-form-container .title {
+  font-size: 26px;
+  font-weight: 400;
+  color: #eee;
+  margin: 0px auto 40px auto;
+  text-align: center;
+  font-weight: bold;
+}
+
+.auth-form-container .show-pwd {
+  position: absolute;
+  right: 10px;
+  top: 7px;
+  font-size: 16px;
+  color: #889aa4;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.auth-form-container .set-language {
+  color: #fff;
+  position: absolute;
+  top: 40px;
+  right: 35px;
+}
+
+.btn-light {
+  background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
 #app .main-container {
   min-height: 100%;
   transition: margin-left .28s;
@@ -10561,114 +10681,4 @@ aside a:hover {
 
 .title-partial {
   margin-bottom: 15px;
-}
-
-/* reset element-ui css */
-.auth-form-container .el-input {
-  display: inline-block;
-  height: 47px;
-  width: 85%;
-}
-
-.auth-form-container .el-input input {
-  background: transparent;
-  border: 0px;
-  -webkit-appearance: none;
-  border-radius: 0px;
-  padding: 12px 5px 12px 15px;
-  color: #eee;
-  height: 47px;
-  /*set the input background color when autofill*/
-}
-
-@-webkit-keyframes autofill {
-  to {
-    background: transparent;
-  }
-}
-
-.auth-form-container .el-input input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
-  -webkit-text-fill-color: #fff !important;
-  -webkit-animation-name: autofill;
-  -webkit-animation-fill-mode: both;
-}
-
-.auth-form-container .el-form-item {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-  color: #454545;
-}
-
-.auth-form-container {
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.auth-form-container .auth-form-wrapper {
-  width: 835px;
-  max-width: 100%;
-  padding: 35px;
-  border-radius: 15px;
-  background-color: #f2f3e90d;
-}
-
-.auth-form-container .auth-form-footer {
-  font-size: 14px;
-  color: #fff;
-  margin-bottom: 10px;
-  margin-top: 40px;
-}
-
-.auth-form-container .auth-form-footer hr {
-  height: 2px;
-  background-image: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
-}
-
-.auth-form-container .svg-container {
-  padding: 6px 5px 6px 15px;
-  color: #889aa4;
-  vertical-align: middle;
-  width: 30px;
-  display: inline-block;
-}
-
-.auth-form-container .svg-container svg {
-  fill: #889aa4;
-}
-
-.auth-form-container .title {
-  font-size: 26px;
-  font-weight: 400;
-  color: #eee;
-  margin: 0px auto 40px auto;
-  text-align: center;
-  font-weight: bold;
-}
-
-.auth-form-container .show-pwd {
-  position: absolute;
-  right: 10px;
-  top: 7px;
-  font-size: 16px;
-  color: #889aa4;
-  cursor: pointer;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-}
-
-.auth-form-container .set-language {
-  color: #fff;
-  position: absolute;
-  top: 40px;
-  right: 35px;
-}
-
-.btn-light {
-  background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }

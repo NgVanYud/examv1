@@ -3,6 +3,8 @@ const data = {
     login: 'Đăng nhập',
     reset: 'Reset',
     change: 'Thay đổi',
+    verify: 'xác nhận',
+    tryAgain: 'Thử lại sau',
   },
   object: {
     system: 'hệ thống',

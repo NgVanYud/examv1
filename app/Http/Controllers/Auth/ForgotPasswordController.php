@@ -75,7 +75,9 @@ class ForgotPasswordController extends Controller
             'message' => __('notifications.actions.send_email').' '.__('notifications.statuses.success'),
           ]);
         } else {
-          throw new GeneralException(__('notifications.actions.send_email').' '.__('notifications.statuses.success'), 422);
+          throw new GeneralException(
+            __('notifications.actions.send_email').' '.__('notifications.statuses.error'),
+            502);
         }
       } else {
         throw new GeneralException(__('exceptions.invalid_data'), 422);

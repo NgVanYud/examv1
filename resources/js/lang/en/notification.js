@@ -3,6 +3,8 @@ const data = {
     login: 'Login',
     reset: 'Reset',
     change: 'Change',
+    verify: 'Verify',
+    tryAgain: 'Try again',
   },
   object: {
     system: 'system',
