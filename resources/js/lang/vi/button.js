@@ -5,6 +5,11 @@ const data = {
   reset: 'Reset',
   update: 'Cập Nhật',
   create: 'Tạo Mơi',
+  delete: 'Xóa',
+  edit: 'Chỉnh Sửa',
+  restore: 'Khôi Phục',
+  active: 'Kích Hoạt',
+  block: 'Khóa',
 };
 
 export default data;

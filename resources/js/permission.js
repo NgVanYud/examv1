@@ -39,6 +39,7 @@ router.beforeEach(async (to, from, next) => {
           // const accessRoutes = await store.dispatch('permission/generateRoutes', roles, permissions);
           store.dispatch('permission/generateRoutes', { roles, permissions }).then(response => {
             // dynamically add accessible routes
+            console.log('route sau khi loc permission', response);
             router.addRoutes(response);
 
             // hack method to ensure that addRoutes is complete

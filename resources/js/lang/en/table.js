@@ -32,6 +32,7 @@ const data = {
   action: 'Action',
   email: 'Email',
   num: 'Num',
+  code: 'Code',
 };
 
 export default data;

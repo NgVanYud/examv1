@@ -3,7 +3,7 @@ import store from '@/store';
 
 export function login(data) {
   return request({
-    url: 'auth/login',
+    url: '/auth/login',
     method: 'post',
     data: data,
   });
@@ -20,14 +20,14 @@ export function getInfo() {
 
 function getInfoStudent() {
   return request({
-    url: 'student/me',
+    url: '/student/me',
     method: 'post',
   });
 }
 
 function getInfoManager() {
   return request({
-    url: 'manager/me',
+    url: '/manager/me',
     method: 'post',
   });
 }

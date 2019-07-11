@@ -37,6 +37,7 @@ service.interceptors.response.use(
     return response.data;
   },
   error => {
+    console.log('loi: ', error);
     let message = error.message;
     if (error.response.data && error.response.data.errors) {
       message = error.response.data.errors;
@@ -46,7 +47,7 @@ service.interceptors.response.use(
 
     Message({
       message: message,
-      type: 'error',
+      type: 'success',
       duration: 5 * 1000,
     });
     return Promise.reject(error);

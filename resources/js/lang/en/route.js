@@ -1,6 +1,12 @@
 const data = {
   login: 'Login',
 
+  managers: 'Managers',
+  managersList: 'Managers List',
+  subjects: 'Subjects',
+  subjectsList: 'Subjects List',
+  editSubject: 'Edit Subject',
+
   dashboard: 'Dashboard',
   introduction: 'Introduction',
   documentation: 'Documentation',

@@ -60,6 +60,6 @@ export function validEmail(email) {
  * @return {Boolean}
  */
 export function validUsername(username) {
-  const reg = /^[0-9A-Z]+$/;
+  const reg = /^[0-9A-Z\-]+$/;
   return reg.test(username);
 }

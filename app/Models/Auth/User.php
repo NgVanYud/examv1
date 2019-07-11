@@ -6,12 +6,14 @@ namespace App\Models\Auth;
 use App\Models\Traits\UserAttributes;
 use App\Models\Traits\UserMethods;
 use App\Models\Traits\Uuid;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
-use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Contracts\Role;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Models\Traits\HasRoles;
 
 
 class User extends Authenticatable implements JWTSubject

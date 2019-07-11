@@ -27,7 +27,7 @@
                 </span>
       </el-form-item>
       <el-form-item>
-        <el-button :loading="loading" class="btn-light" style="width:100%;" @click.native.prevent="handleLogin">
+        <el-button :loading="loading" class="btn-light" style="width:100%;" size="medium" @click.native.prevent="handleLogin">
           {{ $t('button.signIn') }}
         </el-button>
       </el-form-item>
@@ -60,19 +60,19 @@ export default {
       loginRules: {
         username: [{
           validator: validateUsername,
-          trigger: 'blur',
+          trigger: ['change'],
         }, {
           required: true,
           message: this.$t('validation.required', {
             attribute: this.$t('validation.attributes.username'),
           }),
-          trigger: 'blur',
+          trigger: ['blur', 'change'],
         }, {
           min: 8,
           message: this.$t('validation.invalid', {
             attribute: this.$t('validation.attributes.username'),
           }),
-          trigger: 'blur',
+          trigger: ['blur', 'change'],
         }],
         password: [
           // { required: true, trigger: 'blur', validator: validatePass },

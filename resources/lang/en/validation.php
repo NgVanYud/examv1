@@ -152,6 +152,7 @@ return [
       'name' => 'tên',
       'new_password' => 'new password',
       'retype_new_password' => 'confirmed password',
+      'password_confirmation' => 'confirmed password',
       'email' => 'email',
     ],
 

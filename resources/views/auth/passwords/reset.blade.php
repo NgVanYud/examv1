@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
 </head>
 <body>
+{{--{{ dd ($errors->all()) }}--}}
     <div class="auth-form-container d-flex justify-content-center align-items-center">
         <div class="auth-form-wrapper">
             <div class="row">
@@ -32,10 +33,10 @@
                 </div>
                 <div class="col-md-7">
                     <h3 class="title">Reset Password</h3>
-                    <form method="POST" class="el-form" acction="{{ route('password.reset') }}">
+                    <form method="POST" class="el-form" action="{{ route('password.reset') }}">
                         @csrf
                         <input type="hidden" name="token" value="{{ $token }}">
-                        <div class="el-form-item is-required el-form-item--medium">
+                        <div class="el-form-item is-required el-form-item--medium {{ $errors->has('email') ? 'is-error': ''}}">
                             <div class="el-form-item__content">
                                 <span class="svg-container">
                                     <svg width="28" height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 115" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -50,9 +51,16 @@
                                            placeholder="@lang('validation.attributes.email')"
                                            class="el-input__inner">
                                 </div>
+                                <div class="el-form-item__error">
+                                    @if ($errors->has('email'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                        <div class="el-form-item is-required el-form-item--medium">
+                        <div class="el-form-item is-required el-form-item--medium {{ $errors->has('password') ? 'is-error': ''}}">
                             <div class="el-form-item__content">
                                 <span class="svg-container">
                                     <svg width="28" height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 115" xmlns="http://www.w3.org/2000/svg">
@@ -67,9 +75,16 @@
                                            placeholder="@lang('validation.attributes.new_password')"
                                            class="el-input__inner">
                                 </div>
+                                <div class="el-form-item__error">
+                                    @if ($errors->has('password'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('password') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                        <div class="el-form-item is-required el-form-item--medium">
+                        <div class="el-form-item is-required el-form-item--medium {{ $errors->has('password_confirmation') ? 'is-error': ''}}">
                             <div class="el-form-item__content">
                                 <span class="svg-container">
                                     <svg version="1.1" id="Capa_1" width="28" height="15" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -144,6 +159,13 @@
                                            name="password_confirmation"
                                            placeholder="@lang('validation.attributes.retype_new_password')"
                                            class="el-input__inner">
+                                </div>
+                                <div class="el-form-item__error">
+                                    @if ($errors->has('password_confirmation'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('password_confirmation') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
                         </div>

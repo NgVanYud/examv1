@@ -6,7 +6,7 @@ const subjectRoutes = {
   component: Layout,
   redirect: '/subjects/list',
   meta: {
-    title: 'Môn học',
+    title: 'subjects',
     icon: 'subject',
     permissions: ['view menu components'],
     roles: [ALL_ROLES['admin'], ALL_ROLES['exams_maker']],
@@ -16,20 +16,20 @@ const subjectRoutes = {
       path: 'list',
       component: () => import('@/views/subjects/List'),
       name: 'SubjectsList',
-      meta: { title: 'Môn học', icon: 'subject', noCache: true },
+      meta: { title: 'subjectsList', icon: 'subject', noCache: true },
     },
     {
       path: 'detail/:slug',
       component: () => import('@/views/subjects/Detail'),
       name: 'SubjectDetail',
-      meta: { title: 'Chỉnh sửa môn học', noCache: true },
+      meta: { title: 'editSubject', noCache: true },
       hidden: true,
     },
     {
       path: 'chapters/:slug',
       component: () => import('@/views/subjects/Chapter'),
       name: 'ChaptersList',
-      meta: { title: 'Nội dung môn học', noCache: true },
+      meta: { title: 'contentSubject', noCache: true },
       hidden: true,
     },
     {

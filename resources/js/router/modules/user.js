@@ -2,11 +2,11 @@ import Layout from '@/layout';
 import { ALL_ROLES } from '@/utils/auth';
 
 const userRoutes = {
-  path: '/users',
+  path: '/managers',
   component: Layout,
-  redirect: '/users/list',
+  redirect: '/managers/list',
   meta: {
-    title: 'Người dùng',
+    title: 'managers',
     icon: 'user',
     permissions: ['view menu components'],
     roles: [ALL_ROLES['admin']],
@@ -14,15 +14,15 @@ const userRoutes = {
   children: [
     {
       path: 'list',
-      component: () => import('@/views/users/List'),
-      name: 'UsersList',
-      meta: { title: 'Người dùng', icon: 'user', noCache: true },
+      component: () => import('@/views/users/managers/List'),
+      name: 'ManagersList',
+      meta: { title: 'managersList', icon: 'user', noCache: true },
     },
     {
       path: 'edit/:id',
       component: () => import('@/views/users/Edit'),
-      name: 'UserEdit',
-      meta: { title: 'Chỉnh sửa user', noCache: true },
+      name: 'ManagerEdit',
+      meta: { title: 'editManager', noCache: true },
       hidden: true,
     },
   ],

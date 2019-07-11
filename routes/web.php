@@ -16,7 +16,7 @@
 //});
 //Route::get('password/email/{email}', [Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email.get');
 
-Route::post('password/reset', 'Auth\ResetPasswordController@@reset')->name('password.reset');
+Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.reset')->middleware('assign.guard:manager');
 Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset.form');
 
 

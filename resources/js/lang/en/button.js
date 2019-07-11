@@ -5,6 +5,11 @@ const data = {
   reset: 'Reset',
   update: 'Update',
   create: 'Create',
+  delete: 'Delete',
+  edit: 'Edit',
+  restore: 'Restore',
+  active: 'Active',
+  block: 'Block',
 };
 
 export default data;

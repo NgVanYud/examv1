@@ -2,10 +2,6 @@ import request from '@/utils/request';
 import Resource from '@/api/resource';
 
 class UserResource extends Resource {
-  constructor() {
-    super('users');
-  }
-
   permissions(id) {
     return request({
       url: '/' + this.uri + '/' + id + '/permissions',
@@ -37,21 +33,21 @@ class UserResource extends Resource {
     });
   }
 
-  teachers(query) {
-    return request({
-      url: '/' + this.uri + '/teachers',
-      method: 'get',
-      params: query,
-    });
-  }
+  // teachers(query) {
+  //   return request({
+  //     url: '/' + this.uri + '/teachers',
+  //     method: 'get',
+  //     params: query,
+  //   });
+  // }
 
-  getByRoleName(data) {
-    return request({
-      url: '/' + this.uri + '/by-role',
-      method: 'post',
-      data: data,
-    });
-  }
+  // getByRoleName(data) {
+  //   return request({
+  //     url: '/' + this.uri + '/by-role',
+  //     method: 'post',
+  //     data: data,
+  //   });
+  // }
 }
 
 export { UserResource as default };

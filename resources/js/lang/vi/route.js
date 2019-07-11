@@ -1,6 +1,12 @@
 const data = {
   login: 'Đăng nhập',
 
+  managers: 'Người Quản Lý',
+  managersList: 'Danh Sách Quản Lý',
+  subjects: 'Môn Học',
+  subjectsList: 'Danh Sách Môn Học',
+  editSubject: 'Chỉnh Sửa Môn Học',
+
   dashboard: 'Giao diện chính',
   introduction: 'Giới thiệu',
   documentation: 'Tài liệu',

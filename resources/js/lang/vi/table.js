@@ -17,8 +17,8 @@ const data = {
   date: 'Ngày',
   author: 'Tác giả',
   readings: 'Số lần đọc',
-  status: 'Status',
-  actions: 'Actions',
+  status: 'Trạng thái',
+  actions: 'Thao tác',
   edit: 'Edit',
   publish: 'Publish',
   draft: 'Draft',
@@ -32,6 +32,7 @@ const data = {
   action: 'Thao Tác',
   email: 'Email',
   num: 'STT',
+  code: 'Mã số',
 };
 
 export default data;

@@ -71,8 +71,8 @@ export default {
                 this.$t('notification.action.reset'),
                 this.$t('notification.object.password'),
                 this.$t('notification.status.success'),
-                this.$t('notification.action.verify') + ' ' + this.$t('notification.object.email'),
-                'success'
+                'success',
+                this.$t('notification.action.verify') + ' ' + this.$t('notification.object.email')
               );
             }
           }).catch(error => {
@@ -81,6 +81,7 @@ export default {
                 this.$t('notification.action.reset'),
                 this.$t('notification.object.password'),
                 this.$t('notification.status.error'),
+                'error',
                 this.$t('notification.reason', {
                   object: this.uppercaseFirst(this.$t('notification.object.email')),
                   status: this.$t('notification.status.invalid'),
