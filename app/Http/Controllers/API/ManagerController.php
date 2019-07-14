@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Resources\User\UserResource;
+use App\Models\Manager;
 use App\Repositories\User\ManagerRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -79,8 +80,23 @@ class ManagerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $data = $request->all();
+      return $this->managerRepository->create($data);
     }
+
+  public function active(Request $request)
+  {
+    $uuid = $request->uuid;
+    $user = $this->managerRepository->updateByUuid($uuid, ['is_actived' => Manager::ACTIVED_CODE]);
+    return $user;
+  }
+
+  public function deactive(Request $request)
+  {
+    $uuid = $request->uuid;
+    $user = $this->managerRepository->updateByUuid($uuid, ['is_actived' => Manager::DEACTIVED_CODE]);
+    return $user;
+  }
 
     /**
      * Display the specified resource.
@@ -105,14 +121,13 @@ class ManagerController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function destroy(Manager $user)
+  {
+    $this->managerRepository->deleteByUuid($user->uuid);
+  }
 }

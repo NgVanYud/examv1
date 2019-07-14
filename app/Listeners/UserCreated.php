@@ -6,7 +6,7 @@ use App\Notifications\UserNeedsPasswordReset;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class UserCreated
+class UserCreated implements ShouldQueue
 {
     /**
      * Create the event listener.

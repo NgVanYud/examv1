@@ -10,6 +10,7 @@ const data = {
   restore: 'Restore',
   active: 'Active',
   block: 'Block',
+  ok: 'OK',
 };
 
 export default data;

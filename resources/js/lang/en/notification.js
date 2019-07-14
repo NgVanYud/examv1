@@ -6,7 +6,11 @@ const data = {
     verify: 'Verify',
     tryAgain: 'Try again',
     active: 'Active',
+    deactive: 'Deactive',
     block: 'Block',
+    create: 'Create',
+    delete: 'Delete',
+    continue: 'Continue',
   },
   object: {
     system: 'system',
@@ -14,6 +18,8 @@ const data = {
     password: 'password',
     email: 'email',
     account: 'account',
+    data: 'data',
+    user: 'user',
   },
   status: {
     error: 'unsuccessfully',

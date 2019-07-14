@@ -124,10 +124,11 @@ export default {
               this.$t('notification.action.login'),
               this.$t('notification.object.system'),
               this.$t('notification.status.error'),
-              this.$t('notification.reason', {
+              'error',
+              uppercaseFirst(this.$t('notification.reason', {
                 object: this.uppercaseFirst(this.$t('notification.object.info')),
                 status: this.$t('notification.status.invalid'),
-              }),
+              })),
             );
           });
         } else {
@@ -135,10 +136,11 @@ export default {
             this.$t('notification.action.login'),
             this.$t('notification.object.system'),
             this.$t('notification.status.error'),
-            this.$t('notification.reason', {
+            'error',
+            uppercaseFirst(this.$t('notification.reason', {
               object: this.uppercaseFirst(this.$t('notification.object.info')),
               status: this.$t('notification.status.invalid'),
-            }),
+            })),
           );
           return false;
         }

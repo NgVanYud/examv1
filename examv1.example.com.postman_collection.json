@@ -1,0 +1,2790 @@
+{
+	"info": {
+		"_postman_id": "8c745a51-e822-4924-94e3-86c16db2dd3d",
+		"name": "examv1.example.com",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Subject",
+			"item": [
+				{
+					"name": "Chapters",
+					"item": [
+						{
+							"name": "Store chapter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Chương thử nghiêm",
+											"type": "text"
+										},
+										{
+											"key": "is_actived",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/v1/subjects/2/chapters",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"subjects",
+										"2",
+										"chapters"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get chapters",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{domain}}/api/v1/subjects/1/chapters",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"subjects",
+										"1",
+										"chapters"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Detail chapter",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{domain}}/api/v1/chapters/14",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"chapters",
+										"14"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update chapter",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "mô hình tcp/ip 01",
+											"type": "text"
+										},
+										{
+											"key": "is_actived",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/v1/subjects/1/chapters/12/update?",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"subjects",
+										"1",
+										"chapters",
+										"12",
+										"update"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Mô hình tcp/ip (updated)",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Questions",
+					"item": [
+						{
+							"name": "Store question",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "options[1]",
+											"value": "Option 2.1",
+											"type": "text"
+										},
+										{
+											"key": "options[2]",
+											"value": "Option 2.2",
+											"type": "text"
+										},
+										{
+											"key": "options[3]",
+											"value": "Option 2.3",
+											"type": "text"
+										},
+										{
+											"key": "answer",
+											"value": "3",
+											"type": "text"
+										},
+										{
+											"key": "subject_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "chapter_id",
+											"value": "3",
+											"type": "text"
+										},
+										{
+											"key": "content",
+											"value": "Nội dung câu hỏi 11",
+											"type": "text"
+										},
+										{
+											"key": "options[0]",
+											"value": "option 1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/v1/subjects/1/chapters/3/questions",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"subjects",
+										"1",
+										"chapters",
+										"3",
+										"questions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update question",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "options[1]",
+											"value": "Option 2",
+											"type": "text"
+										},
+										{
+											"key": "options[2]",
+											"value": "Option 2.2",
+											"type": "text"
+										},
+										{
+											"key": "options[3]",
+											"value": "Option 3.1",
+											"type": "text"
+										},
+										{
+											"key": "answer",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "subject_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "chapter_id",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "content",
+											"value": "Nội dung câu hỏi 07",
+											"type": "text"
+										},
+										{
+											"key": "options[0]",
+											"value": "option 1",
+											"type": "text"
+										},
+										{
+											"key": "is_actived",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/v1/subjects/1/chapters/2/questions/2/update",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"subjects",
+										"1",
+										"chapters",
+										"2",
+										"questions",
+										"2",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Active question",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{domain}}/api/v1/subjects/1/questions/19/active",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"subjects",
+										"1",
+										"questions",
+										"19",
+										"active"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deactive question",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{domain}}/api/v1/subjects/1/questions/19/deactive",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"subjects",
+										"1",
+										"questions",
+										"19",
+										"deactive"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get questions",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{domain}}/api/v1/subjects/1/questions?order=desc&order_by=content&per_page=10&page=1&chapter=",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"subjects",
+										"1",
+										"questions"
+									],
+									"query": [
+										{
+											"key": "order",
+											"value": "desc"
+										},
+										{
+											"key": "order_by",
+											"value": "content"
+										},
+										{
+											"key": "per_page",
+											"value": "10"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "chapter",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show question",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{domain}}/api/v1/subjects/1/questions/3/show",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"subjects",
+										"1",
+										"questions",
+										"3",
+										"show"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete question",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "options[1]",
+											"value": "Option 2",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "options[2]",
+											"value": "Option 2.2",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "options[3]",
+											"value": "Option 3.1",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "answer",
+											"value": "1",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "subject_id",
+											"value": "1",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "chapter_id",
+											"value": "2",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "content",
+											"value": "Nội dung câu hỏi 06",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "options[0]",
+											"value": "option 1",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/api/v1/questions/2",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"questions",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Teacher",
+					"item": [
+						{
+							"name": "Get exam makers",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{domain}}/api/v1/subjects/1/exam-makers",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"subjects",
+										"1",
+										"exam-makers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add exam maker",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"user_uuid\" : \"b284c335-22ab-42b0-af0f-045c5a2ab8e0\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}/api/v1/subjects/1/add-exam-maker",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"subjects",
+										"1",
+										"add-exam-maker"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove exam maker",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"user_uuid\" : \"49bacd03-b2e7-4f85-ae3c-971f7a66ec30\"\n}"
+								},
+								"url": {
+									"raw": "{{domain}}/api/v1/subjects/1/remove-exam-maker",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"subjects",
+										"1",
+										"remove-exam-maker"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Create subject",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "code",
+									"value": "ATCSLTMM",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "cơ sở lý thuyết mật mã",
+									"type": "text"
+								},
+								{
+									"key": "credit",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/subjects",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subjects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update subject",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "code",
+									"value": "ATCTKM11",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "giams sát mạng máy tính",
+									"type": "text"
+								},
+								{
+									"key": "credit",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "môn hoc cung cấp kỹ năng giám sát mạng máy tính cơ bản",
+									"type": "text"
+								},
+								{
+									"key": "{{methodParaName}}",
+									"value": "PUT",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/subjects/giams-sat-mang-may-tinh",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subjects",
+								"giams-sat-mang-may-tinh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete subject",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "{{methodParaName}}",
+									"value": "DELETE",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/subjects/an-toan-mang-may-tinh?",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subjects",
+								"an-toan-mang-may-tinh"
+							],
+							"query": [
+								{
+									"key": "{{methodParaName}}",
+									"value": "DELETE",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete multi subjects",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "{{methodParaName}}",
+									"value": "DELETE",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/subjects/delete-multi?",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subjects",
+								"delete-multi"
+							],
+							"query": [
+								{
+									"key": "{{methodParaName}}",
+									"value": "DELETE",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get subjects",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"format\" : [\n\t\t\"2\" => 4,\n\t\t\"3\" => 2,\n\t\t\"4\" => 0\n\t]\n}"
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/subjects?",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subjects"
+							],
+							"query": [
+								{
+									"key": "order_by",
+									"value": "name",
+									"disabled": true
+								},
+								{
+									"key": "sort_desc",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "per_page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get exam format",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"format\" : [\n\t\t\"2\" => 4,\n\t\t\"3\" => 2,\n\t\t\"4\" => 0\n\t]\n}"
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/subjects/1/format?",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subjects",
+								"1",
+								"format"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detail subject by slug",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"format\" : [\n\t\t\"2\" => 4,\n\t\t\"3\" => 2,\n\t\t\"4\" => 0\n\t]\n}"
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/subjects/voluptates-sed-molestiae-non-officia",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subjects",
+								"voluptates-sed-molestiae-non-officia"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detail subject by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"format\" : [\n\t\t\"2\" => 4,\n\t\t\"3\" => 2,\n\t\t\"4\" => 0\n\t]\n}"
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/subjects/1/get-by-id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subjects",
+								"1",
+								"get-by-id"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Refresh token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{domain}}/api/v1/auth/refresh",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "quantrihethong@test.com",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "duy.nv.96@gmail.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "giaovienrade@test.com",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/auth/password/email",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"password",
+								"email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "ST976906",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "123@abc",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "MN000001",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/auth/login",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/auth/logout",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Term",
+			"item": [
+				{
+					"name": "Store term",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Thi kết thức học phần đợt 1 năm 2019",
+									"type": "text"
+								},
+								{
+									"key": "begin",
+									"value": "2019-02-10",
+									"type": "text"
+								},
+								{
+									"key": "end",
+									"value": "2019-02-20",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "KT012019",
+									"type": "text"
+								},
+								{
+									"key": "active",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "subjects[0]",
+									"value": "2",
+									"description": "subject id",
+									"type": "text"
+								},
+								{
+									"key": "subjects[1]",
+									"value": "3",
+									"description": "subject id",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/terms",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"terms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get subjects cho term đối vs gv coi thi",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{domain}}/api/v1/subject-term/subject",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subject-term",
+								"subject"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get terms",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "p",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/terms?limit=10",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"terms"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get subject term detail",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "p",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/subject-term/detail?subject_id=2&term_id=1",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subject-term",
+								"detail"
+							],
+							"query": [
+								{
+									"key": "subject_id",
+									"value": "2"
+								},
+								{
+									"key": "term_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update term",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "{{methodParaName}}",
+									"value": "PUT",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Thi kết thúc học phần đợt 2 năm 2018-2019\"",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "KT022019",
+									"type": "text"
+								},
+								{
+									"key": "begin",
+									"value": "2019-07-10",
+									"type": "text"
+								},
+								{
+									"key": "end",
+									"value": "2019-07-20",
+									"type": "text"
+								},
+								{
+									"key": "active",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "subjects[0]",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/terms/1",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"terms",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Store setting subject term",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "original_exam_num",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/subject-term/6/3/setting",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subject-term",
+								"6",
+								"3",
+								"setting"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get term detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/terms/1",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"terms",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exam",
+			"item": [
+				{
+					"name": "Store exam format",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "format[10]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "format[14]",
+									"value": "6",
+									"type": "text"
+								},
+								{
+									"key": "format[17]",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "timeout",
+									"value": "60",
+									"type": "text"
+								},
+								{
+									"key": "format[19]",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/subjects/2/formats?",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subjects",
+								"2",
+								"formats"
+							],
+							"query": [
+								{
+									"key": "subject_id",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update exam format",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "format[10]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "format[14]",
+									"value": "6",
+									"type": "text"
+								},
+								{
+									"key": "format[17]",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "timeout",
+									"value": "40",
+									"type": "text"
+								},
+								{
+									"key": "format[19]",
+									"value": "0",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/subjects/1/formats/1/update?",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subjects",
+								"1",
+								"formats",
+								"1",
+								"update"
+							],
+							"query": [
+								{
+									"key": "subject_id",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get format info (không dùng)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{domain}}/api/v1/subjects/2/formats/2?",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subjects",
+								"2",
+								"formats",
+								"2"
+							],
+							"query": [
+								{
+									"key": "subject_id",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get exam formats by subject",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "format[10]",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "format[14]",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "format[17]",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "timeout",
+									"value": "60",
+									"type": "text"
+								},
+								{
+									"key": "format[19]",
+									"value": "4",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/subjects/2/formats",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subjects",
+								"2",
+								"formats"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Managers",
+					"item": [
+						{
+							"name": "Get list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{domain}}/api/v1/managers?roles[0]=2",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"managers"
+									],
+									"query": [
+										{
+											"key": "roles[0]",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Get current manager",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{domain}}/api/v1/manager/me",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"manager",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get current student",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{domain}}/api/v1/student/me",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"student",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get teachers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/users/teachers?page=1",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"teachers"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "AT",
+									"disabled": true
+								},
+								{
+									"key": "roles[0]",
+									"value": "5",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Active",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "uuid",
+									"value": "2305bc0f-3726-4fad-91ce-76c7d29f0be5",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/users/active",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deactive",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "uuid",
+									"value": "2305bc0f-3726-4fad-91ce-76c7d29f0be5",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/users/deactive",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"deactive"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "{{methodParaName}}",
+									"value": "DELETE",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/users/fa64f98e-8811-4517-a4f8-050017543a18",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"fa64f98e-8811-4517-a4f8-050017543a18"
+							],
+							"query": [
+								{
+									"key": "{{methodParaName}}",
+									"value": "DELETE",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "{{methodParaName}}",
+									"value": "PUT",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "GV001101",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "Nguyen",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "Bui Van",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "test01@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "role_ids[0]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "active",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "role_ids[1]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "GV000002",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/users/49bacd03-b2e7-4f85-ae3c-971f7a66ec30",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"49bacd03-b2e7-4f85-ae3c-971f7a66ec30"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Store",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "code",
+									"value": "GV000010",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "Hậu",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "Bùi Công",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "GV000010@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "role_ids[0]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "active",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "role_ids[1]",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "username",
+									"value": "GV000010",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/users",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get users by role name",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "role_name",
+									"value": "Giáo Viên Ra Đề",
+									"description": "name của role",
+									"type": "text"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "except_users[0]",
+									"value": "a2c8d72b-77d7-41fb-8bf9-2ff6227a4443",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "except_users[1]",
+									"value": "864fb571-f9a2-475e-9273-d028b1b58a13",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/users/by-role",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"by-role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Store multiple",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"users\": [\n\t\t{\n\t\t\t\"first_name\": \"abc\",\n\t\t\t\"last_name\": \"test last name\",\n\t\t\t\"username\": \"GV000005\",\n\t\t\t\"code\": \"GV000005\",\n\t\t\t\"email\": \"gv05@gmai.com\",\n\t\t\t\"active\": 1,\n\t\t\t\"password\": \"123@abc\"\n\t\t},\n\t\t{\n\t\t\t\"first_name\": \"abc\",\n\t\t\t\"last_name\": \"nguyen van\",\n\t\t\t\"username\": \"GV000006\",\n\t\t\t\"code\": \"GV000006\",\n\t\t\t\"email\": \"gv05@gmai.com\",\n\t\t\t\"active\": 1,\n\t\t\t\"password\": \"123@abc\"\n\t\t}\n\t],\n\t\"roles\": [1]\n}"
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/users/store-multiple",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"store-multiple"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/users/49bacd03-b2e7-4f85-ae3c-971f7a66ec30",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"49bacd03-b2e7-4f85-ae3c-971f7a66ec30"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Role",
+			"item": [
+				{
+					"name": "Get list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/roles",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get detail role by name",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/roles",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get teachers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/roles/teachers",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"roles",
+								"teachers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{domain}}/api/v1/test",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"test"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

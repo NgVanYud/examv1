@@ -37,6 +37,11 @@ class Manager extends Authenticable implements CanResetPassword
     return $query->where('username', 'LIKE', '%'.$value.'%');
   }
 
+  public function createPwdResetToken() {
+    $token = app('auth.password.broker')->createToken($this);
+    return $token;
+  }
+
   /**
    * Send the password reset notification.
    *

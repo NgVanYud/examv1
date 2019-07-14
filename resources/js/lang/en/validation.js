@@ -112,6 +112,9 @@ const data = {
     username: 'username',
     password: 'password',
     email: 'email',
+    firstName: 'first name',
+    lastName: 'last name',
+    role: 'role',
   },
 };
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Message } from 'element-ui';
+// import { Message } from 'element-ui';
 import { getToken, setToken } from '@/utils/auth';
 
 // Create axios instance
@@ -38,18 +38,18 @@ service.interceptors.response.use(
   },
   error => {
     console.log('loi: ', error);
-    let message = error.message;
-    if (error.response.data && error.response.data.errors) {
-      message = error.response.data.errors;
-    } else if (error.response.data && error.response.data.error) {
-      message = error.response.data.error;
-    }
+    // let message = error.message;
+    // if (error.response.data && error.response.data.errors) {
+    //   message = error.response.data.errors;
+    // } else if (error.response.data && error.response.data.error) {
+    //   message = error.response.data.error;
+    // }
 
-    Message({
-      message: message,
-      type: 'success',
-      duration: 5 * 1000,
-    });
+    // Message({
+    //   message: message,
+    //   type: 'success',
+    //   duration: 5 * 1000,
+    // });
     return Promise.reject(error);
   },
 );

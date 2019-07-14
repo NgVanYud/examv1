@@ -15,7 +15,7 @@ module.exports = {
     'eslint-plugin/report-message-format': ['error', "^[A-Z`'{].*\\.$"],
     'eslint-plugin/prefer-placeholders': 'error',
     'eslint-plugin/consistent-output': 'error',
-    'no-mixed-operators': 'error',
+    // 'no-mixed-operators': 'error',
     'space-before-function-paren': 'off',
     'vue/comma-dangle': ['error', 'always-multiline'],
     'comma-dangle': ['error', 'always-multiline'],

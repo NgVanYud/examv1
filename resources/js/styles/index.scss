@@ -176,6 +176,21 @@ aside {
   }
 }
 
+// container
+.app-container {
+  flex: 1;
+  justify-content: space-between;
+  font-size: 14px;
+  padding-right: 8px;
+  .block {
+    float: left;
+    min-width: 250px;
+  }
+  .clear-left {
+    clear: left;
+  }
+}
+
 .filter-container {
   padding-bottom: 10px;
 

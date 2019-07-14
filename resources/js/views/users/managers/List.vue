@@ -219,7 +219,7 @@
             {{ $t('button.cancel') }}
           </el-button>
           <el-button type="primary" @click="createUser()">
-            {{ $t('table.create') }}
+            {{ $t('button.create') }}
           </el-button>
         </div>
       </div>
@@ -238,6 +238,7 @@ import checkPermission from '@/utils/permission'; // Permission checking
 import { ALL_ROLES } from '@/utils/auth';
 import { include as includeRole } from '@/utils/role';
 import { getNotification } from '@/utils/notification';
+import { uppercaseFirst } from '@/filters';
 
 const userResource = new ManagerResource();
 const roleResource = new RoleResource();
@@ -287,7 +288,6 @@ export default {
         search: '',
       },
       // roles: ['admin', 'manager', 'editor', 'user', 'visitor'],
-      nonAdminRoles: ['editor', 'user', 'visitor'],
       newItem: {},
       dialogFormVisible: false,
       dialogPermissionVisible: false,
@@ -300,27 +300,108 @@ export default {
       },
       rules: {
         username: [
-          { required: true, message: 'Vui lòng nhập tài khoản người dùng.', trigger: ['change', 'blur'] },
-          { min: 3, max: 15, message: 'Độ dài tài khoản người dùng từ 3 đến 15 ký tự.', trigger: ['change', 'blur'] },
+          {
+            required: true,
+            message: this.$t('validation.required', {
+              attribute: this.$t('validation.attributes.username'),
+            }),
+            trigger: ['change', 'blur'],
+          },
+          {
+            min: 3,
+            max: 15,
+            message: this.$t('validation.between.string', {
+              attribute: this.$t('validation.attributes.username'),
+              min: 3,
+              max: 15,
+            }),
+            trigger: ['change', 'blur'] },
         ],
         code: [
-          { required: true, message: 'Vui lòng nhập mã số người dùng.', trigger: ['change', 'blur'] },
-          { min: 3, max: 15, message: 'Độ dài mã số người dùng từ 3 đến 15 ký tự.', trigger: ['change', 'blur'] },
+          {
+            required: true,
+            message: this.$t('validation.required', {
+              attribute: this.$t('validation.attributes.code'),
+            }),
+            trigger: ['change', 'blur'],
+          },
+          {
+            min: 3,
+            max: 15,
+            message: this.$t('validation.between.string', {
+              attribute: this.$t('validation.attributes.code'),
+              min: 3,
+              max: 15,
+            }),
+            trigger: ['change', 'blur'],
+          },
         ],
         first_name: [
-          { required: true, message: 'Vui lòng nhập tên người dùng.', trigger: ['change', 'blur'] },
-          { min: 1, max: 20, message: 'Độ dài tên người dùng từ 1 đến 20 ký tự.', trigger: ['change', 'blur'] },
+          {
+            required: true,
+            message: this.$t('validation.required', {
+              attribute: this.$t('validation.attributes.firstName'),
+            }),
+            trigger: ['change', 'blur'],
+          },
+          {
+            min: 1,
+            max: 20,
+            message: this.$t('validation.between.string', {
+              attribute: this.$t('validation.attributes.firstName'),
+              min: 1,
+              max: 20,
+            }),
+            trigger: ['change', 'blur'],
+          },
         ],
         last_name: [
-          { required: true, message: 'Vui lòng nhập họ người dùng.', trigger: ['change', 'blur'] },
-          { min: 2, max: 60, message: 'Độ dài họ người dùng từ 2 đến 60 ký tự.', trigger: ['change', 'blur'] },
+          {
+            required: true,
+            message: this.$t('validation.required', {
+              attribute: this.$t('validation.attributes.lastName'),
+            }),
+            trigger: ['change', 'blur'],
+          },
+          {
+            min: 2,
+            max: 60,
+            message: this.$t('validation.between.string', {
+              attribute: this.$t('validation.attributes.lastName'),
+              min: 2,
+              max: 60,
+            }),
+            trigger: ['change', 'blur'],
+          },
         ],
         email: [
-          { type: 'email', required: true, message: 'Vui lòng nhập email người dùng.', trigger: ['change', 'blur'] },
-          { min: 3, max: 100, message: 'Độ dài email từ 3 đến 100 ký tự.', trigger: ['change', 'blur'] },
+          {
+            type: 'email',
+            required: true,
+            message: this.$t('validation.required', {
+              attribute: this.$t('validation.attributes.email'),
+            }),
+            trigger: ['change', 'blur'],
+          },
+          {
+            min: 3,
+            max: 100,
+            message: this.$t('validation.between.string', {
+              attribute: this.$t('validation.attributes.email'),
+              min: 3,
+              max: 100,
+            }),
+            trigger: ['change', 'blur'],
+          },
         ],
         role_ids: [
-          { required: true, message: 'Vui lòng chọn nhóm người dùng.', trigger: ['change', 'blur'] },
+          {
+            required: true,
+            message: this.$t('validation.required', {
+              attribute: this.$t('validation.attributes.role'),
+            }),
+            trigger: ['change', 'blur'],
+          },
         ],
       },
       permissionProps: {
@@ -424,9 +505,9 @@ export default {
           element['index'] = (page - 1) * limit + index + 1;
         });
         this.total = meta.total;
-        this.loading = false;
       } catch (e) {
         console.log(e);
+      } finally {
         this.loading = false;
       }
     },
@@ -446,19 +527,29 @@ export default {
       });
     },
     handleDelete(item) {
-      this.$confirm('Xóa người dùng ' + item.first_name + '. Tiếp tục?', 'Warning', {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Hủy',
-        type: 'warning',
-      }).then(() => {
+      this.$confirm(
+        this.$t('notification.action.delete') + ' ' + this.$t('notification.object.user') + ' ' + item.first_name + '. ' + this.$t('notification.action.continue') + '?', 'Warning',
+        {
+          confirmButtonText: this.$t('button.ok'),
+          cancelButtonText: this.$t('button.cancel'),
+          type: 'warning',
+        }
+      ).then(() => {
         userResource.destroy(item.uuid).then(response => {
-          this.$message({
-            type: 'success',
-            message: 'Xóa người dùng thành công',
-          });
+          getNotification(
+            this.$t('notification.action.delete'),
+            this.$t('notification.object.user'),
+            this.$t('notification.status.success'),
+            'success',
+          );
           this.handleFilter();
         }).catch(error => {
           console.log(error);
+          getNotification(
+            this.$t('notification.action.delete'),
+            this.$t('notification.object.user'),
+            this.$t('notification.status.error')
+          );
         });
       }).catch(() => {
         this.$message({
@@ -494,19 +585,25 @@ export default {
           userResource
             .store(this.newItem)
             .then(response => {
-              console.log(response);
+              console.log('store done: ', response);
               if (response.error) {
-                this.$message({
-                  message: 'Tạo mới người dùng không thành công do dữ liệu  trùng lặp hoặc không hợp lệ.',
-                  type: 'error',
-                  duration: 5 * 1000,
-                });
+                getNotification(
+                  this.$t('notification.action.create'),
+                  this.$t('notification.object.user'),
+                  this.$t('notification.status.error'),
+                  'error',
+                  uppercaseFirst(this.$t('notification.reason', {
+                    object: this.$t('notification.object.data'),
+                    status: this.$t('notification.status.invalid'),
+                  }))
+                );
               } else {
-                this.$message({
-                  message: 'Tạo mới người dùng thành công.',
-                  type: 'success',
-                  duration: 5 * 1000,
-                });
+                getNotification(
+                  this.$t('notification.action.create'),
+                  this.$t('notification.object.user'),
+                  this.$t('notification.status.success'),
+                  'success'
+                );
                 this.resetNewUser();
                 this.dialogFormVisible = false;
                 this.handleFilter();
@@ -514,23 +611,26 @@ export default {
             })
             .catch(error => {
               console.log(error);
-              this.$message({
-                message: 'Tạo mới người dùng không thành công.',
-                type: 'error',
-                duration: 5 * 1000,
-              });
+              getNotification(
+                this.$t('notification.action.create'),
+                this.$t('notification.object.user'),
+                this.$t('notification.status.error')
+              );
             })
             .finally(() => {
               this.itemCreating = false;
             });
         } else {
-          console.log('error submit!!');
-          this.$message({
-            message: 'Dữ liệu không hợp lệ. Vui lòng nhập lại!',
-            type: 'error',
-            duration: 5 * 1000,
-          });
-          return false;
+          getNotification(
+            this.$t('notification.action.create'),
+            this.$t('notification.object.user'),
+            this.$t('notification.status.error'),
+            'error',
+            uppercaseFirst(this.$t('notification.reason', {
+              object: this.$t('notification.object.data'),
+              status: this.$t('notification.status.invalid'),
+            }))
+          );
         }
       });
     },
@@ -613,26 +713,29 @@ export default {
         this.refreshData();
       }).catch(error => {
         console.log(error);
-        this.$message({
-          type: 'error',
-          message: 'Kích hoạt tài khoản người dùng không thành công',
-        });
+        getNotification(
+          this.$t('notification.action.active'),
+          this.$t('notification.object.account'),
+          this.$t('notification.status.error')
+        );
       });
     },
     handleDeactive(item) {
       userResource.deactive(item.uuid).then(response => {
-        console.log('active', response);
-        this.$message({
-          type: 'error',
-          message: 'Khóa tài khoản người dùng thành công',
-        });
+        getNotification(
+          this.$t('notification.action.deactive'),
+          this.$t('notification.object.account'),
+          this.$t('notification.status.success'),
+          'success'
+        );
         this.refreshData();
       }).catch(error => {
         console.log(error);
-        this.$message({
-          type: 'success',
-          message: 'Khóa tài khoản người dùng không thành công',
-        });
+        getNotification(
+          this.$t('notification.action.deactive'),
+          this.$t('notification.object.account'),
+          this.$t('notification.status.error')
+        );
       });
     },
     refreshData() {
@@ -651,18 +754,5 @@ export default {
   text-align: left;
   padding-top: 0;
   margin-left: 150px;
-}
-.app-container {
-  flex: 1;
-  justify-content: space-between;
-  font-size: 14px;
-  padding-right: 8px;
-  .block {
-    float: left;
-    min-width: 250px;
-  }
-  .clear-left {
-    clear: left;
-  }
 }
 </style>
