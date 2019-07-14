@@ -20,7 +20,7 @@ const userRoutes = {
     },
     {
       path: 'edit/:id',
-      component: () => import('@/views/users/Edit'),
+      component: () => import('@/views/users/managers/Edit'),
       name: 'ManagerEdit',
       meta: { title: 'editManager', noCache: true },
       hidden: true,

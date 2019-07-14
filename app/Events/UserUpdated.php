@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\SerializesModels;
@@ -23,7 +22,7 @@ class UserUpdated implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(\App\Models\Auth\User $user)
     {
         $this->user = $user;
     }

@@ -5,8 +5,10 @@ namespace App\Repositories\User;
 
 
 use App\Events\UserCreated;
+use App\Events\UserUpdated;
 use App\Exceptions\GeneralException;
 use App\Models\Manager;
+use App\Models\User;
 use App\Repositories\BaseRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -129,4 +131,61 @@ class ManagerRepository extends BaseRepository
     return $this->getByUuid($uuid)->delete();
   }
 
+  /**
+   * @param User  $user
+   * @param array $data
+   *
+   * @return User
+   * @throws GeneralException
+   * @throws \Exception
+   * @throws \Throwable
+   */
+  public function update(Manager $user, array $data) : Manager
+  {
+    $this->checkUserByEmail($user, $data['email']);
+
+    // See if adding any additional permissions
+    if (! isset($data['permissions']) || ! count($data['permissions'])) {
+      $data['permissions'] = [];
+    }
+
+    return DB::transaction(function () use ($user, $data) {
+      if ($user->update([
+        'username' => $data['username'],
+        'first_name' => $data['first_name'],
+        'last_name' => $data['last_name'],
+        'email' => $data['email'],
+        'code' => $data['code']
+//        'active' => $data['active']
+      ])) {
+        // Add selected roles/permissions
+        $user->syncRoles($data['role_ids']);
+        $user->syncPermissions($data['permissions']);
+
+        event(new UserUpdated($user));
+
+        return $user;
+      }
+
+      throw new GeneralException(__('exceptions.backend.access.users.update_error'));
+    });
+  }
+
+  /**
+   * Kiểm tra email đã tồn tại chưa
+   * @param Manager $user
+   * @param      $email
+   *
+   * @throws GeneralException
+   */
+  protected function checkUserByEmail(Manager $user, $email)
+  {
+    //Figure out if email is not the same
+    if ($user->email != $email) {
+      //Check to see if email exists
+      if ($this->model->where('email', '=', $email)->first()) {
+        throw new GeneralException(trans('exceptions.backend.access.users.email_error'));
+      }
+    }
+  }
 }

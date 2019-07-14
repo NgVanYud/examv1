@@ -31,7 +31,7 @@
 
 <script>
 import RoleResource from '@/api/role';
-import UserResource from '@/api/user';
+import UserResource from '@/api/manager';
 import { Message } from 'element-ui';
 
 const userResource = new UserResource();
@@ -75,6 +75,7 @@ export default {
     },
     async userDetail(uuid) {
       const { data, roles, permissions } = await userResource.get(uuid);
+      console.log('thong tin user: ', data);
       this.user = data;
       this.userRoleIds = roles;
       this.permissionIds = permissions;
@@ -99,7 +100,7 @@ export default {
                 type: 'success',
                 duration: 5 * 1000,
               });
-              this.$router.push({ name: 'UsersList' });
+              this.$router.push({ name: 'ManagersList' });
             }
           }).catch(error => {
             console.log('Error: ', error);

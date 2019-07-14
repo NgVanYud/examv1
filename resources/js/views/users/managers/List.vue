@@ -102,7 +102,7 @@
       <el-table-column align="center" :label="$t('table.action')">
         <template slot-scope="scope">
           <router-link
-            :to = "{ name: 'UserEdit', params: { id: scope.row.uuid }}">
+            :to = "{ name: 'ManagerEdit', params: { id: scope.row.uuid }}">
 <!--            <el-button type="primary" size="mini" icon="el-icon-edit" v-permission="['manage user']">-->
             <el-button
               type="primary"

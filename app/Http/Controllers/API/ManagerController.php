@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Requests\User\UpdateManagerRequest;
 use App\Http\Resources\User\UserResource;
 use App\Models\Manager;
 use App\Repositories\User\ManagerRepository;
@@ -98,28 +99,25 @@ class ManagerController extends Controller
     return $user;
   }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+  /**
+   * Display the specified resource.
+   *
+   * @param \App\Model\Chapter $chapter
+   * @return \Illuminate\Http\Response
+   */
+  public function show(Manager $user)
+  {
+    return new UserResource($user);
+  }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+  /**
+   * Update the specified resource in storage.
+   *
+   */
+  public function update(UpdateManagerRequest $request, Manager $manager)
+  {
+    return $this->managerRepository->update($manager, $request->all());
+  }
 
   /**
    * Remove the specified resource from storage.
