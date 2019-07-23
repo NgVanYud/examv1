@@ -116,7 +116,10 @@ class ManagerController extends Controller
    */
   public function update(UpdateManagerRequest $request, Manager $manager)
   {
-    return $this->managerRepository->update($manager, $request->all());
+    $updatedData = $request->only([
+      'username', 'code', 'first_name', 'last_name', 'email', 'role_ids'
+    ]);
+    return $this->managerRepository->update($manager, $updatedData);
   }
 
   /**

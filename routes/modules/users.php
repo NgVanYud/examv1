@@ -5,11 +5,11 @@
  * Date: 3/26/19
  * Time: 10:07 AM
  */
+//  student
 Route::group([
   'middleware' => ['assign.guard:student', 'jwt.auth'],
   'namespace' => 'API'
 ], function () {
-  //  student
   Route::post('student/me', 'UserController@me');
 });
 

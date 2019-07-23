@@ -11,6 +11,7 @@ const data = {
     create: 'Tạo',
     delete: 'Xóa',
     continue: 'Tiếp tục',
+    update: 'Cập nhật',
   },
   object: {
     system: 'hệ thống',

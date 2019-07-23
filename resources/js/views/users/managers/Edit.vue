@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form ref="itemForm" :model="user" :rules="rules" label-width="120px" size="mini">
       <el-form-item label="Tài Khoản" prop="username">
-        <el-input v-model="user.username" :disabled="true"/>
+        <el-input v-model="user.username"/>
       </el-form-item>
       <el-form-item label="Mã Số" prop="code">
         <el-input v-model="user.code"/>
@@ -32,13 +32,13 @@
 <script>
 import RoleResource from '@/api/role';
 import UserResource from '@/api/manager';
-import { Message } from 'element-ui';
+import { getNotification } from '@/utils/notification';
+import { uppercaseFirst } from '@/filters';
 
 const userResource = new UserResource();
 const roleResource = new RoleResource();
 
 export default {
-  name: 'EditUser',
   data() {
     return {
       user: {},
@@ -46,24 +46,100 @@ export default {
       userRoleIds: [],
       permissionIds: [],
       rules: {
+        username: [
+          {
+            required: true,
+            message: this.$t('validation.required', {
+              attribute: this.$t('validation.attributes.username'),
+            }),
+            trigger: ['change', 'blur'],
+          },
+          {
+            min: 3,
+            max: 15,
+            message: this.$t('validation.between.string', {
+              attribute: this.$t('validation.attributes.username'),
+              min: 3,
+              max: 15,
+            }),
+            trigger: ['change', 'blur'] },
+        ],
         code: [
-          { required: true, message: 'Vui lòng nhập mã số người dùng.', trigger: ['change', 'blur'] },
-          { min: 3, max: 15, message: 'Độ dài mã số người dùng từ 3 đến 15 ký tự.', trigger: ['change', 'blur'] },
+          {
+            required: true,
+            message: this.$t('validation.required', {
+              attribute: this.$t('validation.attributes.code'),
+            }),
+            trigger: ['change', 'blur'],
+          },
+          {
+            min: 3,
+            max: 15,
+            message: this.$t('validation.between.string', {
+              attribute: this.$t('validation.attributes.code'),
+              min: 3,
+              max: 15,
+            }),
+            trigger: ['change', 'blur'],
+          },
         ],
         first_name: [
-          { required: true, message: 'Vui lòng nhập tên người dùng.', trigger: ['change', 'blur'] },
-          { min: 1, max: 20, message: 'Độ dài tên người dùng từ 1 đến 20 ký tự.', trigger: ['change', 'blur'] },
+          {
+            required: true,
+            message: this.$t('validation.required', {
+              attribute: this.$t('validation.attributes.firstName'),
+            }),
+            trigger: ['change', 'blur'],
+          },
+          {
+            min: 1,
+            max: 20,
+            message: this.$t('validation.between.string', {
+              attribute: this.$t('validation.attributes.firstName'),
+              min: 1,
+              max: 20,
+            }),
+            trigger: ['change', 'blur'],
+          },
         ],
         last_name: [
-          { required: true, message: 'Vui lòng nhập họ người dùng.', trigger: ['change', 'blur'] },
-          { min: 2, max: 60, message: 'Độ dài họ người dùng từ 2 đến 60 ký tự.', trigger: ['change', 'blur'] },
+          {
+            required: true,
+            message: this.$t('validation.required', {
+              attribute: this.$t('validation.attributes.lastName'),
+            }),
+            trigger: ['change', 'blur'],
+          },
+          {
+            min: 2,
+            max: 60,
+            message: this.$t('validation.between.string', {
+              attribute: this.$t('validation.attributes.lastName'),
+              min: 2,
+              max: 60,
+            }),
+            trigger: ['change', 'blur'],
+          },
         ],
         email: [
-          { type: 'email', required: true, message: 'Vui lòng nhập email người dùng.', trigger: ['change', 'blur'] },
-          { min: 3, max: 100, message: 'Độ dài email từ 3 đến 100 ký tự.', trigger: ['change', 'blur'] },
-        ],
-        roles: [
-          { type: 'array', required: true, message: 'Vui lòng nhập email người dùng.', trigger: ['change', 'blur'] },
+          {
+            type: 'email',
+            required: true,
+            message: this.$t('validation.required', {
+              attribute: this.$t('validation.attributes.email'),
+            }),
+            trigger: ['change', 'blur'],
+          },
+          {
+            min: 3,
+            max: 100,
+            message: this.$t('validation.between.string', {
+              attribute: this.$t('validation.attributes.email'),
+              min: 3,
+              max: 100,
+            }),
+            trigger: ['change', 'blur'],
+          },
         ],
       },
     };
@@ -89,33 +165,40 @@ export default {
           this.user.role_ids = this.userRoleIds;
           userResource.update(this.user.uuid, this.user).then(response => {
             if (response.error) {
-              Message({
-                message: 'Cập nhật người dùng không thành công do dũ liệu trùng lặp hoặc không hợp lệ',
-                type: 'error',
-                duration: 5 * 1000,
-              });
+              throw new Error('error');
             } else {
-              Message({
-                message: 'Cập nhật người dùng thành công!',
-                type: 'success',
-                duration: 5 * 1000,
-              });
+              getNotification(
+                this.$t('notification.action.update'),
+                this.$t('notification.object.user'),
+                this.$t('notification.status.success'),
+                'success',
+              );
               this.$router.push({ name: 'ManagersList' });
             }
           }).catch(error => {
             console.log('Error: ', error);
-            Message({
-              message: 'Có lỗi xảy ra. Vui lòng thử lại!',
-              type: 'error',
-              duration: 5 * 1000,
-            });
+            getNotification(
+              this.$t('notification.action.update'),
+              this.$t('notification.object.user'),
+              this.$t('notification.status.error'),
+              'error',
+              uppercaseFirst(this.$t('notification.reason', {
+                object: this.$t('notification.object.data'),
+                status: this.$t('notification.status.invalid'),
+              }))
+            );
           });
         } else {
-          Message({
-            message: 'Dữ liệu không hợp lệ. Vui lòng nhập lại!',
-            type: 'error',
-            duration: 5 * 1000,
-          });
+          getNotification(
+            this.$t('notification.action.update'),
+            this.$t('notification.object.user'),
+            this.$t('notification.status.error'),
+            'error',
+            uppercaseFirst(this.$t('notification.reason', {
+              object: this.$t('notification.object.data'),
+              status: this.$t('notification.status.invalid'),
+            }))
+          );
         }
       });
     },

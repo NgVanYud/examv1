@@ -11,6 +11,7 @@ const data = {
     create: 'Create',
     delete: 'Delete',
     continue: 'Continue',
+    update: 'Update',
   },
   object: {
     system: 'system',
