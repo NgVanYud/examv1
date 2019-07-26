@@ -64,15 +64,8 @@ class RoleController extends Controller
    * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
    * @throws GeneralException
    */
-    public function getUsersByRoleName(Request $request) {
+    public function getUsersByRole(Request $request) {
       $roleInfo = $request->role_name;
-//      $role = null;
-//      if(is_int($roleInfo)) {
-//        $role = $this->roleRepository->getById($roleInfo);
-//      } else if(is_string($roleInfo)) {
-//      } else {
-//        throw new GeneralException('Dữ liệu không hợp lệ', 403);
-//      }
       $role = $this->roleRepository->getByColumn($roleInfo, 'name');
 
       $conditions = [

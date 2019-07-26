@@ -50,6 +50,11 @@ class RouteServiceProvider extends ServiceProvider
               'podcast' => 'format',
               'model' => '\App\Models\Format',
               'findBy' => 'id'
+            ],
+            [
+              'podcast' => 'role',
+              'model' => '\Spatie\Permission\Models\Role',
+              'findBy' => 'id'
             ]
         ];
 

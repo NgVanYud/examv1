@@ -18,6 +18,7 @@ use App\Http\Resources\User\UserResource;
 use App\Models\Subject;
 use App\Repositories\Subject\ChapterRepository;
 use App\Repositories\Subject\SubjectRepository;
+use App\Repositories\User\ManagerRepository;
 use App\Repositories\User\UserRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -32,6 +33,8 @@ class SubjectController extends Controller
 
     public $userRepository;
 
+    public $managerRepository;
+
     /**
      * PHP 5 allows developers to declare constructor methods for classes.
      * Classes which have a constructor method call this method on each newly-created object,
@@ -44,10 +47,15 @@ class SubjectController extends Controller
      * @link https://php.net/manual/en/language.oop5.decon.php
      */
     public function __construct(
-      SubjectRepository $subjectRepository, ChapterRepository $chapterRepository, UserRepository $userRepository){
+      SubjectRepository $subjectRepository,
+      ChapterRepository $chapterRepository,
+      UserRepository $userRepository,
+      ManagerRepository $managerRepository){
         $this->subjectRepository = $subjectRepository;
         $this->chapterRepository = $chapterRepository;
         $this->userRepository = $userRepository;
+        $this->managerRepository = $managerRepository;
+        $this->authorizeResource(Subject::class, 'subject');
     }
 
     /**
@@ -215,23 +223,21 @@ class SubjectController extends Controller
       return QuestionResource::collection($this->subjectRepository->getQuestions($subjectId, $request->all()));
     }
 
-    public function getExamMakers(Request $request, $id) {
-      $subject = $this->subjectRepository->getById($id);
-//      return $subject;
+    public function getExamMakers(Request $request, $subject) {
       $examMkers = $subject->examMakers;
       return UserResource::collection($examMkers);
     }
 
-    public function storeExamMaker(Request $request, $subjectId) {
+    public function storeExamMaker(Request $request, $subject) {
       $examMakerUuid = $request->user_uuid;
-      $examMaker = $this->userRepository->getByUuid($examMakerUuid);
-      return $examMaker->subjects()->attach($subjectId);
+      $examMaker = $this->managerRepository->getByUuid($examMakerUuid);
+      return $examMaker->quizMakeSubjects()->attach($subject->id);
     }
 
-    public function removeExamMaker(Request $request, $subjectId) {
+    public function removeExamMaker(Request $request, $subject) {
       $examMakerUuid = $request->user_uuid;
-      $examMaker = $this->userRepository->getByUuid($examMakerUuid);
-      return $examMaker->subjects()->detach($subjectId);
+      $examMaker = $this->managerRepository->getByUuid($examMakerUuid);
+      return $examMaker->quizMakeSubjects()->detach($subject->id);
     }
 
     public function getExamFormat(Request $request, $subjectId) {

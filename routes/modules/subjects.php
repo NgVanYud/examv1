@@ -12,7 +12,7 @@ Route::group([
   Route::group([
     'middleware' => 'role:'.config('access.roles_list.exams_maker')
   ], function () {
-  //Chapter
+      //Chapter
       Route::post('subjects/{subjectId}/chapters', 'SubjectController@storeChapter');
       Route::post('subjects/{subjectId}/chapters/{chapterId}/update', 'SubjectController@updateChapter');
       Route::get('subjects/{subjectId}/chapters', 'SubjectController@getChapters');
@@ -36,9 +36,9 @@ Route::group([
   Route::group([
     'middleware' => 'role:'.config('access.roles_list.admin')
   ], function() {
-    Route::get('subjects/{id}/exam-makers', 'SubjectController@getExamMakers');
-    Route::post('subjects/{id}/add-exam-maker', 'SubjectController@storeExamMaker');
-    Route::post('subjects/{id}/remove-exam-maker', 'SubjectController@removeExamMaker');
+    Route::get('subjects/{subject}/exam-makers', 'SubjectController@getExamMakers');
+    Route::post('subjects/{subject}/exam-makers', 'SubjectController@storeExamMaker');
+    Route::delete('subjects/{subject}/exam-makers', 'SubjectController@removeExamMaker');
     Route::post('subjects/delete-multi', 'SubjectController@destroyMulti');
     Route::resource('subjects', 'SubjectController')->only([ 'store', 'destroy', 'update' ]);
   });

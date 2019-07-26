@@ -51,4 +51,8 @@ class Manager extends Authenticable implements CanResetPassword
   {
     $this->notify(new UserNeedsPasswordReset($token, $this));
   }
+
+  public function quizMakeSubjects() {
+    return $this->belongsToMany('App\Models\Subject', 'quizs_maker_subject', 'quizs_maker_id','subject_id');
+  }
 }

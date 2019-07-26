@@ -8,7 +8,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SubjectPolicy
 {
-    use HandlesAuthorization;
+  use HandlesAuthorization;
 
   public $roleRepository;
 
@@ -30,5 +30,19 @@ class SubjectPolicy
     return $user->hasAnyRole([$adminRole->id, $examsMakerRole->id, $curatorRole->id]);
   }
 
+  public function create($user) {
+    return $user->hasRole(config('access.roles_list.admin'));
+  }
 
+  public function update($user, $model) {
+    return $user->hasRole(config('access.roles_list.admin'));
+  }
+
+  public function view($user, $model) {
+    return true;
+  }
+
+  public function delete($user, $model) {
+    return $user->hasRole(config('access.roles_list.admin'));
+  }
 }

@@ -21,6 +21,7 @@ const data = {
     account: 'account',
     data: 'data',
     user: 'user',
+    subject: 'subject',
   },
   status: {
     error: 'unsuccessfully',

@@ -26,6 +26,8 @@
 
 <script>
 import SubjectResource from '@/api/subject';
+import { getNotification } from '@/utils/notification';
+import { uppercaseFirst } from '@/filters';
 
 const subjectResource = new SubjectResource();
 
@@ -69,33 +71,40 @@ export default {
         if (valid) {
           subjectResource.update(this.subject.slug, this.subject).then(response => {
             if (response.error) {
-              this.$message({
-                message: 'Cập nhật môn học không thành công do dũ liệu trùng lặp hoặc không hợp lệ',
-                type: 'error',
-                duration: 5 * 1000,
-              });
+              throw new Error('error');
             } else {
-              this.$message({
-                message: 'Cập nhật môn học thành công!',
-                type: 'success',
-                duration: 5 * 1000,
-              });
-              // this.$router.push({ name: 'SubjectsList' });
+              getNotification(
+                this.$t('notification.action.update'),
+                this.$t('notification.object.subject'),
+                this.$t('notification.status.success'),
+                'success',
+              );
+              this.$router.push({ name: 'SubjectsList' });
             }
           }).catch(error => {
             console.log('Error: ', error);
-            this.$message({
-              message: 'Có lỗi xảy ra. Vui lòng thử lại!',
-              type: 'error',
-              duration: 5 * 1000,
-            });
+            getNotification(
+              this.$t('notification.action.update'),
+              this.$t('notification.object.subject'),
+              this.$t('notification.status.error'),
+              'error',
+              uppercaseFirst(this.$t('notification.reason', {
+                object: this.$t('notification.object.data'),
+                status: this.$t('notification.status.invalid'),
+              }))
+            );
           });
         } else {
-          this.$message({
-            message: 'Dữ liệu không hợp lệ. Vui lòng nhập lại!',
-            type: 'error',
-            duration: 5 * 1000,
-          });
+          getNotification(
+            this.$t('notification.action.update'),
+            this.$t('notification.object.subject'),
+            this.$t('notification.status.error'),
+            'error',
+            uppercaseFirst(this.$t('notification.reason', {
+              object: this.$t('notification.object.data'),
+              status: this.$t('notification.status.invalid'),
+            }))
+          );
         }
       });
     },

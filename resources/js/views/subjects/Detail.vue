@@ -5,7 +5,7 @@
         <edit-tab></edit-tab>
       </el-tab-pane>
       <el-tab-pane label="Giáo viên ra đề" name="teacher" v-if="includeRoles(userRoles, [allRoles['admin']], false)">
-        <teacher-tab></teacher-tab>
+        <teacher-tab :item="item"></teacher-tab>
       </el-tab-pane>
       <el-tab-pane label="Nội Dung Môn Học" name="content" v-if="includeRoles(userRoles, [allRoles['exams_maker']], false)">
         <subject-content-tab></subject-content-tab>
@@ -27,11 +27,8 @@
 
 <script>
 import SubjectResource from '@/api/subject';
-// import UserResource from '@/api/user';
 import RoleResource from '@/api/role';
-// import Resource from '@/api/resource';
 
-// import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 import SubjectContentTab from './components/tabs/SubjectContent';
 import EditTab from './components/tabs/Edit';
 import TeacherTab from './components/tabs/Teacher';

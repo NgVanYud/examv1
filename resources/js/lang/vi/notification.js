@@ -21,6 +21,7 @@ const data = {
     account: 'tài khoản',
     data: 'dữ liệu',
     user: 'người dùng',
+    subject: 'môn học',
   },
   status: {
     error: 'không thành công',

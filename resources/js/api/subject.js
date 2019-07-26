@@ -22,7 +22,7 @@ class SubjectResource extends Resource {
     });
   }
 
-  getExamMakers(id) {
+  examMakers(id) {
     return request({
       url: '/' + this.uri + '/' + id + '/exam-makers',
       method: 'get',
@@ -30,15 +30,15 @@ class SubjectResource extends Resource {
   }
   storeExamMaker(subjectId, userId) {
     return request({
-      url: '/' + this.uri + '/' + subjectId + '/add-exam-maker',
+      url: '/' + this.uri + '/' + subjectId + '/exam-makers',
       method: 'post',
       data: { user_uuid: userId },
     });
   }
   removeExamMaker(subjectId, userId) {
     return request({
-      url: '/' + this.uri + '/' + subjectId + '/remove-exam-maker',
-      method: 'post',
+      url: '/' + this.uri + '/' + subjectId + '/exam-makers',
+      method: 'delete',
       data: { user_uuid: userId },
     });
   }

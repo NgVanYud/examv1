@@ -145,14 +145,14 @@
 </template>
 
 <script>
-import UserResource from '@/api/user';
+import ManagerResource from '@/api/manager';
 import SubjectResource from '@/api/subject';
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 
 import { ALL_ROLES } from '@/utils/auth';
 import { include as includeRole } from '@/utils/role';
 
-const userResource = new UserResource();
+const userResource = new ManagerResource();
 const subjectResource = new SubjectResource();
 
 export default {
@@ -201,7 +201,7 @@ export default {
       subjectResource.get(idKey).then(response => {
         const { data } = response;
         this.subject = data;
-        this.getSubjectExamMakers(this.subject.id);
+        this.getSubjectExamMakers(this.subject);
         this.getAllExamMakers();
       }).catch(() => {
 
@@ -220,7 +220,7 @@ export default {
       const subjectExamMakerUuids = this.subjectExamMakers.map(examMaker => examMaker.uuid);
       this.query.except_users = subjectExamMakerUuids;
       this.query.role_name = this.allRoles['exams_maker'];
-      userResource.getByRoleName(this.query).then(response => {
+      userResource.getByRole(this.query).then(response => {
         const { data, meta } = response;
         this.allExamMakers = data;
         this.allExamMakers.forEach((element, index) => {
@@ -234,9 +234,9 @@ export default {
         this.loading = false;
       });
     },
-    getSubjectExamMakers(subjectId) {
+    getSubjectExamMakers(subject) {
       this.loading = true;
-      subjectResource.getExamMakers(subjectId).then(response => {
+      subjectResource.examMakers(this.subject.slug).then(response => {
         const { data } = response;
         this.subjectExamMakers = data;
         this.subjectExamMakers.forEach((element, index) => {
@@ -250,10 +250,8 @@ export default {
       });
     },
     handleAddExamUser(user) {
-      subjectResource.storeExamMaker(this.subject.id, user.uuid).then(response => {
+      subjectResource.storeExamMaker(this.subject.slug, user.uuid).then(response => {
         this.loading = true;
-        // this.getAllExamMakers();
-        // this.getSubjectExamMakers();
         this.handleFilter();
         this.$message({
           message: 'Thêm giáo viên ra đề thành công.',
@@ -283,13 +281,9 @@ export default {
         cancelButtonText: 'Hủy',
         type: 'warning',
       }).then(() => {
-        subjectResource.removeExamMaker(this.subject.id, user.uuid).then(response => {
+        subjectResource.removeExamMaker(this.subject.slug, user.uuid).then(response => {
           this.loading = true;
           this.getSubjectExamMakers(this.subject.id);
-          // this.handleFilter();
-          // this.getSubjectExamMakers();
-          // this.getAllExamMakers();
-          // this.handleFilter();
           this.$message({
             type: 'success',
             message: 'Xóa giáo viên ra đề thành công',
