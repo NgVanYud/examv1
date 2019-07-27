@@ -13,7 +13,7 @@
             <el-button icon="el-icon-delete" class="filter-delete" size="mini" circle @click="handleDeleteMulti"></el-button>
           </el-tooltip>
         </div>
-        <div class="ml-auto">
+        <div v-if="includeRoles(userRoles, [allRoles.admin], true)" class="ml-auto">
           <el-button size="mini" class="filter-item" type="primary" icon="el-icon-plus" @click="handleCreate">
             {{ $t('table.add') }}
           </el-button>
@@ -68,22 +68,40 @@
 <!--        </template>-->
 <!--      </el-table-column>-->
 
-      <el-table-column align="center" label="Thao Tác" width="150">
+      <el-table-column align="center" label="Thao Tác" width="250">
         <template slot-scope="scope">
 <!--          <router-link :to = "{ name: 'SubjectDetail', params: { slug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.admin, allRoles.exams_maker], false)">-->
 <!--            <el-button type="primary" size="mini" icon="el-icon-edit" title="Chỉnh sửa">-->
 <!--            </el-button>-->
 <!--          </router-link>-->
-          <router-link :to = "{ name: 'SubjectDetail', params: { slug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.admin, allRoles.exams_maker], false)">
-            <el-button type="warning" size="mini" icon="el-icon-document" title="Tùy Chọn">
+<!--          <router-link :to = "{ name: 'SubjectDetail', params: { slug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.admin, allRoles.exams_maker], false)">-->
+<!--            <el-button type="warning" size="mini" icon="el-icon-document" title="Tùy Chọn">-->
+<!--            </el-button>-->
+<!--          </router-link>-->
+          <!--Quan tri he thong-->
+          <router-link :to = "{ name: 'EditSubject', params: { subjectSlug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.admin], true)">
+            <el-button type="primary" size="mini" icon="el-icon-edit" title="Chỉnh sửa">
+            </el-button>
+          </router-link>
+          <router-link :to = "{ name: 'QuizMakers', params: { subjectSlug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.admin], true)">
+            <el-button type="success" size="mini" icon="el-icon-tickets" title="Giáo viên ra đề">
             </el-button>
           </router-link>
           <el-button v-if="includeRoles(userRoles, [allRoles.admin], true)" type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row);"  title="Xóa">
           </el-button>
-<!--          <router-link :to = "{ name: 'SubjectEdit', params: { slug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.admin], false)">-->
-<!--            <el-button type="warning" size="mini" icon="el-icon-document" title="Giáo viên ra đề">-->
-<!--            </el-button>-->
-<!--          </router-link>-->
+          <!--Giao vien ra de-->
+          <router-link :to = "{ name: 'SubjectContent', params: { subjectSlug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.exams_maker], false)">
+            <el-button type="info" size="mini" icon="el-icon-tickets" title="Nội dung môn học">
+            </el-button>
+          </router-link>
+          <router-link :to = "{ name: 'QuestionsList', params: { subjectSlug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.exams_maker], false)">
+            <el-button type="warning" size="mini" icon="el-icon-question" title="Danh sách câu hỏi">
+            </el-button>
+          </router-link>
+          <router-link :to = "{ name: 'QuizFormat', params: { subjectSlug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.exams_maker], false)">
+            <el-button type="success" size="mini" icon="el-icon-question" title="Định dạng đề thi">
+            </el-button>
+          </router-link>
         </template>
       </el-table-column>
     </el-table>

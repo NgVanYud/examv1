@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Requests\UploadImageRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
 {
-    public function store(Request $request) {
+    public function store(UploadImageRequest $request) {
       $path = $this->save($request->file('upload'), 'images');
       return Storage::url($path);
     }

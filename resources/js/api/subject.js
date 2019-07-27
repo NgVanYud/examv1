@@ -14,11 +14,10 @@ class SubjectResource extends Resource {
     });
   }
 
-  chapters(query, id) {
+  chapters(id) {
     return request({
       url: '/' + this.uri + '/' + id + '/chapters',
       method: 'get',
-      query: query,
     });
   }
 
@@ -52,23 +51,23 @@ class SubjectResource extends Resource {
 
   updateChapter(data, subjectId, chapterId) {
     return request({
-      url: '/' + this.uri + '/' + subjectId + '/chapters/' + chapterId + '/update',
-      method: 'post',
+      url: '/' + this.uri + '/' + subjectId + '/chapters/' + chapterId,
+      method: 'put',
       data: data,
     });
   }
 
   getFormatExam(subjectId) {
     return request({
-      url: '/' + this.uri + '/' + subjectId + '/format',
+      url: '/' + this.uri + '/' + subjectId + '/formats',
       method: 'get',
     });
   }
 
   updateExamFormat(data, subjectId, formatId) {
     return request({
-      url: '/' + this.uri + '/' + subjectId + '/' + 'formats' + '/' + formatId + '/update',
-      method: 'post',
+      url: '/' + this.uri + '/' + subjectId + '/' + 'formats' + '/' + formatId,
+      method: 'put',
       data: data,
     });
   }
@@ -88,9 +87,9 @@ class SubjectResource extends Resource {
       params: query,
     });
   }
-  storeQuestion(data, subjectId, chapterId) {
+  storeQuestion(data, subjectId) {
     return request({
-      url: '/' + this.uri + '/' + subjectId + '/' + 'chapters' + '/' + chapterId + '/questions',
+      url: '/' + this.uri + '/' + subjectId + '/questions',
       method: 'post',
       data: data,
     });
@@ -109,14 +108,14 @@ class SubjectResource extends Resource {
   }
   showQuestion(subjectId, questionId) {
     return request({
-      url: '/' + this.uri + '/' + subjectId + '/' + 'questions' + '/' + questionId + '/show',
+      url: '/' + this.uri + '/' + subjectId + '/' + 'questions' + '/' + questionId,
       method: 'get',
     });
   }
-  updateQuestion(data, subjectId, chapterId, questionId) {
+  updateQuestion(data, subjectId, questionId) {
     return request({
-      url: '/' + this.uri + '/' + subjectId + '/chapters/' + chapterId + '/questions/' + questionId + '/update',
-      method: 'post',
+      url: '/' + this.uri + '/' + subjectId + '/questions/' + questionId,
+      method: 'put',
       data: data,
     });
   }

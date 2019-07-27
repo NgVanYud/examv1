@@ -15,6 +15,7 @@ use App\Http\Resources\Question\QuestionResource;
 use App\Http\Resources\Subject\SubjectCollection;
 use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\User\UserResource;
+use App\Models\Manager;
 use App\Models\Subject;
 use App\Repositories\Subject\ChapterRepository;
 use App\Repositories\Subject\SubjectRepository;
@@ -24,6 +25,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class SubjectController extends Controller
 {
@@ -55,7 +57,7 @@ class SubjectController extends Controller
         $this->chapterRepository = $chapterRepository;
         $this->userRepository = $userRepository;
         $this->managerRepository = $managerRepository;
-        $this->authorizeResource(Subject::class, 'subject');
+//        $this->authorizeResource(Subject::class, 'subject');
     }
 
     /**
@@ -82,8 +84,7 @@ class SubjectController extends Controller
           ->orderBy($conditions['orderBy'], $conditions['order'])
           ->paginate($conditions['perPage']);
       } else if($user->hasRole(config('access.roles_list.exams_maker'))) {
-//        return $user->subjects;
-        $subjects = $user->subjects()
+        $subjects = $user->quizMakeSubjects()
 //          ->where('exam_maker_id', $user->id)
 //          ->where('code',"%{$keyword}%", 'like')
 //          ->orWhere('name', 'like', "%{$keyword}%")
@@ -127,9 +128,9 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $subject)
+    public function show(Subject $subject)
     {
-        return new SubjectResource($subject);
+      return new SubjectResource($subject);
     }
 
     /**
@@ -174,9 +175,9 @@ class SubjectController extends Controller
       $this->subjectRepository->deleteMultipleBySlug($slugs);
     }
 
-    public function storeChapter(StoreChapterRequest $request, $subjectId) {
-      if($this->subjectRepository->existed($subjectId)) {
-        $chapterData = $request->all() + ['subject_id' => (int)$subjectId];
+    public function storeChapter(StoreChapterRequest $request, $subject) {
+      if($this->subjectRepository->existed($subject->id)) {
+        $chapterData = $request->only(['name', 'is_actived']) + ['subject_id' => (int)($subject->id)];
         return $this->chapterRepository->create($chapterData);
       }
       throw new GeneralException(
@@ -185,9 +186,9 @@ class SubjectController extends Controller
       );
     }
 
-    public function updateChapter(UpdateChapterRequest $request, $subjectId, $chapterId) {
-      if($this->chapterRepository->existed($chapterId)) {
-        return $this->chapterRepository->updateById($chapterId, $request->all());
+    public function updateChapter(UpdateChapterRequest $request, $subject, $chapter) {
+      if($this->chapterRepository->existed($chapter->id)) {
+        return $this->chapterRepository->updateById($chapter->id, $request->only(['name', 'is_actived']));
       }
       throw new GeneralException(
         __('exceptions.invalid_data'),
@@ -195,12 +196,14 @@ class SubjectController extends Controller
       );
     }
 
-    public function getChapters($subjectId) {
-      return ChapterResource::collection($this->subjectRepository->getChapters($subjectId));
+    public function getChapters($subject) {
+      $this->authorize('view-chapters', $subject);
+      return ChapterResource::collection($this->subjectRepository->getChapters($subject->id));
     }
 
-    public function storeQuestion(StoreQuestionRequest $request, $subjectId, $chapterId) {
-      if($this->subjectRepository->containChapter($subjectId, $chapterId)) {
+    public function storeQuestion(StoreQuestionRequest $request, $subject) {
+      $chapterId = $request->get('chapter_id');
+      if($this->subjectRepository->containChapter($subject->id, $chapterId)) {
         return $this->subjectRepository->storeQuestion($request->all());
       }
       throw new GeneralException(
@@ -209,9 +212,9 @@ class SubjectController extends Controller
       );
     }
 
-    public function updateQuestion(UpdateQuestionRequest $request, $subjectId, $chapterId, $questionId) {
-      if($this->chapterRepository->containQuestion($chapterId, $questionId)) {
-        return $this->subjectRepository->updateQuestion($questionId, $request->all());
+    public function updateQuestion(UpdateQuestionRequest $request, $subject, $question) {
+      if($this->subjectRepository->containQuestion($subject->id, $question->id)) {
+        return $this->subjectRepository->updateQuestion($question->id, $request->all());
       }
       throw new GeneralException(
         __('exceptions.invalid_data'),
@@ -219,8 +222,8 @@ class SubjectController extends Controller
       );
     }
 
-    public function getQuestions(Request $request, $subjectId) {
-      return QuestionResource::collection($this->subjectRepository->getQuestions($subjectId, $request->all()));
+    public function getQuestions(Request $request, $subject) {
+      return QuestionResource::collection($this->subjectRepository->getQuestions($subject->id, $request->all()));
     }
 
     public function getExamMakers(Request $request, $subject) {
@@ -240,8 +243,7 @@ class SubjectController extends Controller
       return $examMaker->quizMakeSubjects()->detach($subject->id);
     }
 
-    public function getExamFormat(Request $request, $subjectId) {
-      $subject = $this->subjectRepository->getById($subjectId);
+    public function getExamFormat(Request $request, $subject) {
       return $subject->format;
     }
 

@@ -1,18 +1,31 @@
 <template>
-  <div>
-    <div>
-      <h6 class="title-partial">Danh sách câu hỏi môn học </h6>
+  <div class="app-container">
+<!--    <div>-->
+<!--      <h6 class="title-partial">Danh sách câu hỏi môn học </h6>-->
+<!--    </div>-->
+
+    <div class="filter-container">
+      <div class="d-flex">
+        <div>
+          <el-select v-model="query.chapter" clearable placeholder="Chọn Nội Dung Môn Học" size="mini" @change="getQuestions(subject)">
+            <el-option
+              v-for="cht in allChapters"
+              :key="cht.id"
+              :label="cht.name + ' (' + cht.question_num + ')'"
+              :value="cht.id">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="d-flex">
+          <div class="ml-auto">
+            <el-button size="mini" class="filter-item ml-2" type="primary" icon="el-icon-plus" @click="handleCreate">
+              {{ $t('table.add') }}
+            </el-button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div>
-      <el-select v-model="query.chapter" clearable placeholder="Chọn Nội Dung Môn Học" size="mini" @change="getQuestions(subject.id)">
-        <el-option
-          v-for="cht in allChapters"
-          :key="cht.id"
-          :label="cht.name + ' (' + cht.question_num + ')'"
-          :value="cht.id">
-        </el-option>
-      </el-select>
-    </div>
+
     <el-table
       v-loading="loading"
       :data="questions"
@@ -40,7 +53,7 @@
       </el-table-column>
       <el-table-column align="center" label="Thao Tác" width="150">
         <template slot-scope="scope">
-          <router-link :to = "{ name: 'QuestionEdit', params: {subjectSlug: subject.slug, id: scope.row.id }}" v-if="!scope.row.deleted_at" >
+          <router-link :to = "{ name: 'EditQuestion', params: {subjectSlug: subject.slug, questionId: scope.row.id }}" v-if="!scope.row.deleted_at" >
             <el-button type="primary" size="mini" icon="el-icon-edit" title="Chỉnh sửa">
             </el-button>
           </router-link>
@@ -52,7 +65,6 @@
       </el-table-column>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="query.page" :limit.sync="query.per_page" @pagination="getQuestions(subject.id)" />
-
   </div>
 </template>
 
@@ -130,11 +142,11 @@ export default {
       });
     },
     handleActiveQuestion(question) {
-      subjectResource.activeQuestion(this.subject.id, question.id).then(response => {
+      subjectResource.activeQuestion(this.subject.slug, question.id).then(response => {
         if (response.error) {
           getNotification('Kích hoạt', 'câu hỏi', 'error', 'Do dữ liệu không hợp lệ');
         } else {
-          getNotification('Kích hoạt', 'câu hỏi', 'success');
+          getNotification('Kích hoạt', 'câu hỏi', 'success', 'success');
           this.getQuestions(this.subject);
         }
       }).catch(error => {
@@ -143,11 +155,11 @@ export default {
       });
     },
     handleDeactiveQuestion(question) {
-      subjectResource.deactiveQuestion(this.subject.id, question.id).then(response => {
+      subjectResource.deactiveQuestion(this.subject.slug, question.id).then(response => {
         if (response.error) {
           getNotification('Khóa', 'câu hỏi', 'error', 'Do dữ liệu không hợp lệ');
         } else {
-          getNotification('Khóa', 'câu hỏi', 'success');
+          getNotification('Khóa', 'câu hỏi', 'success', 'success');
           this.getQuestions(this.subject);
         }
       }).catch(error => {
@@ -155,10 +167,17 @@ export default {
         getNotification('Khóa', 'câu hỏi', 'error');
       });
     },
+    handleCreate() {
+      this.$router.push({ name: 'CreateQuestion', params: { subjectSlug: this.subject.slug }});
+    },
   },
   created() {
-    const subjectName = this.$route.params.slug;
+    const subjectName = this.$route.params.subjectSlug;
     this.subjectDetail(subjectName);
+  },
+  beforeDestroy() {
+    this.questions = undefined;
+    this.subject = undefined;
   },
 };
 </script>
@@ -172,17 +191,17 @@ export default {
   /*    }*/
   /*  }*/
   /*}*/
- .el-divider--horizontal{
+  .el-divider--horizontal{
     margin: 5px 0;
   }
- /* .option-wrapper {*/
- /*   #eJOY__extension_root {*/
- /*     display: none !important;*/
- /*   }*/
- /*   p:first-child {*/
- /*     margin-bottom: 0;*/
- /*   }*/
- /* }*/
+  /* .option-wrapper {*/
+  /*   #eJOY__extension_root {*/
+  /*     display: none !important;*/
+  /*   }*/
+  /*   p:first-child {*/
+  /*     margin-bottom: 0;*/
+  /*   }*/
+  /* }*/
   .question-wrapper {
     overflow: auto;
   }

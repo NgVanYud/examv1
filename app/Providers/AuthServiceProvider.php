@@ -8,6 +8,7 @@ use App\Policies\SubjectPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Log;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -30,6 +31,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('view-chapters', function ($user, $subject) {
+          $valid = $user->quizMakeSubjects->contains($subject->id);
+          return $valid;
+        });
     }
 }

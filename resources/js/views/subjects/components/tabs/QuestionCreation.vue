@@ -123,17 +123,15 @@ export default {
         const { data } = response;
         this.subject = data;
         this.newQuestion.subject_id = this.subject.id;
-        this.getChapters(this.subject.id);
-      }).catch(() => {
-
+        this.getChapters(this.subject);
+      }).catch((error) => {
+        console.log(error);
       }).finally(() => {
         this.loading = false;
       });
     },
-    getChapters(subjectId) {
-      subjectResource.chapters({
-        limit: 100,
-      }, subjectId).then(response => {
+    getChapters(subject) {
+      subjectResource.chapters(subject.slug).then(response => {
         const { data } = response;
         this.allChapters = data;
       }).catch(error => {
@@ -148,7 +146,7 @@ export default {
         if (valid) {
           this.loading = true;
           this.newQuestion.subject_id = this.subject.id;
-          subjectResource.storeQuestion(this.newQuestion, this.subject.id, this.newQuestion.chapter_id).then(response => {
+          subjectResource.storeQuestion(this.newQuestion, this.subject.slug, this.newQuestion.chapter_id).then(response => {
             if (response.error) {
               this.$message({
                 message: 'Tạo mới câu hỏi không thành công do dũ liệu trùng lặp hoặc không hợp lệ',
@@ -161,7 +159,7 @@ export default {
                 type: 'success',
                 duration: 5 * 1000,
               });
-              this.getChapters(this.subject.id);
+              this.getChapters(this.subject);
               this.resetForm('createQuestionForm');
               this.resetNewQuestion();
             }

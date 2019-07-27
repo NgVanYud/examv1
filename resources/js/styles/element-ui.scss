@@ -81,6 +81,13 @@
   }
 }
 
+//table
+.el-table__row {
+  td:last-child {
+    vertical-align: top;
+  }
+}
+
 //auth form
 $bg:#2d3a4b;
 $light_gray:#eee;

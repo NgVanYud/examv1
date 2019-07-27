@@ -4,7 +4,7 @@
     <div v-loading="loading">
       <el-form ref="editQuestionForm" :model="question" :rules="editQuestionRules" label-width="150px" :label-position="'left'" size="mini">
         <el-form-item prop="chapter_id" label="Nội dung môn học">
-          <el-select v-model="tmpQuestion.chapter_id" clearable disabled=true placeholder="Chọn Nội Dung Môn Học" size="mini">
+          <el-select v-model="tmpQuestion.chapter_id" clearable :disabled=true placeholder="Chọn Nội Dung Môn Học" size="mini">
             <el-option
               v-for="cht in allChapters"
               :key="cht.id"
@@ -125,7 +125,7 @@ export default {
         const { data } = response;
         this.subject = data;
         this.tmpQuestion.subject_id = this.subject.id;
-        this.questionDetail(this.subject.id);
+        this.questionDetail(this.subject.slug);
         this.getChapters(this.subject);
       }).catch(() => {
 
@@ -180,11 +180,12 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true;
-          subjectResource.updateQuestion(this.tmpQuestion, this.subject.id, this.tmpQuestion.chapter_id, this.question.id).then(response => {
+          subjectResource.updateQuestion(this.tmpQuestion, this.subject.slug, this.question.id).then(response => {
             if (response.error) {
               getNotification('Cập nhật', 'câu hỏi', 'error', 'Do dữ liệu trùng lặp hoặc không hơp lệ');
             } else {
-              getNotification('Cập nhật', 'câu hỏi', 'success');
+              getNotification('Cập nhật', 'câu hỏi', 'success', 'success');
+              this.$router.push({ name: 'QuestionsList', params: { subjectSlug: this.subject.slug }});
             }
           }).catch(error => {
             console.log(error);

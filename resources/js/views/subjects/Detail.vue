@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-tabs v-model="activeName" @tab-click="changeTab">
+    <el-tabs v-model="activeName" @tab-click="changeTab" lazy>
       <el-tab-pane label="Cập Nhật Thông Tin" name="edit" v-if="includeRoles(userRoles, [allRoles['admin']], false)">
         <edit-tab></edit-tab>
       </el-tab-pane>

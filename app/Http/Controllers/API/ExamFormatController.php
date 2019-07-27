@@ -71,11 +71,11 @@ class ExamFormatController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $subjectId)
+    public function store(Request $request, $subject)
     {
       $formatData = [
         'format' => $request['format'],
-        'subject_id' => $subjectId,
+        'subject_id' => $subject->id,
         'timeout' => $request['timeout']
       ];
       return $this->examFormatRepository->create($formatData);
@@ -110,9 +110,9 @@ class ExamFormatController extends Controller
      * @param  \App\Models\Format  $examFormat
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateExamFormatRequest $request, $subjectId, $formatId)
+    public function update(UpdateExamFormatRequest $request, $subject, $format)
     {
-        return $this->examFormatRepository->updateById($formatId, $request->all());
+        return $this->examFormatRepository->updateById($format->id, $request->all());
     }
 
     /**

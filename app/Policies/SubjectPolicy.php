@@ -2,9 +2,12 @@
 
 namespace App\Policies;
 
-use App\Models\User;
+use App\Models\Auth\User;
+use App\Models\Manager;
+use App\Models\Subject;
 use App\Repositories\Role\RoleRepository;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Log;
 
 class SubjectPolicy
 {
@@ -22,7 +25,7 @@ class SubjectPolicy
     $this->roleRepository = $roleRepository;
   }
 
-  public function before($user, $ability)
+  public function before(User $user, $ability)
   {
     $adminRole = $this->roleRepository->getByColumn(config('access.roles_list.admin'), 'name', ['id']);
     $examsMakerRole = $this->roleRepository->getByColumn(config('access.roles_list.exams_maker'), 'name', ['id']);
@@ -30,19 +33,19 @@ class SubjectPolicy
     return $user->hasAnyRole([$adminRole->id, $examsMakerRole->id, $curatorRole->id]);
   }
 
-  public function create($user) {
+  public function create(User $user) {
     return $user->hasRole(config('access.roles_list.admin'));
   }
 
-  public function update($user, $model) {
+  public function update(User $user, Subject $model) {
     return $user->hasRole(config('access.roles_list.admin'));
   }
 
-  public function view($user, $model) {
+  public function view(User $user, Subject $model) {
     return true;
   }
 
-  public function delete($user, $model) {
+  public function delete(User $user, Subject $model) {
     return $user->hasRole(config('access.roles_list.admin'));
   }
 }

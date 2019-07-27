@@ -184,8 +184,8 @@ class SubjectRepository extends BaseRepository
 
     public function getQuestions($subjectId, $conditions) {
       $chapterId = isset($conditions['chapter']) ? $conditions['chapter'] : '';
-      $orderBy = $conditions['order_by'] ? $conditions['order_by'] : 'id';
-      $order = $conditions['order'] ? $conditions['order'] : 'asc';
+      $orderBy = $conditions['order_by'] ? $conditions['order_by'] : 'updated_at';
+      $order = $conditions['order'] ? $conditions['order'] : 'desc';
       $perPage = $conditions['per_page'] ? $conditions['per_page'] : 10;
       if($chapterId) {
         return $this->questionRepository
@@ -204,4 +204,19 @@ class SubjectRepository extends BaseRepository
         422
       );
     }
+
+  /**
+   * Check if the subject contains a question by Id
+   *
+   * @param $chapterId
+   * @param $questionId
+   * @return bool
+   */
+  public function containQuestion($subjectId, $questionId) {
+    $question = $this->questionRepository->getById($questionId);
+    if($question->subject->id == $subjectId) {
+      return true;
+    }
+    return false;
+  }
 }

@@ -32,7 +32,7 @@ class UpdateQuestionRequest extends FormRequest
           'min:5',
           Rule::unique('questions')->where(function ($query) {
             return $query->where('chapter_id', request('chapter_id'))
-              ->where('id', '!=', $this->questionId)
+              ->where('id', '!=', $this->question->id)
               ->where('content', request('content'));
           }),
         ],

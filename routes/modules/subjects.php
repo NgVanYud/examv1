@@ -13,23 +13,23 @@ Route::group([
     'middleware' => 'role:'.config('access.roles_list.exams_maker')
   ], function () {
       //Chapter
-      Route::post('subjects/{subjectId}/chapters', 'SubjectController@storeChapter');
-      Route::post('subjects/{subjectId}/chapters/{chapterId}/update', 'SubjectController@updateChapter');
-      Route::get('subjects/{subjectId}/chapters', 'SubjectController@getChapters');
+      Route::post('subjects/{subject}/chapters', 'SubjectController@storeChapter');
+      Route::put('subjects/{subject}/chapters/{chapter}', 'SubjectController@updateChapter');
+      Route::get('subjects/{subject}/chapters', 'SubjectController@getChapters');
 
       //Question
-      Route::post('subjects/{subjectId}/chapters/{chapterId}/questions', 'SubjectController@storeQuestion');
-      Route::post('subjects/{subjectId}/chapters/{chapterId}/questions/{questionId}/update', 'SubjectController@updateQuestion');
-      Route::get('subjects/{subjectId}/questions', 'SubjectController@getQuestions');
-      Route::post('subjects/{subjectId}/questions/{questionId}/deactive', 'QuestionController@deactive');
-      Route::post('subjects/{subjectId}/questions/{questionId}/active', 'QuestionController@active');
-      Route::get('subjects/{subjectId}/questions/{questionId}/show', 'QuestionController@show');
+      Route::post('subjects/{subject}/questions', 'SubjectController@storeQuestion');
+      Route::put('subjects/{subject}/questions/{question}', 'SubjectController@updateQuestion');
+      Route::get('subjects/{subject}/questions', 'SubjectController@getQuestions');
+      Route::post('subjects/{subject}/questions/{question}/deactive', 'QuestionController@deactive');
+      Route::post('subjects/{subject}/questions/{question}/active', 'QuestionController@active');
+      Route::get('subjects/{subject}/questions/{question}', 'QuestionController@show');
 
       //Format
-      Route::post('subjects/{subjectId}/formats', 'ExamFormatController@store');
-      Route::post('subjects/{subjectId}/formats/{formatId}/update', 'ExamFormatController@update');
-      Route::get('subjects/{subjectId}/formats', 'ExamFormatController@index');
-      Route::get('subjects/{subjectId}/format', 'SubjectController@getExamFormat');
+      Route::post('subjects/{subject}/formats', 'ExamFormatController@store');
+      Route::put('subjects/{subject}/formats/{format}', 'ExamFormatController@update');
+//      Route::get('subjects/{subjectId}/formats', 'ExamFormatController@index');
+      Route::get('subjects/{subject}/formats', 'SubjectController@getExamFormat');
       Route::get('subjects/{subjectId}/formats/{formatId}', 'ExamFormatController@show');
   });
 

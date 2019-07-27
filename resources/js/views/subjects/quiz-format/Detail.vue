@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-container">
     <div class="row">
       <div class="col-md-4">
         <h6>Thông Tin Chung Đề Thi</h6>
@@ -32,36 +32,35 @@
           </tr>
           </tbody>
           <tbody v-else class="text-center">
-            <div class="p-3">
-              Dữ Liệu Chưa Được Thiết Lập
-            </div>
+          <div class="p-3">
+            Dữ Liệu Chưa Được Thiết Lập
+          </div>
           </tbody>
         </table>
         <el-button type="primary" @click="editExamFormat">Cập Nhật Định Dạng Đề Thi</el-button>
       </div>
 
-<!--      Edit & Update-->
+      <!--      Edit & Update-->
       <div class="col-12" v-if="activedEditAction">
         <h6>Cập Nhật Định Dạng Đề Thi</h6>
         <div class="border p-4">
           <el-form :model="newExamFormat" :rules="examFormatRules" ref="examFormatForm" :label-position="'right'" label-width="350px" size="mini">
             <div class="row">
-              <div class="col-md-3">
-                <el-form-item label="Thời Gian Làm Bài" prop="timeout" label-width="180px">
+              <div class="col-md-6">
+                <el-form-item label="Thời Gian Làm Bài" prop="timeout">
                   <el-input type="number" v-model.number="newExamFormat.timeout" min="1" max="300"></el-input>
                 </el-form-item>
-                <el-form-item label="Số Lượng Câu Hỏi" label-width="180px">
+              </div>
+              <div class="col-md-6">
+                <el-form-item label="Số Lượng Câu Hỏi">
                   <el-input type="number" v-model="questionCounter" min="1" max="300"></el-input>
                 </el-form-item>
               </div>
-              <div class="col-md-9">
-                <div class="row">
-                  <div class="col-md-6" v-for="cht in allChapters" :key="cht.id">
-                    <el-form-item :label="cht.name + ' (' + 'Max: ' + cht.question_num +')' | uppercaseFirst" prop="format" :label-position="'right'">
-                      <el-input type="number" required=true v-model.number="newExamFormat.format[cht.id]" min=1 max=100></el-input>
-                    </el-form-item>
-                  </div>
-                </div>
+              <hr class="w-100 mt-0 mb-1">
+              <div class="col-md-6" v-for="cht in allChapters" :key="cht.id">
+                <el-form-item :label="cht.name + ' (' + 'Max: ' + cht.question_num +')' | uppercaseFirst" prop="format">
+                  <el-input type="number" required=true v-model.number="newExamFormat.format[cht.id]" min=1 max=50></el-input>
+                </el-form-item>
               </div>
             </div>
             <el-form-item>
@@ -87,7 +86,6 @@ const chapterResource = new ChapterResource();
 // const examFormatResource = new ExamFormatResource();
 
 export default {
-  name: 'ExamFormatTab',
   filters: {
     chapterName (chapterId, allChapters) {
       const chapterCounter = allChapters.length;
@@ -156,7 +154,7 @@ export default {
       subjectResource.get(idKey).then(response => {
         const { data } = response;
         this.subject = data;
-        this.getExamFormat(this.subject.id);
+        this.getExamFormat(this.subject.slug);
         this.getChapters(this.subject);
       }).catch(() => {
 
@@ -243,7 +241,7 @@ export default {
                 type: 'success',
                 duration: 5 * 1000,
               });
-              this.getExamFormat(this.subject.id);
+              this.getExamFormat(this.subject.slug);
             }
           }).catch(error => {
             console.log('Error: ', error);
@@ -265,7 +263,7 @@ export default {
     storeExamFormat(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          subjectResource.storeExamFormat(this.newExamFormat, this.subject.slug).then(response => {
+          subjectResource.storeExamFormat(this.newExamFormat, this.subject.id).then(response => {
             console.log(response);
             if (response.error) {
               this.$message({
@@ -279,7 +277,7 @@ export default {
                 type: 'success',
                 duration: 5 * 1000,
               });
-              this.getExamFormat(this.subject.id);
+              this.getExamFormat(this.subject.slug);
             }
           }).catch(error => {
             console.log('Error: ', error);
@@ -300,7 +298,7 @@ export default {
     },
   },
   async created() {
-    const subjectName = this.$route.params.slug;
+    const subjectName = this.$route.params.subjectSlug;
     this.subjectDetail(subjectName);
   },
 };

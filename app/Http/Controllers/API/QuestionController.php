@@ -59,10 +59,9 @@ class QuestionController extends Controller
      * @param  \App\ModelsQuestion  $modelsQuestion
      * @return \Illuminate\Http\Response
      */
-    public function show($subjectId, $questionId)
+    public function show($subject, $question)
     {
-      $question = $this->questionRepository->getById($questionId);
-      if($subjectId == $question->subject_id) {
+      if($subject->id == $question->subject_id) {
         return new QuestionResource($question);
       } else {
         throw new GeneralException(
@@ -95,9 +94,8 @@ class QuestionController extends Controller
         $question->delete();
     }
 
-    public function deactive($subjectId, $questionId) {
-      $question = $this->questionRepository->getById($questionId);
-      if($question->subject_id == $subjectId) {
+    public function deactive($subject, $question) {
+      if($question->subject_id == $subject->id) {
         $question->is_actived = Question::INACTIVE_CODE;
         $question->save();
       } else {
@@ -108,9 +106,8 @@ class QuestionController extends Controller
       }
     }
 
-    public function active($subjectId, $questionId) {
-      $question = $this->questionRepository->getById($questionId);
-      if($question->subject_id == $subjectId) {
+    public function active($subject, $question) {
+      if($question->subject_id == $subject->id) {
         $question->is_actived = Question::ACTIVE_CODE;
         $question->save();
       } else {

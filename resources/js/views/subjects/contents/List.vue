@@ -1,105 +1,107 @@
 <template>
-  <div class="row">
-    <div class="col-md-5">
-      <div>
-        <h6 class="title-partial">Thông Tin Cơ Bản</h6>
-      </div>
-      <table class="table table-bordered table-sm">
-        <tbody>
-        <tr>
-          <th scope="row">Mã Số</th>
-          <td>{{ subject.code }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Tên</th>
-          <td>{{ subject.name }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Số Tín Chỉ</th>
-          <td>{{ subject.credit }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Mô Tả</th>
-          <td>{{ subject.description }}</td>
-        </tr>
-        </tbody>
-      </table>
-      <div>
+  <div class="app-container">
+    <div class="row">
+      <div class="col-md-5">
         <div>
-          <h6>Tạo Mới Nội Dung Môn Học</h6>
+          <h6 class="title-partial">Thông Tin Cơ Bản</h6>
         </div>
-        <el-form :model="newChapter" :rules="chapterRules" ref="createChapterForm" label-width="50px" :label-position="'left'" size="mini">
-          <el-form-item label="Tên" prop="name">
-            <el-input v-model="newChapter.name"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="createChapter('createChapterForm')">Tạo Mới</el-button>
-            <el-button @click="resetForm('createChapterForm')">Hủy</el-button>
-          </el-form-item>
-        </el-form>
+        <table class="table table-bordered table-sm">
+          <tbody>
+          <tr>
+            <th scope="row">Mã Số</th>
+            <td>{{ subject.code }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Tên</th>
+            <td>{{ subject.name }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Số Tín Chỉ</th>
+            <td>{{ subject.credit }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Mô Tả</th>
+            <td>{{ subject.description }}</td>
+          </tr>
+          </tbody>
+        </table>
+        <div>
+          <div>
+            <h6>Tạo Mới Nội Dung Môn Học</h6>
+          </div>
+          <el-form :model="newChapter" :rules="chapterRules" ref="createChapterForm" label-width="50px" :label-position="'left'" size="mini">
+            <el-form-item label="Tên" prop="name">
+              <el-input v-model="newChapter.name"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="createChapter('createChapterForm')">Tạo Mới</el-button>
+              <el-button @click="resetForm('createChapterForm')">Hủy</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
       </div>
-    </div>
-    <div class="col-md-7">
-      <div>
-        <h6 class="title-partial">Thông Tin Môn Số Lượng Câu Hỏi</h6>
-      </div>
-      <el-table v-loading="loading" :data="allChapters" border fit highlight-current-row style="width: 100%" size="mini">
-        <!--              <el-table-column-->
-        <!--                v-if="includeRoles(this.userRoles, [allRoles.admin], false)"-->
-        <!--                type="selection" align="center">-->
-        <!--              </el-table-column>-->
-        <el-table-column align="center" label="STT" width="50">
-          <template slot-scope="scope">
-            <span>{{ scope.row.index }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="Tiều Đề">
-          <template slot-scope="scope">
-<!--            <span>{{ scope.row.name }}</span>-->
-            <template v-if="scope.row.edit">
-              <el-form :model="scope.row" :rules="chapterRules" ref="chapterEditForm" size="mini">
-                <el-form-item prop="name">
-                  <el-input v-model="scope.row.name" class="edit-input" size="mini" />
-                </el-form-item>
-                <el-form-item>
-                  <el-button class="cancel-btn" size="mini" icon="el-icon-refresh" type="warning" @click="cancelEdit(scope.row)">
-                    cancel
-                  </el-button>
-                </el-form-item>
-              </el-form>
+      <div class="col-md-7">
+        <div>
+          <h6 class="title-partial">Thông Tin Môn Số Lượng Câu Hỏi</h6>
+        </div>
+        <el-table v-loading="loading" :data="allChapters" border fit highlight-current-row style="width: 100%" size="mini">
+          <!--              <el-table-column-->
+          <!--                v-if="includeRoles(this.userRoles, [allRoles.admin], false)"-->
+          <!--                type="selection" align="center">-->
+          <!--              </el-table-column>-->
+          <el-table-column align="center" label="STT" width="50">
+            <template slot-scope="scope">
+              <span>{{ scope.row.index }}</span>
             </template>
-            <span v-else>{{ scope.row.name }}</span>
-          </template>
+          </el-table-column>
 
-        </el-table-column>
+          <el-table-column label="Tiều Đề">
+            <template slot-scope="scope">
+              <!--            <span>{{ scope.row.name }}</span>-->
+              <template v-if="scope.row.edit">
+                <el-form :model="scope.row" :rules="chapterRules" ref="chapterEditForm" size="mini">
+                  <el-form-item prop="name">
+                    <el-input v-model="scope.row.name" class="edit-input" size="mini" />
+                  </el-form-item>
+                  <el-form-item>
+                    <el-button class="cancel-btn" size="mini" icon="el-icon-refresh" type="warning" @click="cancelEdit(scope.row)">
+                      cancel
+                    </el-button>
+                  </el-form-item>
+                </el-form>
+              </template>
+              <span v-else>{{ scope.row.name }}</span>
+            </template>
 
-        <el-table-column label="Số Câu Hỏi" align="center" width="100">
-          <template slot-scope="scope">
-            <span>{{ scope.row.question_num }}</span>
-          </template>
-        </el-table-column>
+          </el-table-column>
 
-        <el-table-column align="center" label="Thao Tác" width="150">
-          <template slot-scope="scope">
-            <el-button v-if="scope.row.edit" type="success" size="mini" icon="el-icon-circle-check-outline" @click="confirmEdit(scope.row, 'chapterEditForm')" title="Cập Nhật">
-              Cập Nhật
-            </el-button>
-            <el-button v-else type="primary" size="mini" icon="el-icon-edit" @click="scope.row.edit=!scope.row.edit" title="Chỉnh Sửa">
-            </el-button>
-<!--            <router-link :to = "{ name: 'SubjectEdit', params: { slug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.admin], false)">-->
-<!--              <el-button type="primary" size="mini" icon="el-icon-edit" title="Chỉnh sửa">-->
-<!--              </el-button>-->
-<!--            </router-link>-->
-<!--            <el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row);"  title="Xóa">-->
-<!--            </el-button>-->
-<!--            <router-link :to = "{ name: 'SubjectEdit', params: { slug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.exams_maker], false)">-->
-<!--              <el-button type="warning" size="mini" icon="el-icon-document" title="Nội dung">-->
-<!--              </el-button>-->
-<!--            </router-link>-->
-          </template>
-        </el-table-column>
-      </el-table>
+          <el-table-column label="Số Câu Hỏi" align="center" width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.question_num }}</span>
+            </template>
+          </el-table-column>
+
+          <el-table-column align="center" label="Thao Tác" width="150">
+            <template slot-scope="scope">
+              <el-button v-if="scope.row.edit" type="success" size="mini" icon="el-icon-circle-check-outline" @click="confirmEdit(scope.row, 'chapterEditForm')" title="Cập Nhật">
+                Cập Nhật
+              </el-button>
+              <el-button v-else type="primary" size="mini" icon="el-icon-edit" @click="scope.row.edit=!scope.row.edit" title="Chỉnh Sửa">
+              </el-button>
+              <!--            <router-link :to = "{ name: 'SubjectEdit', params: { slug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.admin], false)">-->
+              <!--              <el-button type="primary" size="mini" icon="el-icon-edit" title="Chỉnh sửa">-->
+              <!--              </el-button>-->
+              <!--            </router-link>-->
+              <!--            <el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row);"  title="Xóa">-->
+              <!--            </el-button>-->
+              <!--            <router-link :to = "{ name: 'SubjectEdit', params: { slug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.exams_maker], false)">-->
+              <!--              <el-button type="warning" size="mini" icon="el-icon-document" title="Nội dung">-->
+              <!--              </el-button>-->
+              <!--            </router-link>-->
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </div>
   </div>
 </template>
@@ -121,7 +123,7 @@ const subjectResource = new SubjectResource();
 // const roleResource = new RoleResource();
 
 export default {
-  name: 'SubjectContentTab',
+  // name: 'SubjectContentTab',
   props: {
   },
   data() {
@@ -266,11 +268,10 @@ export default {
     },
   },
   async created() {
-    const subjectName = this.$route.params.slug;
+    const subjectName = this.$route.params.subjectSlug;
     await this.subjectDetail(subjectName);
   },
 };
-
 </script>
 
 <style scoped>
