@@ -22,7 +22,7 @@
         </el-col>
       </el-form-item>
       <el-form-item label="Môn Học" prop="subjects">
-        <el-select v-model="term.subjects" placeholder="Chọn môn học" multiple>
+        <el-select v-model="term.subjects" placeholder="Chọn môn học" multiple style="min-width: 500px;">
           <el-option v-for="item in subjects" :label="item.name" :value="item.id" :key="item.id"/>
         </el-select>
       </el-form-item>
@@ -90,7 +90,7 @@ export default {
             if (response.error) {
               getNotification('Tạo mới', 'đợt thi', 'error', 'Do dữ liệu trùng lặp hoặc không hơp lệ');
             } else {
-              getNotification('Tạo mới', 'đợt thi', 'success');
+              getNotification('Tạo mới', 'đợt thi', 'success', 'success');
               this.$router.push({ name: 'TermsList' });
             }
           }).catch(error => {

@@ -13,10 +13,11 @@ class SubjectTerm extends Model
 
     protected $casts = [
       'is_actived' => 'boolean',
-      'is_done' => 'boolean'
+      'is_done' => 'boolean',
+      'quiz_format' => 'array'
     ];
 
-    protected $fillable = ['original_exam_num', 'progression', 'subject_id', 'term_id', 'is_actived', 'is_done'];
+    protected $fillable = ['original_exam_num', 'progression', 'subject_id', 'term_id', 'is_actived', 'is_done', 'quiz_format'];
 
     public function studentTerms() {
       return $this->hasMany(StudentTerm::class, 'subject_term_id');

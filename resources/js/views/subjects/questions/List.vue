@@ -64,7 +64,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-show="total>0" :total="total" :page.sync="query.page" :limit.sync="query.per_page" @pagination="getQuestions(subject.id)" />
+    <pagination v-show="total>0" :total="total" :page.sync="query.page" :limit.sync="query.per_page" @pagination="getQuestions(subject)" />
   </div>
 </template>
 

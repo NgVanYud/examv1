@@ -22,7 +22,7 @@ const userRoutes = {
       path: 'edit/:id',
       component: () => import('@/views/users/managers/Edit'),
       name: 'ManagerEdit',
-      meta: { title: 'editManager', noCache: true },
+      meta: { title: 'Chỉnh sửa tài khoản', noCache: true },
       hidden: true,
     },
   ],

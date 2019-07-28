@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources\Term;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\Resource;
 
-class TermResouce extends JsonResource
+
+class TermResource extends Resource
 {
     /**
      * Transform the resource into an array.

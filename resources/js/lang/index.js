@@ -33,7 +33,7 @@ export function getLanguage() {
       return locale;
     }
   }
-  return 'en';
+  return 'vi';
 }
 const i18n = new VueI18n({
   // set locale

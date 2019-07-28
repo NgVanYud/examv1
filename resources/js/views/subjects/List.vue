@@ -99,7 +99,7 @@
             </el-button>
           </router-link>
           <router-link :to = "{ name: 'QuizFormat', params: { subjectSlug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.exams_maker], false)">
-            <el-button type="success" size="mini" icon="el-icon-question" title="Định dạng đề thi">
+            <el-button type="success" size="mini" icon="el-icon-edit" title="Định dạng đề thi">
             </el-button>
           </router-link>
         </template>

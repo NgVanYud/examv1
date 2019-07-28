@@ -44,7 +44,7 @@ class Term extends Model
     }
 
     public function subjects() {
-        return $this->belongsToMany(Subject::class)->withPivot('original_exam_num', 'progression', 'id');
+        return $this->belongsToMany(Subject::class)->withPivot('original_exam_num', 'progression', 'id', 'quiz_format');
     }
 
     public function quizs() {

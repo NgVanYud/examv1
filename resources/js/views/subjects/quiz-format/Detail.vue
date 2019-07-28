@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="row">
       <div class="col-md-4">
-        <h6>Thông Tin Chung Đề Thi</h6>
+        <h6>Thông Tin Đề Thi - {{ subject.name }}</h6>
         <table class="table table-bordered table-sm">
           <tbody>
           <tr>
@@ -27,7 +27,7 @@
           </tr>
           <tr v-for="(questionNum, chapterId, index) in format">
             <td>{{ index + 1}}</td>
-            <th scope="row">{{ chapterId | chapterName(allChapters) }}</th>
+            <th scope="row">{{ chapterId | chapterName(allChapters) | uppercaseFirst }}</th>
             <td>{{ questionNum }}</td>
           </tr>
           </tbody>
@@ -263,7 +263,7 @@ export default {
     storeExamFormat(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          subjectResource.storeExamFormat(this.newExamFormat, this.subject.id).then(response => {
+          subjectResource.storeExamFormat(this.newExamFormat, this.subject.slug).then(response => {
             console.log(response);
             if (response.error) {
               this.$message({

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests\StoreTermRequest;
 use App\Http\Requests\UpdateTermRequest;
 use App\Http\Resources\Term\TermCollection;
-use App\Http\Resources\Term\TermResouce;
+use App\Http\Resources\Term\TermResource;
 use App\Repositories\Term\TermRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -38,11 +38,11 @@ class TermController extends Controller
     public function index(Request $request)
     {
         $conditions = [
-            'orderBy' => ($request->order_by ? $request->order_by : 'name'),
-            'sortDesc' => ($request->sort_desc == 'true' ? 'desc' : 'asc'),
-            'perPage' => ($request->limit && intval($request->limit) > 0 ? $request->limit: null)
+            'orderBy' => ($request->order_by ? $request->order_by : 'updated_at'),
+            'sortDesc' => ($request->sort_desc == 'true' ? 'desc' : 'desc'),
+            'perPage' => ($request->limit && intval($request->limit) > 0 ? $request->limit: 10)
         ];
-        return TermResouce::collection($this->termRepository
+        return TermResource::collection($this->termRepository
             ->orderBy($conditions['orderBy'], $conditions['sortDesc'])
             ->paginate($conditions['perPage'])
         );
@@ -57,7 +57,7 @@ class TermController extends Controller
      */
     public function store(StoreTermRequest $request)
     {
-        return new TermResouce($this->termRepository->create($request->all()));
+        return new TermResource($this->termRepository->create($request->all()));
     }
 
     /**
@@ -68,7 +68,7 @@ class TermController extends Controller
      */
     public function show($term)
     {
-        return new TermResouce($term);
+        return new TermResource($term);
     }
 
 
@@ -81,7 +81,7 @@ class TermController extends Controller
      */
     public function update(UpdateTermRequest $request, $term)
     {
-        return $this->termRepository->update($term, $request->all());
+        return new TermResource($this->termRepository->update($term, $request->all()));
     }
 
     /**

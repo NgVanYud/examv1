@@ -14,7 +14,7 @@
 <!--          </el-tooltip>-->
 <!--        </div>-->
         <div class="ml-auto">
-          <router-link :to = "{ name: 'CreateTerm' }" v-if="includeRoles(userRoles, [allRoles.admin, allRoles.exams_maker], false)">
+          <router-link :to = "{ name: 'CreateTerm' }">
             <el-button type="primary" size="mini" title="Tùy Chọn" class="filter-item" icon="el-icon-plus">
               {{ $t('table.add') }}
             </el-button>

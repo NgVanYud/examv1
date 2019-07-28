@@ -9,10 +9,11 @@ class Format extends Model
 {
   use FormatAttributes;
 
-  protected $fillable = [ 'format', 'timeout', 'subject_id', 'question_num' ];
+  protected $fillable = ['format', 'timeout', 'subject_id', 'question_num'];
 
-    public function subject() {
-      return $this->belongsTo(Subject::class);
-    }
+  public function subject()
+  {
+    return $this->belongsTo(Subject::class);
+  }
 
 }

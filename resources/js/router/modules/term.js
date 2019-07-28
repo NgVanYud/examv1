@@ -6,7 +6,7 @@ const termRoutes = {
   component: Layout,
   redirect: '/terms/list',
   meta: {
-    title: 'Đợt Thi',
+    title: 'Kỳ Thi',
     icon: 'term',
     // permissions: ['view menu components'],
     roles: [ALL_ROLES['curator']],
@@ -16,14 +16,14 @@ const termRoutes = {
       path: 'list',
       component: () => import('@/views/terms/List'),
       name: 'TermsList',
-      meta: { title: 'Đợt Thi', icon: 'term', noCache: true },
+      meta: { title: 'Kỳ Thi', icon: 'term', noCache: true },
     },
     {
       path: 'detail/:id',
       component: () => import('@/views/terms/Detail'),
       name: 'TermDetail',
       hidden: true,
-      meta: { title: 'Chi tiết đợt thi', icon: 'term', noCache: true },
+      meta: { title: 'Chi tiết kỳ thi', icon: 'term', noCache: true },
     },
     {
       path: 'create',
