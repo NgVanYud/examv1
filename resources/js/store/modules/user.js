@@ -103,14 +103,15 @@ const actions = {
     return new Promise((resolve, reject) => {
       logout(state.token)
         .then(() => {
-          commit('SET_TOKEN', '');
-          commit('SET_ROLES', []);
-          removeToken();
-          resetRouter();
           resolve();
         })
         .catch(error => {
           reject(error);
+        }).finally(() => {
+          commit('SET_TOKEN', '');
+          commit('SET_ROLES', []);
+          removeToken();
+          resetRouter();
         });
     });
   },

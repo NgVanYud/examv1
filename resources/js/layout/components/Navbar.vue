@@ -24,16 +24,6 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
-              {{ $t('navbar.dashboard') }}
-            </el-dropdown-item>
-          </router-link>
-          <a target="_blank" href="https://github.com/tuandm/laravue/">
-            <el-dropdown-item>
-              {{ $t('navbar.github') }}
-            </el-dropdown-item>
-          </a>
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>
           </el-dropdown-item>
@@ -74,8 +64,14 @@ export default {
       this.$store.dispatch('app/toggleSideBar');
     },
     async logout() {
-      await this.$store.dispatch('user/logout');
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`);
+      try {
+        await this.$store.dispatch('user/logout');
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.$router.push(`/login?redirect=${this.$route.fullPath}`);
+        location.reload();
+      }
     },
   },
 };
