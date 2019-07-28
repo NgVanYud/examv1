@@ -69,8 +69,8 @@ class SubjectController extends Controller
     {
       $user = Auth::user();
       $conditions = [
-        'orderBy' => ($request->order_by ? $request->order_by : 'code'),
-        'order' => ($request->order && in_array($request->order, [ 'desc', 'asc' ]) ? $request->order : 'asc'),
+        'orderBy' => ($request->order_by ? $request->order_by : 'updated_at'),
+        'order' => ($request->order && in_array($request->order, [ 'desc', 'asc' ]) ? $request->order : 'desc'),
         'perPage' => ($request->limit && intval($request->limit) > 0 ? $request->limit: 10),
       ];
       $subjects = new Collection();
@@ -214,7 +214,11 @@ class SubjectController extends Controller
 
     public function updateQuestion(UpdateQuestionRequest $request, $subject, $question) {
       if($this->subjectRepository->containQuestion($subject->id, $question->id)) {
-        return $this->subjectRepository->updateQuestion($question->id, $request->all());
+        if (!$question->isPublished()) {
+          return $this->subjectRepository->updateQuestion($question->id, $request->all());
+        } else {
+          return $this->subjectRepository->storeQuestion($request->all());
+        }
       }
       throw new GeneralException(
         __('exceptions.invalid_data'),

@@ -185,7 +185,7 @@ class SubjectRepository extends BaseRepository
     public function getQuestions($subjectId, $conditions) {
       $chapterId = isset($conditions['chapter']) ? $conditions['chapter'] : '';
       $orderBy = $conditions['order_by'] ? $conditions['order_by'] : 'updated_at';
-      $order = $conditions['order'] ? $conditions['order'] : 'desc';
+      $order = $conditions['order'] ? $conditions['order'] : 'aes';
       $perPage = $conditions['per_page'] ? $conditions['per_page'] : 10;
       if($chapterId) {
         return $this->questionRepository

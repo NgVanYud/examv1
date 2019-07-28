@@ -12,11 +12,14 @@ class Question extends Model
 
   const ACTIVE_CODE = 1;
   const INACTIVE_CODE = 0;
+  const PUBLISHED_CODE = 1;
+  const UNPUBLISHED_CODE = 0;
 
-  protected $fillable = [ 'id', 'content', 'is_actived', 'chapter_id', 'subject_id' ];
+  protected $fillable = [ 'id', 'content', 'is_actived', 'chapter_id', 'subject_id', 'is_published' ];
 
   protected $casts = [
-    'is_actived' => 'boolean'
+    'is_actived' => 'boolean',
+    'is_published' => 'boolean'
   ];
 
   protected $dates = [ 'deleted_at' ];
@@ -26,9 +29,18 @@ class Question extends Model
     return 'id';
   }
 
+  public function scopePublish($query, $status = true)
+  {
+    return $query->where('is_published', $status);
+  }
+
   public function scopeActive($query, $status = true)
   {
     return $query->where('is_actived', $status);
+  }
+
+  public function isPublished() {
+    return $this->is_published;
   }
 
   public function options() {
