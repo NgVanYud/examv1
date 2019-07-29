@@ -8,7 +8,9 @@ use App\Exceptions\GeneralException;
 use App\Models\SubjectTerm;
 use App\Repositories\BaseRepository;
 use App\Repositories\Quiz\QuizRepository;
+use App\Repositories\Subject\SubjectRepository;
 use App\Repositories\User\ProtorTermRepository;
+use App\Repositories\User\StudentRepository;
 use App\Repositories\User\UserRepository;
 use App\Repositories\Term\TermRepository;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +23,8 @@ class SubjectTermRepository extends BaseRepository
   public $quizRepository;
   public $termRepository;
   public $protorTermRepository;
+  public $subjectRepository;
+  public $studentRepository;
 
   /**
    * PHP 5 allows developers to declare constructor methods for classes.
@@ -33,12 +37,19 @@ class SubjectTermRepository extends BaseRepository
    * param [ mixed $args [, $... ]]
    * @link https://php.net/manual/en/language.oop5.decon.php
    */
-  public function __construct(UserRepository $userRepository, QuizRepository $quizRepository, TermRepository $termRepository, ProtorTermRepository $protorTermRepository)
+  public function __construct(UserRepository $userRepository,
+                              QuizRepository $quizRepository,
+                              TermRepository $termRepository,
+                              SubjectRepository $subjectRepository,
+                              StudentRepository $studentRepository,
+                              ProtorTermRepository $protorTermRepository)
   {
     $this->userRepository = $userRepository;
     $this->quizRepository = $quizRepository;
     $this->termRepository = $termRepository;
     $this->protorTermRepository = $protorTermRepository;
+    $this->subjectRepository = $subjectRepository;
+    $this->studentRepository = $studentRepository;
     $this->makeModel();
   }
 
@@ -58,6 +69,7 @@ class SubjectTermRepository extends BaseRepository
       $students = $data['students'];
       $protors = $data['protors'];
       $term = $this->termRepository->getById($termId);
+      $subject = $this->subjectRepository->getById($subjectId);
 
       // Update subject_term table
       $subjectTerm = $this->where('term_id', $termId)
@@ -65,33 +77,17 @@ class SubjectTermRepository extends BaseRepository
       ->first();
       $subjectTerm->update(['original_exam_num' => $data['original_exam_num']]);
 
-      // Store students
-      $studentsData = $this->parseUserData(config('access.roles_list.student'), $students, $term->code);
-
+      $studentsData = $this->parseUserData(config('access.roles_list.student'), $students, $term->code, $subject->code);
       $protorsData = $data['protors'];
       // Store protors
-      $this->storeProtorsForTerm($subjectTerm->id, $protorsData);
+      $this->storeProtorsForTerm($subjectTerm, $protorsData);
       // Store student
-      $studentsList = $this->userRepository->storeMulti($studentsData, true);
+      $studentsList = $this->studentRepository->storeMulti($studentsData);
       // Create quiz
       $quizs = $this->quizRepository->createQuiz($subjectTerm->id, $termId, $subjectId, $data['original_exam_num']);
         //Assign quiz for each student
       $this->quizRepository->assignQuizs($quizs, $studentsList);
-//      $subStudentsData = $this->parseDataForExcel($studentsList, [
-//        'code' => 'Mã Số',
-//        'last_name' => 'Họ',
-//        'first_name' => 'Tên',
-//        'username' => 'Tài Khoản',
-//        'plain_pwd' => 'Mật Khẩu',
-//      ]);
-//      $subStudentsData = $studentsList->map(function ($user) {
-//        return collect($user->toArray())
-//          ->only(['last_name', 'first_name', 'code', 'username', 'plain_pwd'])
-//          ->all();
-//      });
       return $studentsList;
-//      $this->userRepository->storeMulti();
-//      return $subjectTerm;
     });
   }
 
@@ -101,44 +97,44 @@ class SubjectTermRepository extends BaseRepository
    * @param $termCode (String)
    * @return array
    */
-  public function parseUserData($role, $users, $termCode = '') {
-    $counter = count($users);
+  public function parseUserData($role, $users, $termCode = '', $subjectCode = '') {
+    \Log::info('role ne: '.$role);
     $arr = [];
-    for ($i = 0; $i < $counter; $i++) {
-      $tmpUser = $users[$i];
+    foreach ($users as $tmpUser) {
       $parsedData = [];
       $parsedData['first_name'] = $tmpUser['Tên'];
       $parsedData['last_name'] = $tmpUser['Họ'];
       $parsedData['code'] = $tmpUser['Mã Số'];
-      $parsedData['username'] = $this->setUsername($role, $tmpUser['Mã Số'], $termCode);
-      $parsedData['role_ids'] = [(Role::findByName($role))->id];
+      $parsedData['username'] = $this->setUsername($role, $tmpUser['Mã Số'], $termCode, $subjectCode);
+      $parsedData['role_ids'] = [(Role::findByName($role, 'student'))->id];
       $arr[] = $parsedData;
     }
     return $arr;
   }
 
-  public function setUsername($role, $code, $termCode = '') {
+  public function setUsername($role, $code, $termCode = '', $subjectCode) {
     if($role == config('access.roles_list.student')) {
-      return $termCode.'-'.$code;
+      return $termCode.'-'.$subjectCode.'-'.$code;
     }
     return $code;
   }
 
   /**
    * Assign protors to a specified term
-   * @param $subjectTermId
-   * @param $protorIds
+   * @param SubjectTerm $subjectTerm
+   * @param array $protorIds
    */
-  public function storeProtorsForTerm($subjectTermId, $protorIds) {
-    $protorCounter = count($protorIds);
-    for($i = 0; $i < $protorCounter; $i++) {
-      if(!($this->protorTermRepository->where('protor_id', $protorIds[$i])
-        ->where('subject_term_id', $subjectTermId)
-        ->get()
-        ->count() > 0)) {
-        $this->protorTermRepository->create(['protor_id' => $protorIds[$i], 'subject_term_id' => $subjectTermId]);
-      }
-    }
+  public function storeProtorsForTerm($subjectTerm, $protorIds) {
+//    $protorCounter = count($protorIds);
+//    foreach ($protorIds as $protorId) {
+//      if(!($this->protorTermRepository->where('protor_id', $protorId)
+//        ->where('subject_term_id', $subjectTermId)
+//        ->get()
+//        ->count() > 0)) {
+//        $this->protorTermRepository->create(['protor_id' => $protorId, 'subject_term_id' => $subjectTermId]);
+//      }
+//    }
+    $subjectTerm->protors()->sync($protorIds);
   }
 
   /**

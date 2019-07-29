@@ -33,3 +33,12 @@ if(!function_exists("getErrorResponse")) {
         ];
     }
 }
+
+if(!function_exists("random_password_generate")) {
+  function random_password_generate($length)
+  {
+    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-=+?";
+    $password = substr(str_shuffle( $chars ),0, $length );
+    return $password;
+  }
+}

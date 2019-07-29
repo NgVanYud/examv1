@@ -119,12 +119,12 @@ class SubjectResource extends Resource {
       data: data,
     });
   }
-  getById(subjectId) {
-    return request({
-      url: '/' + this.uri + '/' + subjectId + '/get-by-id',
-      method: 'get',
-    });
-  }
+  // getById(subjectId) {
+  //   return request({
+  //     url: '/' + this.uri + '/' + subjectId + '/get-by-id',
+  //     method: 'get',
+  //   });
+  // }
 }
 
 export { SubjectResource as default };

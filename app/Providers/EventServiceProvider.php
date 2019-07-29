@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Events\StudentCreated;
 use App\Events\UserCreated;
 use App\Events\UserUpdated;
 use Illuminate\Support\Facades\Event;
@@ -29,6 +30,9 @@ class EventServiceProvider extends ServiceProvider
       ],
       ManagerCreated::class => [
         \App\Listeners\ManagerCreated::class
+      ],
+      StudentCreated::class => [
+        \App\Listeners\StudentCreated::class
       ]
     ];
 

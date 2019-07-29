@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
-    <h6 class="title-partial">Thiết Lập Thông Tin Môn Thi "{{ subject.name }}" Trong Đợt Thi</h6>
-    <el-form ref="editTermForm" :model="subjectTerm" :rules="rules" label-width="160px" size="mini">
+    <h6 class="title-partial">Đợt thi: {{ term.name | uppercaseFirst }} - Môn thi: {{ subject.name | uppercaseFirst }}</h6>
+    <el-form ref="editTermForm" :model="subjectTerm" :rules="rules" label-width="200px" size="mini">
       <el-form-item label="Số Lượng Đề Thi" prop="original_exam_num">
         <el-input type="number" v-model="subjectTerm.original_exam_num" v-model.number="subjectTerm.original_exam_num" :min="1" :max="10"/>
       </el-form-item>
@@ -14,7 +14,7 @@
         <upload-excel :load-fullfill="loadedStudents"></upload-excel>
       </el-form-item>
         <el-form-item>
-        <el-button type="primary" @click="storeSettingTerm('editTermForm')">Cập Nhật</el-button>
+        <el-button :loading="loading" type="primary" @click="storeSettingTerm('editTermForm')">Cập Nhật</el-button>
         <el-button @click="resetForm('editTermForm')">Reset</el-button>
       </el-form-item>
     </el-form>
@@ -23,7 +23,7 @@
 
 <script>
 import SubjectResource from '@/api/subject';
-import UserResource from '@/api/user';
+import ManagerResource from '@/api/manager';
 import TermResource from '@/api/term';
 import UploadExcel from '@/views/excel/UploadExcel';
 // import waves from '@/directive/waves'; // Waves directive
@@ -36,7 +36,7 @@ import { getNotification } from '@/utils/notification';
 
 const subjectResource = new SubjectResource();
 const termResource = new TermResource();
-const userResource = new UserResource();
+const managerResource = new ManagerResource();
 export default {
   name: 'SettingSubject',
   components: {
@@ -65,6 +65,7 @@ export default {
       studentAccounts: [],
       autoWidth: true,
       bookType: 'xlsx',
+      loading: false,
     };
   },
   methods: {
@@ -79,7 +80,7 @@ export default {
             element['index'] = index + 1;
           });
         }
-        const subjectId = this.$route.params.subjectId;
+        const subjectId = this.$route.params.subjectSlug;
         this.subjectDetail(subjectId);
         this.subjectTermDetail(this.term.id, subjectId);
       }).catch(error => {
@@ -88,8 +89,8 @@ export default {
         this.loading = false;
       });
     },
-    subjectDetail(idKey) {
-      subjectResource.getById(idKey).then(response => {
+    subjectDetail(subjectId) {
+      subjectResource.get(subjectId).then(response => {
         const { data } = response;
         this.subject = data;
       }).catch(() => {
@@ -98,7 +99,7 @@ export default {
       });
     },
     subjectTermDetail(termId, subjectId) {
-      termResource.subjectTermDetail({ termId: termId, subjectId: subjectId }).then(response => {
+      termResource.subjectTermDetail(termId, subjectId).then(response => {
         const { data } = response;
         if (data.length > 0) {
           this.subjectTerm.original_exam_num = data[0].original_exam_num;
@@ -114,19 +115,22 @@ export default {
       this.subjectTerm.students = data;
     },
     storeSettingTerm(formName) {
+      this.loading = true;
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          termResource.storeSetting(this.subjectTerm, this.term.id, this.$route.params.subjectId).then(response => {
+          termResource.storeSetting(this.subjectTerm, this.term.id, this.subject.slug).then(response => {
             if (response.error) {
               getNotification('Thiết lập', 'thông tin môn thi', 'error');
             } else {
               this.studentAccounts = response;
               console.log('thiet lap xong: ', response);
               this.handleDownload();
-              getNotification('Thiết lập', 'thông tin môn thi', 'success');
+              getNotification('Thiết lập', 'thông tin môn thi', 'success', 'success');
             }
           }).catch(error => {
             console.log(error);
+          }).finally(() => {
+            this.loading = false;
           });
         } else {
           getNotification('Thiết lập', 'thông tin môn thi', 'error', 'Do dữ liêu không hợp lệ');
@@ -137,7 +141,7 @@ export default {
       // const subjectExamMakerUuids = this.subjectExamMakers.map(examMaker => examMaker.uuid);
       // this.query.except_users = subjectExamMakerUuids;
       // this.query.role_name = this.allRoles['exams_maker'];
-      userResource.getByRoleName({ role_name: ALL_ROLES['protor'], limit: 200 }).then(response => {
+      managerResource.getByRole({ role_name: ALL_ROLES['protor'] }).then(response => {
         const { data } = response;
         this.protors = data;
       }).catch(error => {

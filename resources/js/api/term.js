@@ -23,17 +23,16 @@ class TermResource extends Resource {
   //   });
   // }
 
-  subjectTermDetail(query) {
+  subjectTermDetail(termId, subjectId) {
     return request({
-      url: '/subject-term' + '/' + 'detail',
+      url: '/terms/' + termId + '/subjects/' + subjectId,
       method: 'get',
-      params: query,
     });
   }
 
   storeSetting(data, termId, subjectId) {
     return request({
-      url: '/subject-term' + '/' + termId + '/' + subjectId + '/setting',
+      url: '/subject-term' + '/terms/' + termId + '/subjects/' + subjectId,
       method: 'post',
       data,
     });

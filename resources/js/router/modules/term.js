@@ -19,7 +19,7 @@ const termRoutes = {
       meta: { title: 'Kỳ Thi', icon: 'term', noCache: true },
     },
     {
-      path: 'detail/:id',
+      path: ':id/detail',
       component: () => import('@/views/terms/Detail'),
       name: 'TermDetail',
       hidden: true,
@@ -33,14 +33,14 @@ const termRoutes = {
       meta: { title: 'Tạo mới đợt thi', icon: 'term', noCache: true },
     },
     {
-      path: 'edit/:id',
+      path: ':id/edit',
       component: () => import('@/views/terms/Edit'),
       name: 'EditTerm',
       meta: { title: 'Chỉnh sửa đợt thi', noCache: true },
       hidden: true,
     },
     {
-      path: 'setting-subject/:termId/:subjectId',
+      path: ':termId/subjects/:subjectSlug',
       component: () => import('@/views/terms/SettingSubject'),
       name: 'SettingTermSubject',
       meta: { title: 'Chỉnh sửa đợt thi', noCache: true },

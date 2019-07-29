@@ -54,4 +54,8 @@ class Subject extends Model
     public function examMakers() {
       return $this->belongsToMany('App\Models\Manager', 'quizs_maker_subject', 'subject_id','quizs_maker_id');
     }
+
+    public function subjectTerms() {
+      return $this->hasMany('App\Models\SubjectTerm', 'subject_id');
+    }
 }

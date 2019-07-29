@@ -9,8 +9,8 @@ Route::group([
     'middleware' => ['jwt.auth', 'role:'.config('access.roles_list.curator').'|'.config('access.roles_list.protor')],
   'namespace' => 'API'
 ], function() {
-    Route::get('subject-term/detail', 'SubjectTermController@show');
-    Route::post('subject-term/{termId}/{subjectId}/setting', 'SubjectTermController@setting');
+    Route::get('terms/{term}/subjects/{subject}', 'SubjectTermController@show');
+    Route::post('subject-term/terms/{term}/subjects/{subject}', 'SubjectTermController@store');
     Route::post('subject-term/subject', 'SubjectTermController@subjectsForTerm')->middleware('role:'.config('access.roles_list.protor'));
     Route::apiResource('terms', 'TermController');
 });

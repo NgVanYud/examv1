@@ -43,17 +43,18 @@ class SubjectTermController extends Controller
   public function index() {
   }
 
-  public function show(Request $request) {
+  public function show(Request $request, $term, $subject) {
     $termDetail = $this->subjectTermRepository
-      ->where('term_id', $request->term_id)
-      ->where('subject_id', $request->subject_id)
-      ->get();
+      ->where('term_id', $term->id)
+      ->where('subject_id', $subject->id)
+      ->first();
     return new SubjectTermResource($termDetail);
   }
 
-  public function setting(StoreSettingSubjectTermRequest $request, $termId, $subjectId) {
-    return DB::transaction(function() use ($request, $termId, $subjectId) {
-      $studentData = $this->subjectTermRepository->storeSetting($termId, $subjectId, $request->all());
+//  public function store(StoreSettingSubjectTermRequest $request, $term, $subject) {
+  public function store(Request $request, $term, $subject) {
+    return DB::transaction(function() use ($request, $term, $subject) {
+      $studentData = $this->subjectTermRepository->storeSetting($term->id, $subject->id, $request->all());
       return $studentData;
     });
   }

@@ -43,11 +43,12 @@ Route::group([
     Route::resource('subjects', 'SubjectController')->only([ 'store', 'destroy', 'update' ]);
   });
 
-  Route::get('subjects/{subjectId}/get-by-id', 'SubjectController@getById');
+//  Route::get('subjects/{subjectId}/get-by-id', 'SubjectController@getById');
   Route::resource('subjects', 'SubjectController')->only([ 'index', 'show' ])->middleware(
     'role:'.config('access.roles_list.admin').'|'.
     config('access.roles_list.exams_maker').'|'.
-    config('access.roles_list.curator'));
+    config('access.roles_list.curator').'|'.
+    config('access.roles_list.protor'));
 
     Route::get('test', function() {
       $examFormat =  \App\Models\Format::find(2);

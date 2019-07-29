@@ -55,4 +55,8 @@ class Manager extends Authenticable implements CanResetPassword
   public function quizMakeSubjects() {
     return $this->belongsToMany('App\Models\Subject', 'quizs_maker_subject', 'quizs_maker_id','subject_id');
   }
+
+  public function terms() {
+    return $this->belongsToMany('App\Models\SubjectTerm', 'protor_term', 'protor_id', 'subject_term_id');
+  }
 }
