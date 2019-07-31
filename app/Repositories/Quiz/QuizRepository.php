@@ -5,6 +5,7 @@ namespace App\Repositories\Quiz;
 
 
 use App\Exceptions\GeneralException;
+use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\StudentTerm;
 use App\Repositories\BaseRepository;
@@ -13,6 +14,7 @@ use App\Repositories\Subject\FormatRepository;
 use App\Repositories\Subject\QuestionRepository;
 use App\Repositories\Subject\SubjectRepository;
 use App\Repositories\Term\TermRepository;
+use App\Repositories\User\StudentRepository;
 use App\Repositories\User\StudentTermRepository;
 use Illuminate\Support\Facades\DB;
 
@@ -24,6 +26,7 @@ class QuizRepository extends BaseRepository
   public $questionRepository;
   public $chapterRepository;
   public $studentTermRepository;
+  public $studentRepository;
 
   /**
    * PHP 5 allows developers to declare constructor methods for classes.
@@ -41,7 +44,8 @@ class QuizRepository extends BaseRepository
                               TermRepository $termRepository,
                               QuestionRepository $questionRepository,
                               ChapterRepository $chapterRepository,
-                              StudentTermRepository $studentTermRepository
+                              StudentTermRepository $studentTermRepository,
+                              StudentRepository $studentRepository
                               ) {
     $this->formatRepository = $formatRepository;
     $this->subjectRepository = $subjectRepository;
@@ -49,6 +53,7 @@ class QuizRepository extends BaseRepository
     $this->questionRepository = $questionRepository;
     $this->chapterRepository = $chapterRepository;
     $this->studentTermRepository = $studentTermRepository;
+    $this->studentRepository = $studentRepository;
     $this->makeModel();
   }
 
@@ -86,6 +91,9 @@ class QuizRepository extends BaseRepository
             $tmpQuestions = $this->chapterRepository->getRandomQuestions($chapterId, $quesNum);
             if(count($tmpQuestions) > 0) {
               foreach ($tmpQuestions as $tmpQuestion) {
+                //Update trang thái câu hỏi sang publish
+                $tmpQuestion->is_published = Question::PUBLISHED_CODE;
+                $tmpQuestion->save();
                 $tmpQuestionInfo = $this->parseQuestionInfo($tmpQuestion);
                 $detailQuiz[] = $tmpQuestionInfo['question'];
                 $answers[] = $tmpQuestionInfo['answer'];
@@ -152,7 +160,11 @@ class QuizRepository extends BaseRepository
     $quizNum = count($quizs);
     foreach ($students as $student) {
       $randomIndex = rand(0, $quizNum - 1);
-      $this->studentTermRepository->create(['student_id' => $student->id, 'quiz_id' => ($quizs[$randomIndex])->id, 'subject_term_id' => ($quizs[$randomIndex])->subject_term_id]);
+      $tmpQuiz = $quizs[$randomIndex];
+      $this->studentRepository->updateById($student->id, [
+        'subject_term_id' => $tmpQuiz->subject_term_id,
+        'quiz_id' => $tmpQuiz->id
+      ]);
     }
   }
 }

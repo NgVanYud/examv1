@@ -15,8 +15,7 @@ class StudentResource extends JsonResource
   public function toArray($request)
   {
     return array_merge(parent::toArray($request), [
-      'roles' => $this->resource->roles,
-      'permissions' => $this->resource->permissions
+      'quiz' => $this->resource->quiz
     ]);
   }
 

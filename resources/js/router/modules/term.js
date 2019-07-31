@@ -26,6 +26,13 @@ const termRoutes = {
       meta: { title: 'Chi tiết kỳ thi', icon: 'term', noCache: true },
     },
     {
+      path: ':termId/subjects/:subjectSlug/detail',
+      component: () => import('@/views/terms/SubjectInfo'),
+      name: 'SubjectInfo',
+      hidden: true,
+      meta: { title: 'Chi tiết môn thi', icon: 'term', noCache: true },
+    },
+    {
       path: 'create',
       component: () => import('@/views/terms/Create'),
       name: 'CreateTerm',
@@ -40,10 +47,11 @@ const termRoutes = {
       hidden: true,
     },
     {
-      path: ':termId/subjects/:subjectSlug',
-      component: () => import('@/views/terms/SettingSubject'),
-      name: 'SettingTermSubject',
-      meta: { title: 'Chỉnh sửa đợt thi', noCache: true },
+      path: ':termId/subjects/:subjectSlug/setting',
+      // component: () => import('@/views/terms/SettingSubject'),
+      component: () => import('@/views/terms/SubjectDetail/index'),
+      name: 'SubjectTermInfo',
+      meta: { title: 'Thông số môn thi', noCache: true },
       hidden: true,
     },
     {

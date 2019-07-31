@@ -438,7 +438,6 @@ export default {
         children: tmp,
         disabled: tmp.length === 0,
       };
-
       return [rolePermissions, userPermissions];
     },
     normalizedOtherPermissions() {

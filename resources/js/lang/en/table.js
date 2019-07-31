@@ -33,6 +33,8 @@ const data = {
   email: 'Email',
   num: 'Num',
   code: 'Code',
+  firstName: 'Firstname',
+  lastName: 'Lastname',
 };
 
 export default data;

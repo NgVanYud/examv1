@@ -38,7 +38,6 @@ const subjectResource = new SubjectResource();
 const termResource = new TermResource();
 const managerResource = new ManagerResource();
 export default {
-  name: 'SettingSubject',
   components: {
     UploadExcel,
   },
@@ -82,7 +81,7 @@ export default {
         }
         const subjectId = this.$route.params.subjectSlug;
         this.subjectDetail(subjectId);
-        this.subjectTermDetail(this.term.id, subjectId);
+        this.subjectTermDetail(this.term.uuid, subjectId);
       }).catch(error => {
         console.log(error);
       }).finally(() => {
@@ -118,14 +117,14 @@ export default {
       this.loading = true;
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          termResource.storeSetting(this.subjectTerm, this.term.id, this.subject.slug).then(response => {
+          termResource.storeSetting(this.subjectTerm, this.term.uuid, this.subject.slug).then(response => {
             if (response.error) {
               getNotification('Thiết lập', 'thông tin môn thi', 'error');
             } else {
               this.studentAccounts = response;
-              console.log('thiet lap xong: ', response);
-              this.handleDownload();
               getNotification('Thiết lập', 'thông tin môn thi', 'success', 'success');
+              this.$router.push({ name: 'TermDetail' });
+              this.handleDownload();
             }
           }).catch(error => {
             console.log(error);
@@ -168,6 +167,9 @@ export default {
       return jsonData.map(v => filterVal.map(j => {
         return v[j];
       }));
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
     },
   },
   created() {

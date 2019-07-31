@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\QuizAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Quiz extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes,
+      QuizAttributes;
 
     const ACTIVED_CODE = 1;
     const DEACTIVED_CODE = 0;
@@ -33,4 +35,9 @@ class Quiz extends Model
         'question_id')
         ->withPivot('order');;
     }
+
+    public function students() {
+      return $this->hasMany('App\Models\Student', 'quiz_id');
+    }
+
 }

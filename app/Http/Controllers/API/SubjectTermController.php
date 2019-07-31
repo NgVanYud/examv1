@@ -5,11 +5,15 @@ namespace App\Http\Controllers\API;
 use App\Exceptions\GeneralException;
 use App\Exports\UsersExport;
 use App\Http\Requests\StoreSettingSubjectTermRequest;
+use App\Http\Resources\QuizResource;
 use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\Term\SubjectTermResource;
+use App\Http\Resources\User\ManagerResource;
+use App\Http\Resources\User\StudentResource;
 use App\Repositories\Subject\SubjectRepository;
 use App\Repositories\Term\SubjectTermRepository;
 use App\Repositories\Term\TermRepository;
+use App\Repositories\User\StudentRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +25,7 @@ class SubjectTermController extends Controller
     public $termRepository;
     public $protorTermRepository;
     public $subjectRepository;
+    public $studentRespository;
 
   /**
    * PHP 5 allows developers to declare constructor methods for classes.
@@ -33,11 +38,16 @@ class SubjectTermController extends Controller
    * param [ mixed $args [, $... ]]
    * @link https://php.net/manual/en/language.oop5.decon.php
    */
-  public function __construct(SubjectTermRepository $subjectTermRepository, TermRepository $termRepository, SubjectRepository $subjectRepository)
-  {
+  public function __construct(
+    SubjectTermRepository $subjectTermRepository,
+    TermRepository $termRepository,
+    SubjectRepository $subjectRepository,
+    StudentRepository $studentRepository
+  ){
     $this->subjectTermRepository = $subjectTermRepository;
     $this->termRepository = $termRepository;
     $this->subjectRepository = $subjectRepository;
+    $this->studentRespository = $studentRepository;
   }
 
   public function index() {
@@ -71,4 +81,37 @@ class SubjectTermController extends Controller
     return new SubjectResource($subjects);
   }
 
+  public function getStudents(Request $request, $term, $subject) {
+    $subjectTerm = $this->subjectTermRepository->where('term_id', $term->id)
+      ->where('subject_id', $subject->id)
+      ->first();
+    $conditions = [
+      'orderBy' => ($request->orderBy ? $request->orderBy : 'first_name'),
+      'order' => ($request->order && in_array($request->order, ['desc', 'asc']) ? $request->order : 'asc'),
+      'limit' => ($request->limit && intval($request->limit) > 0 ? $request->limit : 10),
+      'search' => ($request->search ? $request->search : ''),
+      'roles' => ($request->roles ? $request->roles : ''),
+    ];
+    $students = $this->studentRespository
+      ->where('subject_term_id', $subjectTerm->id)
+      ->orderBy($conditions['orderBy'], $conditions['order'])
+      ->paginate($conditions['limit']);
+    return StudentResource::collection($students);
+  }
+
+  public function getProtors($term, $subject) {
+    $subjectTerm = $this->subjectTermRepository->where('term_id', $term->id)
+      ->where('subject_id', $subject->id)
+      ->first();
+    $protors = ManagerResource::collection($subjectTerm->protors);
+    return $protors;
+  }
+
+  public function getQuizs($term, $subject) {
+    $subjectTerm = $this->subjectTermRepository->where('term_id', $term->id)
+      ->where('subject_id', $subject->id)
+      ->first();
+    $quizs = QuizResource::collection($subjectTerm->quizs);
+    return $quizs;
+  }
 }

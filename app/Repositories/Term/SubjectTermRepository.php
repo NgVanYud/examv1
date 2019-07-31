@@ -75,7 +75,10 @@ class SubjectTermRepository extends BaseRepository
       $subjectTerm = $this->where('term_id', $termId)
       ->where('subject_id', $subjectId)
       ->first();
-      $subjectTerm->update(['original_exam_num' => $data['original_exam_num']]);
+      $subjectTerm->update([
+        'original_exam_num' => $data['original_exam_num'],
+        'is_configed' => SubjectTerm::CONFIGED_CODE
+      ]);
 
       $studentsData = $this->parseUserData(config('access.roles_list.student'), $students, $term->code, $subject->code);
       $protorsData = $data['protors'];

@@ -9,15 +9,19 @@ use Spatie\Permission\Contracts\Role;
 
 class SubjectTerm extends Model
 {
+  const CONFIGED_CODE = 1;
+  const UNCONFIGED_CODE = 0;
+
   protected $table = 'subject_term';
 
   protected $casts = [
     'is_actived' => 'boolean',
     'is_done' => 'boolean',
+    'is_configed' => 'boolean'
 //    'quiz_format' => 'array'
   ];
 
-  protected $fillable = ['original_exam_num', 'progression', 'subject_id', 'term_id', 'is_actived', 'is_done', 'quiz_format'];
+  protected $fillable = ['original_exam_num', 'progression', 'subject_id', 'term_id', 'is_actived', 'is_done', 'quiz_format', 'is_done', 'is_configed'];
 
   public function studentTerms()
   {
@@ -26,7 +30,7 @@ class SubjectTerm extends Model
 
   public function protors()
   {
-    return $this->belongsToMany(User::class, 'protor_term', 'subject_term_id', 'protor_id');
+    return $this->belongsToMany(Manager::class, 'protor_term', 'subject_term_id', 'protor_id');
   }
 
   public function quizs()
@@ -42,6 +46,10 @@ class SubjectTerm extends Model
   public function subject()
   {
     return $this->belongsTo('App\Models\Subject', 'subject_id');
+  }
+
+  public function students() {
+    return $this->hasMany('App\Model\Student', 'subject_term_id');
   }
 
   public function scopeDone(Builder $query): Builder

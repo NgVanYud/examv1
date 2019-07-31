@@ -227,3 +227,16 @@ aside {
 .title-partial {
   margin-bottom: 15px;
 }
+
+.question-wrapper {
+  .options-wrapper {
+    margin-left: 15px;
+    .option-item {
+      margin-bottom: 10px;
+    }
+  }
+
+  .content-wrapper {
+    margin-bottom: 10px;
+  }
+}

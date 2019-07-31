@@ -10,6 +10,9 @@ Route::group([
   'namespace' => 'API'
 ], function() {
     Route::get('terms/{term}/subjects/{subject}', 'SubjectTermController@show');
+    Route::get('terms/{term}/subjects/{subject}/students', 'SubjectTermController@getStudents');
+    Route::get('terms/{term}/subjects/{subject}/protors', 'SubjectTermController@getProtors');
+    Route::get('terms/{term}/subjects/{subject}/quizs', 'SubjectTermController@getQuizs');
     Route::post('subject-term/terms/{term}/subjects/{subject}', 'SubjectTermController@store');
     Route::post('subject-term/subject', 'SubjectTermController@subjectsForTerm')->middleware('role:'.config('access.roles_list.protor'));
     Route::apiResource('terms', 'TermController');

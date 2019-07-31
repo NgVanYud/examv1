@@ -45,3 +45,7 @@ export function uppercaseFirst(txt = '') {
   return txt.charAt(0).toUpperCase() + txt.slice(1);
 }
 
+export function index2OptionChar(value) {
+  const charMap = ['A', 'B', 'C', 'D'];
+  return charMap[value];
+}

@@ -112,7 +112,7 @@ export default {
     updateTerm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          termResource.update(this.term.id, this.term).then(response => {
+          termResource.update(this.term.uuid, this.term).then(response => {
             if (response.error) {
               getNotification('Cập nhật', 'đợt thi', 'error', 'Do dữ liệu trùng lặp hoặc không hơp lệ');
             } else {
@@ -130,7 +130,7 @@ export default {
     },
     resetForm(formName) {
       // this.$refs[formName].resetFields();
-      this.termDetail(this.term.id);
+      this.termDetail(this.term.uuid);
     },
   },
   created() {

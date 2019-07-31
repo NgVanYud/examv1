@@ -38,6 +38,30 @@ class TermResource extends Resource {
     });
   }
 
+  getStudents(termId, subjectId, data = {}) {
+    return request({
+      url: '/terms/' + termId + '/subjects/' + subjectId + '/students',
+      method: 'get',
+      data,
+    });
+  }
+
+  getProtors(termId, subjectId, data = {}) {
+    return request({
+      url: '/terms/' + termId + '/subjects/' + subjectId + '/protors',
+      method: 'get',
+      data,
+    });
+  }
+
+  getQuizs(termId, subjectId, data = {}) {
+    return request({
+      url: '/terms/' + termId + '/subjects/' + subjectId + '/quizs',
+      method: 'get',
+      data,
+    });
+  }
+
   subjectForTerm() {
 
   }

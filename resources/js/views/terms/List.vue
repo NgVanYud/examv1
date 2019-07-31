@@ -66,11 +66,11 @@
 
       <el-table-column align="center" label="Thao Tác" width="180">
         <template slot-scope="scope">
-          <router-link :to = "{ name: 'EditTerm', params: { id: scope.row.id }}" v-if="includeRoles(userRoles, [allRoles.curator], false)">
+          <router-link :to = "{ name: 'EditTerm', params: { id: scope.row.uuid }}" v-if="includeRoles(userRoles, [allRoles.curator], false)">
             <el-button type="primary" size="mini" icon="el-icon-edit" title="Chỉnh Sửa">
             </el-button>
           </router-link>
-          <router-link :to = "{ name: 'TermDetail', params: { id: scope.row.id }}" v-if="includeRoles(userRoles, [allRoles.curator], false)">
+          <router-link :to = "{ name: 'TermDetail', params: { id: scope.row.uuid }}" v-if="includeRoles(userRoles, [allRoles.curator], false)">
             <el-button type="warning" size="mini" icon="el-icon-document" title="Chi Tiết">
             </el-button>
           </router-link>

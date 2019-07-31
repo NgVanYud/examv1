@@ -65,11 +65,11 @@
         </el-table-column>
         <el-table-column align="center" label="Thao Tác" width="150">
           <template slot-scope="scope">
-            <router-link :to = "{ name: 'SettingTermSubject', params: { termId: term.id, subjectSlug: scope.row.slug }}">
-              <el-button type="primary" size="mini" icon="el-icon-edit" title="Thiết Lập Thông Tin">
+            <router-link :to = "{ name: 'SubjectTermInfo', params: { termId: term.uuid, subjectSlug: scope.row.slug }}">
+              <el-button type="primary" size="mini" icon="el-icon-document" title="Thông Số">
               </el-button>
             </router-link>
-<!--            <router-link :to = "{ name: 'SubjectDetail', params: { slug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.admin, allRoles.exams_maker], false)">-->
+<!--            <router-link :to = "{ name: 'SubjectInfo', params: { termId: term.uuid, subjectSlug: scope.row.slug }}">-->
 <!--              <el-button type="warning" size="mini" icon="el-icon-document" title="Tùy Chọn">-->
 <!--              </el-button>-->
 <!--            </router-link>-->
