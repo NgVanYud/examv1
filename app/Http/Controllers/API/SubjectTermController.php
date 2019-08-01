@@ -74,11 +74,9 @@ class SubjectTermController extends Controller
   }
 
   public function subjectsForTerm(Request $request) {
-    $currentUser = auth()->user();
-    $subjectTerms = $this->subjectTermRepository->getSubjectIdsForTermByUser(config('access.roles_list.protor'), $currentUser);
+    $currentUser = auth('manager')->user();
+    $subjectTerms = $currentUser->terms()->notDone()->actived()->configed()->get();
     return SubjectTermResource::collection($subjectTerms);
-//    $subjects = $this->subjectRepository->whereIn('id', $subjectIds)->get();
-    return new SubjectResource($subjects);
   }
 
   public function getStudents(Request $request, $term, $subject) {
@@ -113,5 +111,14 @@ class SubjectTermController extends Controller
       ->first();
     $quizs = QuizResource::collection($subjectTerm->quizs);
     return $quizs;
+  }
+
+  public function activeQuiz(Request $request) {
+    return $this->subjectTermRepository->activeQuiz($request->subject_term_id);
+  }
+
+  public function getQuiz() {
+    $user = auth('student')->user();
+
   }
 }

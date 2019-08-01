@@ -27,6 +27,7 @@ import subjectRouters from './modules/subject';
 import termRouters from './modules/term';
 import subjectTermRoutes from './modules/subject-term';
 import authRoutes from './modules/auth';
+import quizRoutes from '@/router/modules/quiz';
 
 // import ALL_ROLES from '@/utils/auth';
 
@@ -146,6 +147,7 @@ export const asyncRoutes = [
   subjectRouters,
   termRouters,
   subjectTermRoutes,
+  quizRoutes,
   permissionRoutes,
   componentRoutes,
   chartsRoutes,

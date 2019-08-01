@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Exceptions\GeneralException;
 use App\Http\Requests\StoreTermRequest;
 use App\Http\Requests\UpdateTermRequest;
+use App\Http\Resources\Term\SubjectTermResource;
 use App\Http\Resources\Term\TermCollection;
 use App\Http\Resources\Term\TermResource;
 use App\Repositories\Term\TermRepository;
@@ -42,10 +44,15 @@ class TermController extends Controller
             'sortDesc' => ($request->sort_desc == 'true' ? 'desc' : 'desc'),
             'perPage' => ($request->limit && intval($request->limit) > 0 ? $request->limit: 10)
         ];
-        return TermResource::collection($this->termRepository
+        $user = auth('manager')->user();
+        $terms = [];
+        if ($user->hasRole(config('access.roles_list.curator'))) {
+          $terms = $this->termRepository
             ->orderBy($conditions['orderBy'], $conditions['sortDesc'])
-            ->paginate($conditions['perPage'])
-        );
+            ->paginate($conditions['perPage']);
+          return TermResource::collection($terms);
+        }
+        throw new GeneralException('Invalid Data', 403);
     }
 
 

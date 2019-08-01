@@ -13,17 +13,10 @@ const subjectTermRoutes = {
   children: [
     {
       path: 'list',
-      component: () => import('@/views/subjects-term/List'),
-      name: 'SubjectsTermList',
+      component: () => import('@/views/terms/WaitingSubject'),
+      name: 'TermSubjectsList',
       meta: { title: 'Môn Thi Hiện Tại', icon: 'user', noCache: true },
     },
-    // {
-    //   path: 'edit/:id',
-    //   component: () => import('@/views/users/Edit'),
-    //   name: 'UserEdit',
-    //   meta: { title: 'Chỉnh sửa user', noCache: true },
-    //   hidden: true,
-    // },
   ],
 };
 

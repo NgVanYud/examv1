@@ -134,7 +134,7 @@ class LoginController extends Controller
     {
         return Validator::make(
             $request->only(['username', 'password']),[
-            $this->username() => "required|string|min:4|max:25",
+            $this->username() => "required|string|min:4|max:40",
             'password' => "required|string|min:4|max:255"
             ], [
                 'required' => __('validation.required'),

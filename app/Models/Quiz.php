@@ -24,7 +24,7 @@ class Quiz extends Model
       'detail' => 'array'
     ];
 
-    public function terms() {
+    public function term() {
       return $this->belongsTo(SubjectTerm::class, 'subject_term_id');
     }
 

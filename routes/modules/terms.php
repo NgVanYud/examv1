@@ -14,6 +14,11 @@ Route::group([
     Route::get('terms/{term}/subjects/{subject}/protors', 'SubjectTermController@getProtors');
     Route::get('terms/{term}/subjects/{subject}/quizs', 'SubjectTermController@getQuizs');
     Route::post('subject-term/terms/{term}/subjects/{subject}', 'SubjectTermController@store');
-    Route::post('subject-term/subject', 'SubjectTermController@subjectsForTerm')->middleware('role:'.config('access.roles_list.protor'));
+    Route::get('subject-term/subjects', 'SubjectTermController@subjectsForTerm')
+      ->middleware('role:'.config('access.roles_list.protor'));
+    Route::post('subject-term/subject/active-quiz', 'SubjectTermController@activeQuiz')
+      ->middleware('role:'.config('access.roles_list.protor'));
+    Route::get('subject-term/quiz', 'SubjectTermController@getQuiz')
+      ->middleware('role:'.config('access.roles_list.student'));
     Route::apiResource('terms', 'TermController');
 });

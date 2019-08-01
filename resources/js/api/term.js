@@ -62,8 +62,19 @@ class TermResource extends Resource {
     });
   }
 
-  subjectForTerm() {
+  subjectsForTerm() {
+    return request({
+      url: '/subject-term/subjects',
+      method: 'get',
+    });
+  }
 
+  activeQuiz(data) {
+    return request({
+      url: 'subject-term/subject/active-quiz',
+      method: 'post',
+      data,
+    });
   }
 }
 

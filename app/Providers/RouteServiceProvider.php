@@ -37,6 +37,11 @@ class RouteServiceProvider extends ServiceProvider
         'findBy' => 'uuid'
       ],
       [
+        'podcast' => 'student',
+        'model' => '\App\Models\Student',
+        'findBy' => 'uuid'
+      ],
+      [
         'podcast' => 'subject',
         'model' => '\App\Models\Subject',
         'findBy' => 'slug'
@@ -64,6 +69,16 @@ class RouteServiceProvider extends ServiceProvider
       [
         'podcast' => 'question',
         'model' => '\App\Models\Question',
+        'findBy' => 'id'
+      ],
+      [
+        'podcast' => 'quiz',
+        'model' => '\App\Models\Quiz',
+        'findBy' => 'id'
+      ],
+      [
+        'podcast' => 'subjectTerm',
+        'model' => '\App\Models\SubjectTerm',
         'findBy' => 'id'
       ]
     ];

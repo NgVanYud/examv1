@@ -5,6 +5,8 @@ namespace App\Repositories\Term;
 //
 //
 use App\Exceptions\GeneralException;
+use App\Models\Quiz;
+use App\Models\Student;
 use App\Models\SubjectTerm;
 use App\Repositories\BaseRepository;
 use App\Repositories\Quiz\QuizRepository;
@@ -169,11 +171,11 @@ class SubjectTermRepository extends BaseRepository
   public function getSubjectIdsForTermByUser($role, $user) {
     if($user->hasRole($role)) {
       // danh sach subject_term ma nguoi dung trong thi
-      $subjectTermOfUser = $user->subjectTerms;
+      $subjectTermOfUser = $user->terms;
       $subjectTerms = [];
       foreach ($subjectTermOfUser as $subjectTerm) {
         $tmpTerm = $this->termRepository->getById($subjectTerm->term_id);
-        if($tmpTerm && $tmpTerm->active && !$tmpTerm->is_done) {
+        if($tmpTerm && $tmpTerm->is_actived && !$tmpTerm->is_done) {
           $subjectTerms[] = $subjectTerm;
         }
       }
@@ -181,5 +183,22 @@ class SubjectTermRepository extends BaseRepository
     } else {
       throw new GeneralException('You do not have permission', 401);
     }
+  }
+
+  /**
+   * Kich hoat bai thi
+   *
+   * @param integer $subjectTermId
+   */
+  public function activeQuiz($subjectTermId) {
+    $subjectTerm = $this->getById($subjectTermId);
+    return DB::transaction(function () use ($subjectTerm) {
+      // Mo bai thi
+      $quizs = $subjectTerm->quizs()->update(['is_actived' => Quiz::ACTIVED_CODE]);
+      // Kich hoat tai khoan sinh vien
+      $students = $subjectTerm->students()->update(['is_actived' => Student::ACTIVED_CODE]);
+      // Thay doi trang thai cua subjectTerm
+      $subjectTerm->update(['status' => SubjectTerm::RUNNING]);
+    });
   }
 }

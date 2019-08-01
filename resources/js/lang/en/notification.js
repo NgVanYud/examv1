@@ -12,6 +12,7 @@ const data = {
     delete: 'Delete',
     continue: 'Continue',
     update: 'Update',
+    do: 'Do',
   },
   object: {
     system: 'system',
@@ -22,6 +23,7 @@ const data = {
     data: 'data',
     user: 'user',
     subject: 'subject',
+    quiz: 'quiz',
   },
   status: {
     error: 'unsuccessfully',

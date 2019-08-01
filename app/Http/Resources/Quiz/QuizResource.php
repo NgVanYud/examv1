@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Quiz;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,6 +14,8 @@ class QuizResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return array_merge(parent::toArray($request), [
+          'subject' => $this->resource->term->subject
+        ]);
     }
 }

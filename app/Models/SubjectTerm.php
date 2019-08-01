@@ -11,6 +11,8 @@ class SubjectTerm extends Model
 {
   const CONFIGED_CODE = 1;
   const UNCONFIGED_CODE = 0;
+  const RUNNING = 2;
+  const WAITING = 3;
 
   protected $table = 'subject_term';
 
@@ -21,7 +23,18 @@ class SubjectTerm extends Model
 //    'quiz_format' => 'array'
   ];
 
-  protected $fillable = ['original_exam_num', 'progression', 'subject_id', 'term_id', 'is_actived', 'is_done', 'quiz_format', 'is_done', 'is_configed'];
+  protected $fillable = [
+    'original_exam_num',
+    'progression',
+    'subject_id',
+    'term_id',
+    'is_actived',
+    'is_done',
+    'quiz_format',
+    'is_done',
+    'is_configed',
+    'status'
+  ];
 
   public function studentTerms()
   {
@@ -49,7 +62,7 @@ class SubjectTerm extends Model
   }
 
   public function students() {
-    return $this->hasMany('App\Model\Student', 'subject_term_id');
+    return $this->hasMany('App\Models\Student', 'subject_term_id');
   }
 
   public function scopeDone(Builder $query): Builder
@@ -70,5 +83,25 @@ class SubjectTerm extends Model
   public function scopeDeactived(Builder $query)
   {
     return $query->where('is_actived', '=', 0);
+  }
+
+  public function scopeConfiged(Builder $query)
+  {
+    return $query->where('is_configed', '=', 1);
+  }
+
+  public function scopeUnconfiged(Builder $query)
+  {
+    return $query->where('is_unconfiged', '=', 0);
+  }
+
+  public function scopeRunning(Builder $query)
+  {
+    return $query->where('status', '=', self::RUNNING);
+  }
+
+  public function scopeWaiting(Builder $query)
+  {
+    return $query->where('status', '=', self::WAITING);
   }
 }

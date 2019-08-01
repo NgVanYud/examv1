@@ -19,6 +19,7 @@ Route::group([
   'namespace' => 'API'
 ], function () {
   Route::post('manager/me', 'UserController@me');
+  Route::get('students/{student}/password/reset', 'UserController@resetStdPwd')->middleware('role:' . config('access.roles_list.curator'));
   Route::post('users/store-multiple', 'UserController@storeMulti');
   Route::post('managers/active', 'ManagerController@active')->middleware('role:' . config('access.roles_list.admin'));
   Route::post('managers/deactive', 'ManagerController@deactive')->middleware('role:' . config('access.roles_list.admin'));

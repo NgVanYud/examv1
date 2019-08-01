@@ -11,6 +11,7 @@ use App\Http\Resources\User\UserCollection;
 use App\Models\Manager;
 use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use phpDocumentor\Reflection\Types\Boolean;
 use Validator;
@@ -232,5 +233,11 @@ class UserController extends Controller
   public function resetPwd(Request $request)
   {
 
+  }
+
+  public function resetStdPwd(Request $request, $student) {
+    $pwd = random_password_generate(config('access.password_length', 10));
+    $student->update(['password' => Hash::make($pwd)]);
+    return $pwd;
   }
 }

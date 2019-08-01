@@ -66,7 +66,8 @@
 
       <el-table-column align="center" label="Thao Tác" width="180">
         <template slot-scope="scope">
-          <router-link :to = "{ name: 'EditTerm', params: { id: scope.row.uuid }}" v-if="includeRoles(userRoles, [allRoles.curator], false)">
+          <router-link :to = "{ name: 'EditTerm', params: { id: scope.row.uuid }}"
+                       v-if="includeRoles(userRoles, [allRoles.curator], false) && !scope.row.is_done">
             <el-button type="primary" size="mini" icon="el-icon-edit" title="Chỉnh Sửa">
             </el-button>
           </router-link>

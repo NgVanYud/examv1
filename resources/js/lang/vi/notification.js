@@ -12,6 +12,7 @@ const data = {
     delete: 'Xóa',
     continue: 'Tiếp tục',
     update: 'Cập nhật',
+    do: 'Làm',
   },
   object: {
     system: 'hệ thống',
@@ -22,6 +23,7 @@ const data = {
     data: 'dữ liệu',
     user: 'người dùng',
     subject: 'môn học',
+    quiz: 'bai thi',
   },
   status: {
     error: 'không thành công',
