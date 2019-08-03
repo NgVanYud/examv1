@@ -1,3 +1,4 @@
+<!--Cán bộ coi thi-->
 <template>
   <div class="app-container">
     <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%" size="mini">
@@ -32,6 +33,14 @@
             icon="el-icon-refresh"
             title="Kích hoạt bài thi"
             @click="activeQuizs(scope.row)">
+          </el-button>
+          <el-button
+            v-if="scope.row.status === 2"
+            type="primary"
+            size="mini"
+            icon="el-icon-refresh"
+            title="Đóng bài thi"
+            @click="closeQuizs(scope.row)">
           </el-button>
          <router-link :to = "{ name: 'EditTerm', params: { id: scope.row.uuid }}">
             <el-button type="success" size="mini" icon="el-icon-circle-check" title="Chỉnh Sửa">
@@ -71,7 +80,7 @@ export default {
     };
   },
   methods: {
-    getList() {
+    getList() { // thong tin subjectTerm
       this.loading = true;
       termResource.subjectsForTerm().then(response => {
         const { data } = response;
@@ -103,6 +112,9 @@ export default {
           message: 'Hủy kích hoạt bài thi.',
         });
       });
+    },
+    closeQuizs(item) {
+
     },
   },
   created() {

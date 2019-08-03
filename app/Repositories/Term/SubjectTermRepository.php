@@ -201,4 +201,18 @@ class SubjectTermRepository extends BaseRepository
       $subjectTerm->update(['status' => SubjectTerm::RUNNING]);
     });
   }
+
+  /**
+   * Đóng bài thi, tinh điểm.
+   *
+   * @param integer $subjectTermId
+   */
+  public function deactiveQuiz($subjectTermId) {
+    $subjectTerm = $this->getById($subjectTermId);
+    return DB::transaction(function() use ($subjectTerm) {
+      // Dong bai thi
+      $quizs = $subjectTerm->quizs()->update(['is_actived' => Quiz::DEACTIVED_CODE]);
+      // Xoa tai khoan sinh vien
+    });
+  }
 }

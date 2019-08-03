@@ -19,6 +19,14 @@ class QuizResource extends Resource {
       method: 'get',
     });
   }
+
+  submitResult(subjectTermId, data) {
+    return request({
+      url: '/quizs/' + subjectTermId + '/result',
+      method: 'post',
+      data,
+    });
+  }
 }
 
 export { QuizResource as default };

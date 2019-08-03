@@ -15,4 +15,5 @@ Route::group([
 ], function() {
     Route::get('quizs', 'QuizController@index');
     Route::get('quizs/{subjectTerm}', 'QuizController@show');
+    Route::post('quizs/{subjectTerm}/result', 'QuizController@storeResult');
 });

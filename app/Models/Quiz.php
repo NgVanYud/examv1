@@ -40,4 +40,7 @@ class Quiz extends Model
       return $this->hasMany('App\Models\Student', 'quiz_id');
     }
 
+    public function results() {
+      return $this->hasMany(Result::class, 'quiz_id');
+    }
 }

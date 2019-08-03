@@ -13,6 +13,7 @@ const data = {
     continue: 'Continue',
     update: 'Update',
     do: 'Do',
+    submit: 'Submit',
   },
   object: {
     system: 'system',

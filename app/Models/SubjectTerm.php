@@ -65,6 +65,10 @@ class SubjectTerm extends Model
     return $this->hasMany('App\Models\Student', 'subject_term_id');
   }
 
+  public function results() {
+    return $this->hasMany(Result::class, 'subject_term_id');
+  }
+
   public function scopeDone(Builder $query): Builder
   {
     return $query->where('is_done', '=', 1);

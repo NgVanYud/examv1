@@ -10,6 +10,7 @@ use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\Term\SubjectTermResource;
 use App\Http\Resources\User\ManagerResource;
 use App\Http\Resources\User\StudentResource;
+use App\Models\SubjectTerm;
 use App\Repositories\Subject\SubjectRepository;
 use App\Repositories\Term\SubjectTermRepository;
 use App\Repositories\Term\TermRepository;
@@ -75,7 +76,7 @@ class SubjectTermController extends Controller
 
   public function subjectsForTerm(Request $request) {
     $currentUser = auth('manager')->user();
-    $subjectTerms = $currentUser->terms()->notDone()->actived()->configed()->get();
+    $subjectTerms = $currentUser->terms()->actived()->configed()->get();
     return SubjectTermResource::collection($subjectTerms);
   }
 

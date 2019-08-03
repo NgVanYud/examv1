@@ -13,6 +13,7 @@ const data = {
     continue: 'Tiếp tục',
     update: 'Cập nhật',
     do: 'Làm',
+    submit: 'Xác nhận',
   },
   object: {
     system: 'hệ thống',
@@ -23,7 +24,7 @@ const data = {
     data: 'dữ liệu',
     user: 'người dùng',
     subject: 'môn học',
-    quiz: 'bai thi',
+    quiz: 'bài thi',
   },
   status: {
     error: 'không thành công',

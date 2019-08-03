@@ -2,7 +2,7 @@
   <div>
     <div class="d-flex justify-content-around p-3 pr-5 w-100 text-light" style="position: fixed; background-color: #1f2d3d; z-index: 2 !important;">
       <div>
-        <b><i class="el-icon-tickets"></i> Môn thi: </b> {{ quiz.subject.name | uppercaseFirst }} <i>phút</i>
+        <b><i class="el-icon-tickets"></i> Môn thi: </b> {{ quiz.subject.name | uppercaseFirst }}
       </div>
       <div>
         <b><i class="el-icon-timer"></i> Thời gian làm bài: </b> {{ quiz.timeout }} <i>phút</i>
@@ -57,6 +57,9 @@
                   </span>
                   </a>
                 </div>
+                <div class="mt-2">
+                  <el-button :loading="loading" type="primary" @click="submitResult">Nộp Bài</el-button>
+                </div>
               </div>
             </div>
           </div>
@@ -71,9 +74,11 @@
 import QuizResource from '@/api/quiz';
 // import QuizFrame from '@/views/terms/SubjectDetail/tabs/components/QuizFrame';
 import VueCountdown from '@chenfengyuan/vue-countdown';
-// import Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
+import { getNotification } from '@/utils/notification';
 
 const quizResource = new QuizResource();
+const RESULT_COOKIE_NAME = 'quizKma';
 
 export default {
   components: {
@@ -98,11 +103,12 @@ export default {
   },
   watch: {
     results: function(newValue, oldValue) {
-
+      Cookies.set(RESULT_COOKIE_NAME, newValue, { expires: 1 });
     },
   },
   created() {
     this.getQuiz();
+    this.setResult();
   },
   methods: {
     getQuiz() {
@@ -118,8 +124,81 @@ export default {
         this.loading = false;
       });
     },
+    setResult() {
+      if (Cookies.getJSON(RESULT_COOKIE_NAME || 'quizKma')) {
+        this.results = Cookies.getJSON(RESULT_COOKIE_NAME || 'quizKma');
+      }
+    },
+    resetResult() {
+      if (Cookies.getJSON(RESULT_COOKIE_NAME || 'quizKma')) {
+        Cookies.remove(RESULT_COOKIE_NAME || 'quizKma');
+        this.results = [];
+        this.quiz = {};
+      }
+    },
+    submitResult(needConfirmed = true) {
+      if (needConfirmed) {
+        this.$confirm(
+          this.$t('notification.action.submit') + ' ' + this.$t('notification.object.quiz') + '. ' + this.$t('notification.action.continue') + '?', 'Warning',
+          {
+            confirmButtonText: this.$t('button.ok'),
+            cancelButtonText: this.$t('button.cancel'),
+            type: 'warning',
+          }
+        ).then(() => {
+          this.storeResult();
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: 'Hủy nộp bài thi',
+          });
+        }).finally(() => {
+          this.loading = false;
+        });
+      } else {
+        this.storeResult();
+      }
+    },
+    storeResult() {
+      this.loading = true;
+      const subjectTermId = this.$route.params.subjectTermId;
+      quizResource.submitResult(subjectTermId, {
+        student: this.$store.getters.uuid,
+        result: this.results,
+        quiz: this.quiz.id,
+      }).then(response => {
+        const { data } = response;
+        console.log('result: ', response);
+        this.resetResult();
+        this.waitRefresh();
+        getNotification(
+          this.$t('notification.action.submit'),
+          this.$t('notification.object.quiz'),
+          this.$t('notification.status.success'),
+          'success',
+          'Điểm số: ' + data.score + ' - ' + data.answer + '/' + data.questions_total + ' câu',
+          20000
+        );
+      }).catch(error => {
+        console.log(error);
+        getNotification(
+          this.$t('notification.action.submit'),
+          this.$t('notification.object.quiz'),
+          this.$t('notification.status.error'),
+          'Vui lòng thử lại.',
+        );
+      }).finally(() => {
+        this.loading = false;
+      });
+    },
     finishQuiz() {
       console.log('finish');
+      this.storeResult();
+    },
+    waitRefresh() {
+      setTimeout(function() {
+        location.reload();
+      });
     },
   },
 };

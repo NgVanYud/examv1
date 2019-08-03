@@ -9,6 +9,10 @@ trait QuizAttributes
     return json_decode($value, true);
   }
 
+  public function getAnswerAttributes($value) {
+    return json_decode($value, true);
+  }
+
 //  public function setQuestionNumAttribute($value) {
 //    $examFormat = $this->format;
 //    $questionNum = 0;
