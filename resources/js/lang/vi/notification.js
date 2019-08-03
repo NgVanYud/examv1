@@ -14,6 +14,7 @@ const data = {
     update: 'Cập nhật',
     do: 'Làm',
     submit: 'Xác nhận',
+    close: 'Đóng',
   },
   object: {
     system: 'hệ thống',

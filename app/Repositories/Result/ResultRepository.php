@@ -4,7 +4,6 @@ namespace App\Repositories\Result;
 
 
 use App\Models\Result;
-use App\Models\SubjectTerm;
 use App\Repositories\BaseRepository;
 use App\Repositories\Subject\SubjectRepository;
 use App\Repositories\Term\TermRepository;

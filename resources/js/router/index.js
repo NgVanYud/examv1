@@ -19,7 +19,6 @@ import chartsRoutes from './modules/charts';
 import tableRoutes from './modules/table';
 import adminRoutes from './modules/admin';
 import nestedRoutes from './modules/nested';
-import errorRoutes from './modules/error';
 import excelRoutes from './modules/excel';
 import permissionRoutes from './modules/permission';
 import userRoutes from './modules/user';
@@ -181,7 +180,6 @@ export const asyncRoutes = [
       },
     ],
   },
-  errorRoutes,
   excelRoutes,
   {
     path: '/zip',

@@ -13,6 +13,7 @@ class SubjectTerm extends Model
   const UNCONFIGED_CODE = 0;
   const RUNNING = 2;
   const WAITING = 3;
+  const CLOSED = 4;
 
   protected $table = 'subject_term';
 
@@ -62,11 +63,16 @@ class SubjectTerm extends Model
   }
 
   public function students() {
-    return $this->hasMany('App\Models\Student', 'subject_term_id');
+    return $this->hasMany('App\Models\Student', 'subject_term_id', 'id');
   }
 
   public function results() {
     return $this->hasMany(Result::class, 'subject_term_id');
+  }
+
+  public function scopeStatus(Builder $query, $value): Builder
+  {
+    return $query->where('status', '=', $value);
   }
 
   public function scopeDone(Builder $query): Builder

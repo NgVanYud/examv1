@@ -14,6 +14,7 @@ const data = {
     update: 'Update',
     do: 'Do',
     submit: 'Submit',
+    close: 'Close',
   },
   object: {
     system: 'system',

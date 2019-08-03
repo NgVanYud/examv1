@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Subject;
+use App\Models\SubjectTerm;
 use App\Models\User;
 use App\Policies\SubjectPolicy;
+use App\Policies\SubjectTermPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -19,7 +21,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
       User::class => UserPolicy::class,
-      Subject::class => SubjectPolicy::class
+      Subject::class => SubjectPolicy::class,
+      SubjectTerm::class => SubjectTermPolicy::class
     ];
 
     /**
@@ -35,5 +38,8 @@ class AuthServiceProvider extends ServiceProvider
           $valid = $user->quizMakeSubjects->contains($subject->id);
           return $valid;
         });
+
+        Gate::define('active-quiz', 'App\Policies\SubjectTermPolicy@handleQuiz');
+        Gate::define('deactive-quiz', 'App\Policies\SubjectTermPolicy@handleQuiz');
     }
 }

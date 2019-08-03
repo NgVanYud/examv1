@@ -6,11 +6,13 @@ use App\Exceptions\GeneralException;
 use App\Exports\UsersExport;
 use App\Http\Requests\StoreSettingSubjectTermRequest;
 use App\Http\Resources\QuizResource;
+use App\Http\Resources\Result\ResultResource;
 use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\Term\SubjectTermResource;
 use App\Http\Resources\User\ManagerResource;
 use App\Http\Resources\User\StudentResource;
 use App\Models\SubjectTerm;
+use App\Repositories\Result\ResultRepository;
 use App\Repositories\Subject\SubjectRepository;
 use App\Repositories\Term\SubjectTermRepository;
 use App\Repositories\Term\TermRepository;
@@ -18,6 +20,7 @@ use App\Repositories\User\StudentRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Maatwebsite\Excel\Facades\Excel;
 
 class SubjectTermController extends Controller
@@ -27,6 +30,7 @@ class SubjectTermController extends Controller
     public $protorTermRepository;
     public $subjectRepository;
     public $studentRespository;
+    public $resultRepository;
 
   /**
    * PHP 5 allows developers to declare constructor methods for classes.
@@ -43,12 +47,14 @@ class SubjectTermController extends Controller
     SubjectTermRepository $subjectTermRepository,
     TermRepository $termRepository,
     SubjectRepository $subjectRepository,
-    StudentRepository $studentRepository
+    StudentRepository $studentRepository,
+    ResultRepository $resultRepository
   ){
     $this->subjectTermRepository = $subjectTermRepository;
     $this->termRepository = $termRepository;
     $this->subjectRepository = $subjectRepository;
     $this->studentRespository = $studentRepository;
+    $this->resultRepository = $resultRepository;
   }
 
   public function index() {
@@ -76,7 +82,10 @@ class SubjectTermController extends Controller
 
   public function subjectsForTerm(Request $request) {
     $currentUser = auth('manager')->user();
-    $subjectTerms = $currentUser->terms()->actived()->configed()->get();
+    $subjectTerms = $currentUser->terms()
+      ->actived()
+      ->configed()
+      ->get();
     return SubjectTermResource::collection($subjectTerms);
   }
 
@@ -115,11 +124,34 @@ class SubjectTermController extends Controller
   }
 
   public function activeQuiz(Request $request) {
-    return $this->subjectTermRepository->activeQuiz($request->subject_term_id);
+    $subjectTermId = $request->subject_term_id;
+    $subjectTerm = $this->subjectTermRepository->getById($subjectTermId);
+    if (Gate::allows('active-quiz', $subjectTerm)) {
+      return $this->subjectTermRepository->activeQuiz($subjectTermId);
+    }
+    throw new GeneralException('Invalid data', 401);
   }
 
-  public function getQuiz() {
-    $user = auth('student')->user();
+  public function deactiveQuiz(Request $request) {
+    $subjectTermId = $request->subject_term_id;
+    $subjectTerm = $this->subjectTermRepository->getById($subjectTermId);
+    if (Gate::allows('deactive-quiz', $subjectTerm)) {
+      return $this->subjectTermRepository->deactiveQuiz($subjectTermId);
+    }
+    throw new GeneralException('Invalid data', 401);
+  }
 
+  public function getResults(Request $request, $subjectTerm) {
+    $conditions = [
+      'orderBy' => ($request->orderBy ? $request->orderBy : 'first_name'),
+      'order' => ($request->order && in_array($request->order, ['desc', 'asc']) ? $request->order : 'asc'),
+      'limit' => ($request->limit && intval($request->limit) > 0 ? $request->limit : 10)
+    ];
+    $results = $this->resultRepository
+      ->where('subject_term_id', $subjectTerm->id)
+      ->orderBy($conditions['orderBy'], $conditions['order'])
+      ->paginate($conditions['limit']);
+
+    return ResultResource::collection($results);
   }
 }

@@ -27,7 +27,7 @@
       <el-table-column align="center" label="Thao Tác" width="180">
         <template slot-scope="scope">
           <el-button
-            v-if="scope.row.status !== 2"
+            v-if="scope.row.status === 3"
             type="primary"
             size="mini"
             icon="el-icon-refresh"
@@ -36,14 +36,14 @@
           </el-button>
           <el-button
             v-if="scope.row.status === 2"
-            type="primary"
+            type="danger"
             size="mini"
-            icon="el-icon-refresh"
+            icon="el-icon-close"
             title="Đóng bài thi"
             @click="closeQuizs(scope.row)">
           </el-button>
-         <router-link :to = "{ name: 'EditTerm', params: { id: scope.row.uuid }}">
-            <el-button type="success" size="mini" icon="el-icon-circle-check" title="Chỉnh Sửa">
+         <router-link :to = "{ name: 'TermSubjectResultsList', params: { subjectTermId: scope.row.id }}">
+            <el-button type="success" size="mini" icon="el-icon-info" title="Kết quả">
             </el-button>
           </router-link>
         </template>
@@ -75,7 +75,7 @@ export default {
   },
   data() {
     return {
-      list: null,
+      list: null, // Danh sách các record SubjectTerm
       loading: true,
     };
   },
@@ -93,7 +93,7 @@ export default {
     },
     activeQuizs(item) {
       this.$confirm(
-        this.$t('notification.action.active') + ' ' + this.$t('notification.object.quiz') + ' ' + item.subject.name + '. ' + this.$t('notification.action.continue') + '?', 'Warning',
+        this.$t('notification.action.active') + ' ' + this.$t('notification.object.quiz') + ' ' + item.subject.name + ' ' + this.$t('notification.action.continue') + '?', 'Warning',
         {
           confirmButtonText: this.$t('button.ok'),
           cancelButtonText: this.$t('button.cancel'),
@@ -101,6 +101,7 @@ export default {
         }
       ).then(() => {
         termResource.activeQuiz({ subject_term_id: item.id }).then(response => {
+          this.getList();
           getNotification('Kích hoạt', 'bài thi', 'thành công', 'success');
         }).catch(error => {
           getNotification('Kích hoạt', 'bài thi', 'không thành công');
@@ -114,7 +115,28 @@ export default {
       });
     },
     closeQuizs(item) {
-
+      this.$confirm(
+        this.$t('notification.action.close') + ' ' + this.$t('notification.object.quiz') + ' ' + item.subject.name + ' ' + this.$t('notification.action.continue') + '?', 'Warning',
+        {
+          confirmButtonText: this.$t('button.ok'),
+          cancelButtonText: this.$t('button.cancel'),
+          type: 'warning',
+        }
+      ).then(() => {
+        termResource.deactiveQuiz({ subject_term_id: item.id }).then(response => {
+          this.getList();
+          this.$router.push({ name: 'TermSubjectResultsList', params: { subjectTermId: item.id }});
+          getNotification('Đóng', 'bài thi', 'thành công', 'success');
+        }).catch(error => {
+          getNotification('Bài thi', 'bài thi', 'không thành công');
+          console.log(error);
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Hủy đóng bài thi.',
+        });
+      });
     },
   },
   created() {

@@ -7,11 +7,12 @@ use App\Models\Traits\Filterable;
 use App\Notifications\UserNeedsPasswordReset;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Manager extends Authenticable implements CanResetPassword
 {
 
-  use CanResetPasswordTrait, Filterable;
+  use CanResetPasswordTrait, Filterable, SoftDeletes;
 
   protected $table = 'managers';
 

@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Models\Auth\User as Authenticable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Student extends Authenticable
 {
-  protected $table = 'students';
+//  use SoftDeletes;
 
-  protected $guard_name = 'student';
+  protected $table = 'students';
 
   protected $fillable = [
     'last_name', 'first_name', 'username', 'uuid', 'password', 'is_actived', 'code', 'id', 'quiz_id', 'subject_term_id'
@@ -19,7 +20,8 @@ class Student extends Authenticable
   ];
 
   protected $dates = [
-    'deleted_at', 'password_changed_at'
+//    'deleted_at',
+    'password_changed_at'
   ];
 
   public function quiz() {
@@ -27,6 +29,6 @@ class Student extends Authenticable
   }
 
   public function subjectTerm() {
-    return $this->belongsTo('App\Models\SubjectTerm', 'subject_term_id');
+    return $this->belongsTo('App\Models\SubjectTerm', 'subject_term_id', 'id');
   }
 }

@@ -17,6 +17,13 @@ const subjectTermRoutes = {
       name: 'TermSubjectsList',
       meta: { title: 'Môn Thi Hiện Tại', icon: 'user', noCache: true },
     },
+    {
+      path: ':subjectTermId/results',
+      component: () => import('@/views/terms/ResultsList'),
+      name: 'TermSubjectResultsList',
+      hidden: true,
+      meta: { title: 'Kết quả bài thi', icon: 'user', noCache: true },
+    },
   ],
 };
 

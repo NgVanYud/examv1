@@ -76,6 +76,22 @@ class TermResource extends Resource {
       data,
     });
   }
+
+  deactiveQuiz(data) {
+    return request({
+      url: 'subject-term/subject/deactive-quiz',
+      method: 'post',
+      data,
+    });
+  }
+
+  getResults(subjectTermId, params) {
+    return request({
+      url: 'subject-term/' + subjectTermId + '/subject/results',
+      method: 'get',
+      params: params,
+    });
+  }
 }
 
 export { TermResource as default };

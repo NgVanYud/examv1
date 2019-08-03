@@ -6,10 +6,12 @@ namespace App\Repositories\Term;
 //
 use App\Exceptions\GeneralException;
 use App\Models\Quiz;
+use App\Models\Result;
 use App\Models\Student;
 use App\Models\SubjectTerm;
 use App\Repositories\BaseRepository;
 use App\Repositories\Quiz\QuizRepository;
+use App\Repositories\Result\ResultRepository;
 use App\Repositories\Subject\SubjectRepository;
 use App\Repositories\User\ProtorTermRepository;
 use App\Repositories\User\StudentRepository;
@@ -17,6 +19,7 @@ use App\Repositories\User\UserRepository;
 use App\Repositories\Term\TermRepository;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+
 //
 class SubjectTermRepository extends BaseRepository
 {
@@ -27,6 +30,7 @@ class SubjectTermRepository extends BaseRepository
   public $protorTermRepository;
   public $subjectRepository;
   public $studentRepository;
+  public $resultRepository;
 
   /**
    * PHP 5 allows developers to declare constructor methods for classes.
@@ -44,7 +48,9 @@ class SubjectTermRepository extends BaseRepository
                               TermRepository $termRepository,
                               SubjectRepository $subjectRepository,
                               StudentRepository $studentRepository,
-                              ProtorTermRepository $protorTermRepository)
+                              ProtorTermRepository $protorTermRepository,
+                              ResultRepository $resultRepository
+  )
   {
     $this->userRepository = $userRepository;
     $this->quizRepository = $quizRepository;
@@ -52,6 +58,7 @@ class SubjectTermRepository extends BaseRepository
     $this->protorTermRepository = $protorTermRepository;
     $this->subjectRepository = $subjectRepository;
     $this->studentRepository = $studentRepository;
+    $this->resultRepository = $resultRepository;
     $this->makeModel();
   }
 
@@ -66,8 +73,9 @@ class SubjectTermRepository extends BaseRepository
     return SubjectTerm::class;
   }
 
-  public function storeSetting($termId, $subjectId, $data) {
-    return DB::transaction(function() use ($data, $termId, $subjectId) {
+  public function storeSetting($termId, $subjectId, $data)
+  {
+    return DB::transaction(function () use ($data, $termId, $subjectId) {
       $students = $data['students'];
       $protors = $data['protors'];
       $term = $this->termRepository->getById($termId);
@@ -75,8 +83,8 @@ class SubjectTermRepository extends BaseRepository
 
       // Update subject_term table
       $subjectTerm = $this->where('term_id', $termId)
-      ->where('subject_id', $subjectId)
-      ->first();
+        ->where('subject_id', $subjectId)
+        ->first();
       $subjectTerm->update([
         'original_exam_num' => $data['original_exam_num'],
         'is_configed' => SubjectTerm::CONFIGED_CODE
@@ -90,7 +98,7 @@ class SubjectTermRepository extends BaseRepository
       $studentsList = $this->studentRepository->storeMulti($studentsData);
       // Create quiz
       $quizs = $this->quizRepository->createQuiz($subjectTerm->id, $termId, $subjectId, $data['original_exam_num']);
-        //Assign quiz for each student
+      //Assign quiz for each student
       $this->quizRepository->assignQuizs($quizs, $studentsList);
       return $studentsList;
     });
@@ -102,8 +110,9 @@ class SubjectTermRepository extends BaseRepository
    * @param $termCode (String)
    * @return array
    */
-  public function parseUserData($role, $users, $termCode = '', $subjectCode = '') {
-    \Log::info('role ne: '.$role);
+  public function parseUserData($role, $users, $termCode = '', $subjectCode = '')
+  {
+    \Log::info('role ne: ' . $role);
     $arr = [];
     foreach ($users as $tmpUser) {
       $parsedData = [];
@@ -117,9 +126,10 @@ class SubjectTermRepository extends BaseRepository
     return $arr;
   }
 
-  public function setUsername($role, $code, $termCode = '', $subjectCode) {
-    if($role == config('access.roles_list.student')) {
-      return $termCode.'-'.$subjectCode.'-'.$code;
+  public function setUsername($role, $code, $termCode = '', $subjectCode)
+  {
+    if ($role == config('access.roles_list.student')) {
+      return $termCode . '-' . $subjectCode . '-' . $code;
     }
     return $code;
   }
@@ -129,7 +139,8 @@ class SubjectTermRepository extends BaseRepository
    * @param SubjectTerm $subjectTerm
    * @param array $protorIds
    */
-  public function storeProtorsForTerm($subjectTerm, $protorIds) {
+  public function storeProtorsForTerm($subjectTerm, $protorIds)
+  {
 //    $protorCounter = count($protorIds);
 //    foreach ($protorIds as $protorId) {
 //      if(!($this->protorTermRepository->where('protor_id', $protorId)
@@ -147,7 +158,8 @@ class SubjectTermRepository extends BaseRepository
    * @param $data
    * @param $columns (Array: ['actual_key' => 'column_name'])
    */
-  public function parseDataForExcel($data, $columns) {
+  public function parseDataForExcel($data, $columns)
+  {
     $dataCounter = count($data);
     $newData = [];
     for ($i = 0; $i < $dataCounter; $i++) {
@@ -168,14 +180,15 @@ class SubjectTermRepository extends BaseRepository
    * @return array
    * @throws GeneralException
    */
-  public function getSubjectIdsForTermByUser($role, $user) {
-    if($user->hasRole($role)) {
+  public function getSubjectIdsForTermByUser($role, $user)
+  {
+    if ($user->hasRole($role)) {
       // danh sach subject_term ma nguoi dung trong thi
       $subjectTermOfUser = $user->terms;
       $subjectTerms = [];
       foreach ($subjectTermOfUser as $subjectTerm) {
         $tmpTerm = $this->termRepository->getById($subjectTerm->term_id);
-        if($tmpTerm && $tmpTerm->is_actived && !$tmpTerm->is_done) {
+        if ($tmpTerm && $tmpTerm->is_actived && !$tmpTerm->is_done) {
           $subjectTerms[] = $subjectTerm;
         }
       }
@@ -190,7 +203,8 @@ class SubjectTermRepository extends BaseRepository
    *
    * @param integer $subjectTermId
    */
-  public function activeQuiz($subjectTermId) {
+  public function activeQuiz($subjectTermId)
+  {
     $subjectTerm = $this->getById($subjectTermId);
     return DB::transaction(function () use ($subjectTerm) {
       // Mo bai thi
@@ -207,12 +221,56 @@ class SubjectTermRepository extends BaseRepository
    *
    * @param integer $subjectTermId
    */
-  public function deactiveQuiz($subjectTermId) {
+  public function deactiveQuiz($subjectTermId)
+  {
     $subjectTerm = $this->getById($subjectTermId);
-    return DB::transaction(function() use ($subjectTerm) {
-      // Dong bai thi
-      $quizs = $subjectTerm->quizs()->update(['is_actived' => Quiz::DEACTIVED_CODE]);
-      // Xoa tai khoan sinh vien
+    return DB::transaction(function () use ($subjectTerm) {
+      /** Đóng bài thi **/
+      $quizs = $subjectTerm->quizs()->update([
+        'is_actived' => Quiz::DEACTIVED_CODE
+      ]);
+      /** Lưu kết qủa **/
+      $allStudents = $subjectTerm->students;
+      $this->storeResults($allStudents, $subjectTerm);
+      /** Khóa môn thi **/
+      $subjectTerm->update([
+        'status' => SubjectTerm::CLOSED
+      ]);
+      /** Xóa tài khoản sinh viên **/
+      $this->studentRepository->deleteMultipleById($allStudents->pluck('id')->all());
     });
+  }
+
+  /**
+   * Luư kết quả bài làm của những sinh viên không dự thi vào bảng results
+   */
+  public function storeResults($students, $subjectTerm)
+  {
+    foreach ($students as $student) {
+      $tmpResult = $this->resultRepository
+        ->where('quiz_id', $student->quiz_id)
+        ->where('subject_term_id', $subjectTerm->id)
+        ->where('student_code', $student->code)
+        ->get();
+      if (count($tmpResult) === 0) {
+        $tmpQuiz = $this->quizRepository->getById($student->quiz_id);
+        $this->resultRepository->create([
+          'student_code' => $student->code,
+          'first_name' => $student->first_name,
+          'last_name' => $student->last_name,
+          'answer' => 0,
+          'questions_total' => $tmpQuiz->question_num,
+          'subject_term_id' => $subjectTerm->id,
+          'quiz_id' => $student->quiz_id,
+          'detail' => []
+        ]);
+      }
+    }
+  }
+
+  public function getResults($subjectTermId) {
+    $subjectTerm = $this->getById($subjectTermId);
+    $results = $subjectTerm->results;
+    return $results;
   }
 }

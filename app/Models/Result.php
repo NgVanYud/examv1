@@ -9,6 +9,8 @@ class Result extends Model
 {
   use ResultAttributes;
 
+  protected $table = 'results';
+
   protected $fillable = [
     'student_code',
     'first_name',

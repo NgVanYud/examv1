@@ -19,7 +19,7 @@ use App\Models\Traits\HasRoles;
 class User extends Authenticatable implements JWTSubject
 {
 
-  use UserAttributes, Uuid, SoftDeletes, Notifiable, HasRoles, UserMethods;
+  use UserAttributes, Uuid, Notifiable, HasRoles, UserMethods;
 
   const ACTIVED_CODE = 1;
   const DEACTIVED_CODE = 0;
