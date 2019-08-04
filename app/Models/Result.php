@@ -23,7 +23,7 @@ class Result extends Model
   ];
 
   protected $appends = [
-    'score'
+    'score', 'fullname'
   ];
 
   protected $casts = [

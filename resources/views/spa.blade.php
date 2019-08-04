@@ -22,6 +22,7 @@
 {{--    <link rel="manifest" href="/favicon/manifest.json">--}}
     <meta name="msapplication-TileColor" content="#ffffff">
 {{--    <meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png">--}}
+    <script src="https://raw.githubusercontent.com/open-xml-templating/pizzip/v3.0.4/dist/pizzip-utils.js"></script>
     <meta name="theme-color" content="#ffffff">
     <link href="{{ mix('css/app.css') }}" type="text/css" rel="stylesheet" />
 </head>

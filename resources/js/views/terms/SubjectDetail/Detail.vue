@@ -14,20 +14,29 @@
     </div>
     <div>
       <i class="el-icon-s-finance"></i>
-       Kỳ thi: <b>{{ subjectTerm.term.code }}</b> -
+       Kỳ thi: <b>{{ subjectTerm.term.code ? subjectTerm.term.code : '' }}</b> -
       <i class="el-icon-tickets"></i>
        Môn thi: <b>{{ subjectTerm.subject.name | uppercaseFirst }}</b>
     </div>
     <div class="">
       <el-tabs v-model="activeName" @tab-click="changeTab" lazy>
-        <el-tab-pane label="Sinh viên" name="student" v-if="includeRoles(userRoles, [allRoles['curator']], false)">
+        <el-tab-pane label="Đề thi" name="content" v-if="includeRoles(userRoles, [allRoles['curator']], false)">
+          <quiz-tab></quiz-tab>
+        </el-tab-pane>
+        <el-tab-pane
+          v-if="(this.subjectTerm.status === 2 || this.subjectTerm.status === 3) && includeRoles(userRoles, [allRoles['curator']], false)"
+          label="Sinh viên"
+          name="student" >
           <student-tab></student-tab>
         </el-tab-pane>
         <el-tab-pane label="Giáo viên ra đề" name="teacher" v-if="includeRoles(userRoles, [allRoles['curator']], false)">
           <teacher-tab></teacher-tab>
         </el-tab-pane>
-        <el-tab-pane label="Đề thi" name="content" v-if="includeRoles(userRoles, [allRoles['curator']], false)">
-          <quiz-tab></quiz-tab>
+        <el-tab-pane
+          v-if="this.subjectTerm.status === 4 && includeRoles(userRoles, [allRoles['curator']], false)"
+          label="Kết quả thi"
+          name="result" >
+          <result-tab></result-tab>
         </el-tab-pane>
       </el-tabs>
 
@@ -42,6 +51,7 @@ import { ALL_ROLES } from '@/utils/auth';
 import StudentTab from './tabs/Students';
 import TeacherTab from './tabs/Teachers';
 import QuizTab from './tabs/Quizs';
+import ResultTab from './tabs/Results';
 import TermResource from '@/api/term';
 
 const termResource = new TermResource();
@@ -51,12 +61,13 @@ export default {
     StudentTab,
     TeacherTab,
     QuizTab,
+    ResultTab,
   },
   data() {
     return {
       userRoles: [],
       allRoles: ALL_ROLES,
-      activeName: 'student',
+      activeName: 'content',
       subjectTerm: {},
     };
   },

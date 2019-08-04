@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Exceptions\GeneralException;
 use App\Exports\UsersExport;
 use App\Http\Requests\StoreSettingSubjectTermRequest;
-use App\Http\Resources\QuizResource;
+use App\Http\Resources\Quiz\QuizResource;
 use App\Http\Resources\Result\ResultResource;
 use App\Http\Resources\Subject\SubjectResource;
 use App\Http\Resources\Term\SubjectTermResource;

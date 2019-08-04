@@ -15,8 +15,9 @@ class ResultResource extends JsonResource
     public function toArray($request)
     {
         return array_merge(parent::toArray($request), [
-          'quiz' => $this->resource->quiz->code,
-          'subject' => $this->resource->subjectTerm->subject
+          'quiz' => $this->resource->quiz,
+          'subject' => $this->resource->subjectTerm->subject,
+          'term' => $this->resource->subjectTerm->term
         ]);
     }
 }

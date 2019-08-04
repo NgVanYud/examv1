@@ -49,3 +49,15 @@ export function index2OptionChar(value) {
   const charMap = ['A', 'B', 'C', 'D'];
   return charMap[value];
 }
+
+/**
+ * Convert giá trị số có 1 ký tự thành 2 ký tự (thêm số 0 ở đầu)
+ * @param txt
+ */
+export function oneChar2TwoChars(txt) {
+  if (txt.length === 1) {
+    return '0' + txt;
+  }
+  return txt;
+}
+

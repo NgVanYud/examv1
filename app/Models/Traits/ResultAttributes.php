@@ -37,4 +37,5 @@ trait ResultAttributes
   {
     return round((10/($this->questions_total))*$this->answer, 1, PHP_ROUND_HALF_EVEN);
   }
+
 }

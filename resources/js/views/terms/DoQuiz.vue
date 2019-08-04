@@ -11,7 +11,7 @@
         <b><i class="el-icon-question"></i> Số lượng câu hỏi</b>: {{ quiz.question_num }} <i>câu</i>
       </div>
       <div>
-        <vue-countdown :time="quiz.timeout*60*1000" @end="finishQuiz">
+        <vue-countdown :time="timeout*60*1000" @end="finishQuiz">
           <template slot-scope="props">
             <b><i class="el-icon-time"> </i> Thời gian còn lại: </b>
             <b style="color: #ff0000;"> {{ props.minutes }} phút, {{ props.seconds }} giây</b>
@@ -79,6 +79,7 @@ import { getNotification } from '@/utils/notification';
 
 const quizResource = new QuizResource();
 const RESULT_COOKIE_NAME = 'quizKma';
+const TIMEOUT_COOKIE_NAME = 'quizTimeout';
 
 export default {
   components: {
@@ -94,6 +95,7 @@ export default {
       quiz: {},
       results: [],
       loading: false,
+      timeout: 0,
     };
   },
   computed: {
@@ -104,6 +106,9 @@ export default {
   watch: {
     results: function(newValue, oldValue) {
       Cookies.set(RESULT_COOKIE_NAME, newValue, { expires: 1 });
+    },
+    timeout: function(newValue, oldValue) {
+      Cookies.set(TIMEOUT_COOKIE_NAME, newValue, { expires: 1 });
     },
   },
   created() {

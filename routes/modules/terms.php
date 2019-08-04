@@ -21,7 +21,7 @@ Route::group([
   Route::post('subject-term/subject/deactive-quiz', 'SubjectTermController@deactiveQuiz')
     ->middleware('role:' . config('access.roles_list.protor'));
   Route::get('subject-term/{subjectTerm}/subject/results', 'SubjectTermController@getResults')
-    ->middleware('role:' . config('access.roles_list.protor'). '|' . config('access.roles_list.protor'));
+    ->middleware('role:' . config('access.roles_list.protor'). '|' . config('access.roles_list.curator'));
   Route::get('subject-term/quiz', 'SubjectTermController@getQuiz')
     ->middleware('role:' . config('access.roles_list.student'));
   Route::apiResource('terms', 'TermController');

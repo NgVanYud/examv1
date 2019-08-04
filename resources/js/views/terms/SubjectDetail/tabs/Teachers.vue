@@ -40,55 +40,17 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('table.action')">
-        <template slot-scope="scope">
-<!--          <router-link-->
-<!--            :to = "{ name: 'ManagerEdit', params: { id: scope.row.uuid }}">-->
-<!--            &lt;!&ndash;            <el-button type="primary" size="mini" icon="el-icon-edit" v-permission="['manage user']">&ndash;&gt;-->
-<!--            <el-button-->
-<!--              type="primary"-->
-<!--              size="mini"-->
-<!--              icon="el-icon-edit"-->
-<!--              :title="$t('button.edit')">-->
-<!--            </el-button>-->
-<!--          </router-link>-->
-          <!--          <el-button type="warning" size="mini" icon="el-icon-edit" v-if="!scope.row.roles.includes('admin')" v-permission="['manage permission']" @click="handleEditPermissions(scope.row.id);">-->
-          <!--            Permissions-->
-          <!--          </el-button>-->
-          <!--          <el-button type="warning" size="mini" icon="el-icon-edit" v-if="!scope.row.roles.includes('admin')" v-permission="['manage permission']" @click="handleEditPermissions(scope.row.id);">-->
-          <!--            Permissions-->
-          <!--          </el-button>-->
-          <el-button
-            v-if="!scope.row.deleted_at"
-            type="danger"
-            size="mini"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row);" :title="$t('button.delete')">
-          </el-button>
+<!--      <el-table-column align="center" :label="$t('table.action')">-->
+<!--        <template slot-scope="scope">-->
 <!--          <el-button-->
-<!--            v-if="scope.row.deleted_at"-->
-<!--            type="info"-->
-<!--            icon="el-icon-refresh-right"-->
-<!--            @click="handleRestore(scope.row);" :title="$t('button.restore')">-->
+<!--            v-if="!scope.row.deleted_at"-->
+<!--            type="danger"-->
+<!--            size="mini"-->
+<!--            icon="el-icon-delete"-->
+<!--            @click="handleDelete(scope.row);" :title="$t('button.delete')">-->
 <!--          </el-button>-->
-<!--          <el-button-->
-<!--            class="m-0"-->
-<!--            v-if="!scope.row.is_actived"-->
-<!--            type="success"-->
-<!--            icon="el-icon-check"-->
-<!--            @click="handleActive(scope.row);"-->
-<!--            :title="$t('button.active')">-->
-<!--          </el-button>-->
-<!--          <el-button-->
-<!--            v-else-->
-<!--            class="m-0"-->
-<!--            type="warning"-->
-<!--            icon="el-icon-close"-->
-<!--            @click="handleDeactive(scope.row);"-->
-<!--            :title="$t('button.block')">-->
-<!--          </el-button>-->
-        </template>
-      </el-table-column>
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
   </div>
 </template>
