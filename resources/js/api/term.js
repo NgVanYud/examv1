@@ -92,6 +92,22 @@ class TermResource extends Resource {
       params: params,
     });
   }
+
+  activeSubjectTerm(data) {
+    return request({
+      url: 'subject-term/active',
+      method: 'post',
+      data,
+    });
+  }
+
+  deactiveSubjectTerm(data) {
+    return request({
+      url: 'subject-term/deactive',
+      method: 'post',
+      data,
+    });
+  }
 }
 
 export { TermResource as default };

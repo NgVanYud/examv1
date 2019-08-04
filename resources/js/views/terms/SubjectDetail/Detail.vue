@@ -80,7 +80,6 @@ export default {
       const subjectSlug = this.$route.params.subjectSlug;
       termResource.subjectTermDetail(termId, subjectSlug).then(response => {
         const { data } = response;
-        console.log('detail: ', data);
         this.subjectTerm = data;
       }).catch(error => {
         console.log(error);

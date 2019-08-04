@@ -11,7 +11,11 @@
           :key="item.code"
           :label="item.code"
           :name="item.code" >
-          <quiz-frame :detail="item.detail | json2Arr"></quiz-frame>
+          <quiz-frame
+            :detail="item.detail | json2Arr"
+            :subject-term="subjectTerm"
+            :answer="item.answer | json2Arr"
+          ></quiz-frame>
         </el-tab-pane>
       </el-tabs>
 
@@ -38,6 +42,7 @@ export default {
     return {
       list: [],
       loading: false,
+      subjectTerm: {},
     };
   },
   computed: {
@@ -47,6 +52,7 @@ export default {
   },
   created() {
     this.getQuizs();
+    this.getSubjectTermDetail();
   },
   methods: {
     getQuizs() {
@@ -60,6 +66,16 @@ export default {
         console.log(error);
       }).finally(() => {
         this.loading = false;
+      });
+    },
+    getSubjectTermDetail() {
+      const termId = this.$route.params.termId;
+      const subjectSlug = this.$route.params.subjectSlug;
+      termResource.subjectTermDetail(termId, subjectSlug).then(response => {
+        const { data } = response;
+        this.subjectTerm = data;
+      }).catch(error => {
+        console.log(error);
       });
     },
   },

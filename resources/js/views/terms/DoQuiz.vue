@@ -53,8 +53,8 @@
                 <div class="d-inline-block mx-2" v-for="(item, index) in results" :key="index">
                   <a :href="'#question' + index">
                     <span>
-                    <b>{{ index + 1 }}. <i class="text-danger">{{ item ? item : '*' }}</i></b>
-                  </span>
+                      <b>{{ index + 1 }}. <i class="text-danger">{{ item ? item : '*' }}</i></b>
+                    </span>
                   </a>
                 </div>
                 <div class="mt-2">

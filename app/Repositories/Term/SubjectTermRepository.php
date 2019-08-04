@@ -273,4 +273,22 @@ class SubjectTermRepository extends BaseRepository
     $results = $subjectTerm->results;
     return $results;
   }
+
+  /**
+   * Kich hoat is_actived = 1 trong bang subject_term de kich hoat
+   * @param $subjectTermId
+   */
+  public function active($subjectTermId) {
+    $subjectTerm = $this->getById($subjectTermId);
+    return $this->updateById($subjectTermId, ['is_actived' => SubjectTerm::ACTIVED_CODE]);
+  }
+
+  /**
+   * Khoa is_actived = 0 trong bang subject_term de kich hoat
+   * @param $subjectTermId
+   */
+  public function deactive($subjectTermId) {
+    $subjectTerm = $this->getById($subjectTermId);
+    return $this->updateById($subjectTermId, ['is_actived' => SubjectTerm::DEACTIVED_CODE]);
+  }
 }

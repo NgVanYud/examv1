@@ -17,13 +17,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('table.lastName')" width="150">
+      <el-table-column :label="$t('table.lastName')">
         <template slot-scope="scope">
           <span>{{ scope.row.last_name }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('table.firstName')" width="80">
+      <el-table-column :label="$t('table.firstName')">
         <template slot-scope="scope">
           <span>{{ scope.row.first_name }}</span>
         </template>
@@ -97,7 +97,6 @@ export default {
       this.loading = true;
       try {
         const { data } = await termResource.getProtors(termId, subjectSlug);
-        console.log('teacher: ', data);
         this.list = data;
       } catch (e) {
         console.log(e);

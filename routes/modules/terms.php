@@ -20,6 +20,10 @@ Route::group([
     ->middleware('role:' . config('access.roles_list.protor'));
   Route::post('subject-term/subject/deactive-quiz', 'SubjectTermController@deactiveQuiz')
     ->middleware('role:' . config('access.roles_list.protor'));
+  Route::post('subject-term/active', 'SubjectTermController@active')
+    ->middleware('role:' . config('access.roles_list.curator'));
+  Route::post('subject-term/deactive', 'SubjectTermController@deactive')
+    ->middleware('role:' . config('access.roles_list.curator'));
   Route::get('subject-term/{subjectTerm}/subject/results', 'SubjectTermController@getResults')
     ->middleware('role:' . config('access.roles_list.protor'). '|' . config('access.roles_list.curator'));
   Route::get('subject-term/quiz', 'SubjectTermController@getQuiz')

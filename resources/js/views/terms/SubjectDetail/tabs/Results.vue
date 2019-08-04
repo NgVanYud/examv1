@@ -106,7 +106,6 @@ export default {
       const subjectTermId = this.subjectTerm.id;
       termResource.getResults(subjectTermId, this.query).then(response => {
         const { data, meta } = response;
-        console.log('all result: ', data);
         this.list = data;
         this.total = meta.total;
         this.list.forEach((element, index) => {
@@ -126,7 +125,6 @@ export default {
         const { data } = response;
         this.subjectTerm = data;
         this.getList();
-        console.log('subjectTerm Detail: ', data);
       }).catch(error => {
         console.log(error);
       }).finally(() => {

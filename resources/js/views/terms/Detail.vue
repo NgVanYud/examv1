@@ -73,8 +73,22 @@
 <!--              <el-button type="warning" size="mini" icon="el-icon-document" title="Tùy Chọn">-->
 <!--              </el-button>-->
 <!--            </router-link>-->
-<!--            <el-button v-if="includeRoles(userRoles, [allRoles.admin], true)" type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row);"  title="Xóa">-->
-<!--            </el-button>-->
+            <el-button
+              v-if="(scope.row.pivot.status === 3) && (scope.row.pivot.is_actived === 0) && (scope.row.pivot.is_configed === 1)"
+              type="danger"
+              size="mini"
+              icon="el-icon-check"
+              @click="activeSubjectTerm(scope.row.pivot);"
+              title="Kích Hoạt">
+            </el-button>
+            <el-button
+              v-if="(scope.row.pivot.status === 3) && (scope.row.pivot.is_actived === 1)"
+              type="danger"
+              size="mini"
+              icon="el-icon-close"
+              @click="deactiveSubjectTerm(scope.row.pivot);"
+              title="Khóa">
+            </el-button>
             <!--          <router-link :to = "{ name: 'SubjectEdit', params: { slug: scope.row.slug }}" v-if="includeRoles(userRoles, [allRoles.admin], false)">-->
             <!--            <el-button type="warning" size="mini" icon="el-icon-document" title="Giáo viên ra đề">-->
             <!--            </el-button>-->
@@ -87,15 +101,8 @@
 </template>
 
 <script>
-// import SubjectResource from '@/api/subject';
 import TermResource from '@/api/term';
-// import waves from '@/directive/waves'; // Waves directive
-// import permission from '@/directive/permission'; // Waves directive
-// import checkPermission from '@/utils/permission'; // Permission checking
-// import { ALL_ROLES } from '@/utils/auth';
-// import { includes as includeRoles } from '@/utils/role';
-
-// import { getNotification } from '@/utils/notification';
+import { getNotification } from '@/utils/notification';
 
 // const subjectResource = new SubjectResource();
 const termResource = new TermResource();
@@ -133,6 +140,53 @@ export default {
         console.log(error);
       }).finally(() => {
         this.loading = false;
+      });
+    },
+    activeSubjectTerm(subjectTerm) {
+      this.$confirm(
+        this.$t('notification.action.active') + ' ' + this.$t('notification.object.quiz') + ' ' + this.$t('notification.action.continue') + '?', 'Warning',
+        {
+          confirmButtonText: this.$t('button.ok'),
+          cancelButtonText: this.$t('button.cancel'),
+          type: 'warning',
+        }
+      ).then(() => {
+        console.log('dm may');
+        termResource.activeSubjectTerm({ subject_term_id: subjectTerm.id }).then(response => {
+          this.termDetail(this.term.id);
+          getNotification('Kích hoạt', 'bài thi', 'thành công', 'success');
+        }).catch(error => {
+          console.log(error);
+          getNotification('Kích hoạt', 'bài thi', 'không thành công');
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Hủy kích hoạt bài thi.',
+        });
+      });
+    },
+    deactiveSubjectTerm(subjectTerm) {
+      this.$confirm(
+        this.$t('notification.action.active') + ' ' + this.$t('notification.object.quiz') + ' ' + this.$t('notification.action.continue') + '?', 'Warning',
+        {
+          confirmButtonText: this.$t('button.ok'),
+          cancelButtonText: this.$t('button.cancel'),
+          type: 'warning',
+        }
+      ).then(() => {
+        termResource.deactiveSubjectTerm({ subject_term_id: subjectTerm.id }).then(response => {
+          this.termDetail(this.term.uuid);
+          getNotification('Kích hoạt', 'bài thi', 'thành công', 'success');
+        }).catch(error => {
+          console.log(error);
+          getNotification('Kích hoạt', 'bài thi', 'không thành công');
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Hủy kích hoạt bài thi.',
+        });
       });
     },
     // allSubjects() {

@@ -154,4 +154,14 @@ class SubjectTermController extends Controller
 
     return ResultResource::collection($results);
   }
+
+  public function active(Request $request) {
+    $subjectTermId = $request->subject_term_id;
+    return new SubjectTermResource($this->subjectTermRepository->active($subjectTermId));
+  }
+
+  public function deactive(Request $request) {
+    $subjectTermId = $request->subject_term_id;
+    return new SubjectTermResource($this->subjectTermRepository->deactive($subjectTermId));
+  }
 }

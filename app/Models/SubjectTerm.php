@@ -9,6 +9,8 @@ use Spatie\Permission\Contracts\Role;
 
 class SubjectTerm extends Model
 {
+  const ACTIVED_CODE = 1;
+  const DEACTIVED_CODE = 0;
   const CONFIGED_CODE = 1;
   const UNCONFIGED_CODE = 0;
   const RUNNING = 2;
