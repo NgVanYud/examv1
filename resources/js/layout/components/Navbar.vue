@@ -6,7 +6,6 @@
 
     <div class="right-menu ml-auto">
       <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
@@ -20,7 +19,7 @@
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper d-flex align-items-center">
-          <img :src="avatar+'/128'" class="user-avatar">
+          <img src="@/assets/default-avatar.svg" class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -40,7 +39,6 @@ import Hamburger from '@/components/Hamburger';
 import Screenfull from '@/components/Screenfull';
 // import SizeSelect from '@/components/SizeSelect';
 import LangSelect from '@/components/LangSelect';
-import Search from '@/components/HeaderSearch';
 
 export default {
   components: {
@@ -49,7 +47,6 @@ export default {
     Screenfull,
     // SizeSelect,
     LangSelect,
-    Search,
   },
   computed: {
     ...mapGetters([

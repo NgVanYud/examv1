@@ -2,14 +2,11 @@
   <div class="app-container">
     <div class="filter-container">
       <div class="ml-auto">
-        <router-link :to = "{ name: 'CreateTerm' }">
+        <router-link :to = "{ name: 'CreateTerm' }" v-if="this.subjectTerm.status === 3">
           <el-button type="primary" size="mini" title="Cập nhật" class="filter-item" icon="el-icon-refresh">
             Cập nhật
           </el-button>
         </router-link>
-        <!--          <el-button size="mini" v-waves :loading="downloading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
-        <!--            {{ $t('table.export') }}-->
-        <!--          </el-button>-->
       </div>
     </div>
     <div>

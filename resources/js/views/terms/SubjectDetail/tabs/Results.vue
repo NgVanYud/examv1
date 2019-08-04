@@ -1,6 +1,21 @@
 <!--Cán bộ coi thi-->
 <template>
   <div>
+    <div class="filter-container">
+      <div class="d-flex">
+        <div class="ml-auto">
+          <el-button
+            class="filter-item"
+            type="primary"
+            icon="el-icon-download"
+            :loading="downloadLoading"
+            @click="handleExport">
+            {{ $t('table.export') }}
+          </el-button>
+        </div>
+      </div>
+    </div>
+
     <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%" size="mini">
       <el-table-column label="STT" width="60">
         <template slot-scope="scope">
@@ -81,6 +96,7 @@ export default {
         limit: 10,
       },
       total: 0,
+      downloadLoading: false,
     };
   },
   methods: {
@@ -148,6 +164,25 @@ export default {
         detail.push(tmp);
       }
       return detail;
+    },
+    handleExport() {
+      this.downloadLoading = true;
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['STT', 'Mã Sinh Viên', 'Họ', 'Tên', 'Điểm'];
+        const filterVal = ['index', 'student_code', 'last_name', 'first_name', 'score'];
+        const data = this.formatJson(filterVal, this.list);
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: 'results-list',
+        });
+        this.downloadLoading = false;
+      });
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        return v[j];
+      }));
     },
   },
   created() {

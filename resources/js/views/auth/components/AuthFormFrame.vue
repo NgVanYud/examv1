@@ -6,7 +6,7 @@
           <logo-frame :main-title="this.mainLogoTitle" :sub-title="this.subLogoTitle"></logo-frame>
           <div class="col-md-7">
             <h3 class="title">{{ formTitle }}</h3>
-            <lang-select class="set-language" />
+<!--            <lang-select class="set-language" />-->
             <slot name="formContent"></slot>
             <form-footer :footer-title="this.footerTitle"></form-footer>
           </div>
@@ -19,13 +19,13 @@
 <script>
 import LogoFrame from './LogoFrame';
 import FormFooter from './FormFooter';
-import LangSelect from '@/components/LangSelect';
+// import LangSelect from '@/components/LangSelect';
 
 export default {
   name: 'AuthFormFrame',
   components: {
     LogoFrame,
-    LangSelect,
+    // LangSelect,
     FormFooter,
   },
   props: {

@@ -13,13 +13,7 @@ Vue.use(Router);
 import Layout from '@/layout';
 
 /* Router for modules */
-import elementUiRoutes from './modules/element-ui';
-import componentRoutes from './modules/components';
-import chartsRoutes from './modules/charts';
-import tableRoutes from './modules/table';
 import adminRoutes from './modules/admin';
-import nestedRoutes from './modules/nested';
-import excelRoutes from './modules/excel';
 import permissionRoutes from './modules/permission';
 import userRoutes from './modules/user';
 import subjectRouters from './modules/subject';
@@ -100,7 +94,7 @@ export const constantRoutes = [
     hidden: true,
   },
   {
-    path: '/',
+    path: '',
     component: Layout,
     redirect: '/dashboard',
     children: [
@@ -112,7 +106,6 @@ export const constantRoutes = [
       },
     ],
   },
-  elementUiRoutes,
 ];
 
 export const asyncRoutes = [
@@ -122,96 +115,7 @@ export const asyncRoutes = [
   subjectTermRoutes,
   quizRoutes,
   permissionRoutes,
-  componentRoutes,
-  chartsRoutes,
-  nestedRoutes,
-  tableRoutes,
   adminRoutes,
-  {
-    path: '/theme',
-    component: Layout,
-    redirect: 'noredirect',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/theme/index'),
-        name: 'Theme',
-        meta: { title: 'theme', icon: 'theme' },
-      },
-    ],
-  },
-  {
-    path: '/clipboard',
-    component: Layout,
-    redirect: 'noredirect',
-    meta: { permissions: ['view menu clipboard'] },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/clipboard/index'),
-        name: 'ClipboardDemo',
-        meta: { title: 'clipboardDemo', icon: 'clipboard', roles: ['admin', 'manager', 'editor', 'user'] },
-      },
-    ],
-  },
-  excelRoutes,
-  {
-    path: '/zip',
-    component: Layout,
-    redirect: '/zip/download',
-    alwaysShow: true,
-    meta: { title: 'zip', icon: 'zip' },
-    children: [
-      {
-        path: 'download',
-        component: () => import('@/views/zip'),
-        name: 'ExportZip',
-        meta: { title: 'exportZip' },
-      },
-    ],
-  },
-  {
-    path: '/pdf',
-    component: Layout,
-    redirect: '/pdf/index',
-    meta: { title: 'pdf', icon: 'pdf', permissions: ['view menu pdf'] },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/pdf'),
-        name: 'Pdf',
-        meta: { title: 'pdf' },
-      },
-    ],
-  },
-  {
-    path: '/pdf/download',
-    component: () => import('@/views/pdf/Download'),
-    hidden: true,
-  },
-  {
-    path: '/i18n',
-    component: Layout,
-    meta: { permissions: ['view menu i18n'] },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/i18n'),
-        name: 'I18n',
-        meta: { title: 'i18n', icon: 'international' },
-      },
-    ],
-  },
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://github.com/tuandm/laravue',
-        meta: { title: 'externalLink', icon: 'link' },
-      },
-    ],
-  },
   { path: '*', redirect: '/404', hidden: true },
 ];
 

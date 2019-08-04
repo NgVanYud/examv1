@@ -7,7 +7,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import adminDashboard from './admin';
-import editorDashboard from './editor';
 import studentDashboard from './student';
 import managerDashboard from './manager';
 import { ALL_ROLES } from '@/utils/auth';
@@ -15,7 +14,7 @@ import { includes as includeRoles } from '@/utils/role';
 
 export default {
   name: 'Dashboard',
-  components: { adminDashboard, editorDashboard, studentDashboard, managerDashboard },
+  components: { adminDashboard, studentDashboard, managerDashboard },
   data() {
     return {
       currentRole: undefined,
